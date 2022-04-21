@@ -1,0 +1,21 @@
+{
+  "name": "scouting-app",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "build": "cd packages/game && npm run build",
+    "clean": "rm -rf ./apps/client/node_modules/scouting-app-game",
+    "copy": "cp -R packages/game apps/client/node_modules/scouting-app-game",
+    "sync": "npm run build && npm run clean && npm run copy"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/omagarwal25/scouting-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/omagarwal25/scouting-app/issues"
+  },
+  "homepage": "https://github.com/omagarwal25/scouting-app#readme"
+}
