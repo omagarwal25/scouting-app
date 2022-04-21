@@ -1,0 +1,9 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/omagarwal25/scouting-app/main/packages/game/schemas/game.schema.json
+
+name: Rapid React
+description: Uwu balls for brrrr
+year: 2022
+
+scoringElements:
+  - name: duckDelivery
+    label: Duck Delivery
