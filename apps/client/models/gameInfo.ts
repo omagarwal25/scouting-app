@@ -1,4 +1,4 @@
-import { z } from 'scouting-app-game';
+import { z } from 'zod';
 
 export const gameInfoSchema = z.object({
   scoutId: z.enum(['Red1', 'Red2', 'Red3', 'Blue1', 'Blue2', 'Blue3']),

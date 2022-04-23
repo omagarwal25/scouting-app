@@ -1,12 +1,12 @@
 import {
   autoSchema,
-  z,
   teleopSchema,
   pregameSchema,
   endgameSchema,
   postgameSchema,
 } from 'scouting-app-game';
 import { gameInfoSchema } from './gameInfo';
+import { z } from 'zod';
 
 export const gameSchema = z.object({
   gameInfo: gameInfoSchema,

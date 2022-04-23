@@ -7,13 +7,14 @@ import {
   UnpackNestedValue,
   useForm,
 } from 'react-hook-form';
-import { game, ScoringElement, ZodSchema } from '../../models';
+import { game, ScoringElement } from '../../models';
 import { RootStackParamList, RootTabScreenProps } from '../../types';
 import { Topbar } from '../Topbar';
 import { Button } from '../Button';
 import { ScrollView } from '../Themed';
 import { FieldInput } from './FieldInput';
 import { container } from '../../styles/container';
+import { ZodSchema } from 'zod';
 
 type Props<
   T extends Record<string, any>,

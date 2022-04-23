@@ -2,11 +2,9 @@
   "name": "scouting-app",
   "version": "1.0.0",
   "description": "",
+  "private": true,
   "scripts": {
-    "build": "cd packages/game && npm run build",
-    "clean": "rm -rf ./apps/client/node_modules/scouting-app-game",
-    "copy": "cp -R packages/game apps/client/node_modules/scouting-app-game",
-    "sync": "npm run build && npm run clean && npm run copy"
+    "build": "yarn nuxi build app"
   },
   "repository": {
     "type": "git",
@@ -17,5 +15,12 @@
   "bugs": {
     "url": "https://github.com/omagarwal25/scouting-app/issues"
   },
-  "homepage": "https://github.com/omagarwal25/scouting-app#readme"
+  "homepage": "https://github.com/omagarwal25/scouting-app#readme",
+  "dependencies": {
+    "turbo": "^1.2.5"
+  },
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ]
 }
