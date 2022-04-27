@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://github.com/omagarwal25/scouting-app/blob/turbo-repo/packages/game/schemas/game.schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/omagarwal25/scouting-app/turbo-repo/packages/game/schemas/game.schema.json
 
 name: FreightFrenzy
 description: Ducks Balls Cubes FTC
