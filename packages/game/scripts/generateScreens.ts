@@ -140,6 +140,36 @@ screens.forEach((screen) => {
   });
 });
 
+file.addVariableStatement({
+  declarationKind: VariableDeclarationKind.Const,
+  isExported: true,
+  declarations: [
+    {
+      name: "gameSchema",
+      initializer: `z.object({
+        gameInfo: infoSchema,
+        pregame: pregameSchema,
+        auto: autoSchema,
+        teleop: teleopSchema,
+        endgame: endgameSchema,
+        postgame: postgameSchema,
+      })`,
+    },
+  ],
+});
+
+file.addTypeAlias({
+  name: "Game",
+  isExported: true,
+  type: `z.infer<typeof gameSchema>`,
+});
+
+file.addTypeAlias({
+  name: "GameInfo",
+  isExported: true,
+  type: `z.infer<typeof gameInfoSchema>`,
+});
+
 file.saveSync();
 
 // Capitalize First Letter

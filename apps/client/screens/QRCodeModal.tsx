@@ -2,6 +2,7 @@ import { View, ScrollView } from '../components/Themed';
 
 // import { gameAtom, saveGameAtom } from '../state';
 import QRCode from 'react-native-qrcode-svg';
+import { encode, encodeGame } from 'scouting-app-game';
 import { useAtom } from 'jotai';
 import { container } from '../styles/container';
 import layout from '../constants/Layout';
@@ -10,7 +11,6 @@ import { RootTabScreenProps } from '../types';
 import { Button } from '../components/Button';
 import useColorScheme from '../hooks/useColorScheme';
 import Colors from '../constants/Colors';
-import { encode } from '../utils/csv';
 import { gameAtom } from '../state';
 import { Alert } from 'react-native';
 
@@ -41,7 +41,7 @@ export function QRCodeModal({ navigation }: RootTabScreenProps<'TabOne'>) {
       <Topbar />
       <ScrollView style={container.container}>
         <QRCode
-          value={encode(game)}
+          value={encodeGame(game)}
           // value={JSON.stringify(game.gameInfo)}
           size={layout.window.width * 0.9}
           ecl="L"

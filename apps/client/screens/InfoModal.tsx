@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { ScrollView, Text } from '../components/Themed';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { GameInfo, gameInfoSchema } from '../models/gameInfo';
+import { GameInfo, gameInfoSchema } from '../models';
 import { gameInfoAtom } from '../state';
 import { useAtom } from 'jotai';
 import { input } from '../styles/input';

@@ -5,6 +5,11 @@ description: Ducks Balls Cubes FTC
 year: 2021
 
 scoringElements:
+  - name: scoutId
+    type: Dropdown
+    label: Scout ID
+    screens:
+      - "Info"
   - name: duckDelivery
     label: Duck Delivery
     screens:
