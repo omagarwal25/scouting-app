@@ -4,7 +4,7 @@
     <QrStream @decode="onDecode">
       <div
         style="color: red"
-        class="absolute top-0 bottom-0 left-0 right-0 m-auto aspect-square h-4/5 border-2 border-pheonix-red"
+        class="absolute top-0 bottom-0 left-0 right-0 m-auto aspect-square h-4/5 border-2 border-phoenix-red"
       />
     </QrStream>
   </div>

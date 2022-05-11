@@ -5,20 +5,13 @@
     <Generator />
   </FlexVert> -->
 
-  <div class="grid grid-cols-3 grid-rows-2 gap-4 p-4">
-    <Scanner />
-    <FlexVert class="h-full gap-5">
-      <Button color="bg-pheonix-red font-whtie text-2xl"> Confirm </Button>
-      <Button color="bg-pheonix-red font-whtie text-2xl"> Confirm </Button>
-      <Button color="bg-pheonix-red font-whtie text-2xl"> Confirm </Button>
-    </FlexVert>
+  <div class="w-full">
+    <div class="w-full p-4">
+      <ScannerDash />
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import Scanner from './components/scanner/Scanner.vue';
-
-import FlexVert from './components/util/FlexVert.vue';
-import FlexHorz from './components/util/FlexHorz.vue';
-import Button from './components/util/Button.vue';
+import ScannerDash from './components/scanner/ScannerDash.vue';
 </script>

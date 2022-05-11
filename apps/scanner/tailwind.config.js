@@ -4,15 +4,15 @@ module.exports = {
   theme: {
     extend: {
       aspectRatio: {
-        "5/4": "5 / 4",
+        '5/4': '5 / 4',
       },
       fontFamily: {
-        sans: ["Poppins", "sans-serif"],
-        code: "Recursive",
+        sans: ['Poppins', 'sans-serif'],
+        code: 'Recursive',
       },
       colors: {
-        "pheonix-red": "#9B3A2A",
-        "griffins-blue": "#013D61",
+        'phoenix-red': '#9B3A2A',
+        'griffins-blue': '#013D61',
       },
     },
   },
