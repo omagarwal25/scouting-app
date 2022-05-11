@@ -1,11 +1,13 @@
 <template>
-  <div class="h-[500px] w-[500px]">
+  <div class="aspect-5/4 rounded-md border-2 border-gray-400">
+    <!-- @ts-ignore -->
     <QrStream @decode="onDecode">
-      <div style="color: red" class="frame"></div>
+      <div
+        style="color: red"
+        class="absolute top-0 bottom-0 left-0 right-0 m-auto aspect-square h-4/5 border-2 border-pheonix-red"
+      />
     </QrStream>
   </div>
-  <Buttons :is-loading="isLoading" :result="result" :error="error" />
-  <GameTable v-if="games.games.length !== 0" />
 </template>
 
 <script lang="ts" setup>
@@ -13,26 +15,8 @@ import { ref } from 'vue';
 import 'vue-loading-overlay/dist/vue-loading.css';
 // @ts-ignore
 import { QrStream } from 'vue3-qr-reader';
-import { useGamesStore } from '~/stores/games';
-import Buttons from '~/components/scanner/ScannerDash.vue';
 
 const result = ref<string>();
 const isLoading = ref(false);
 const error = ref<string>();
 </script>
-
-<style scoped>
-.frame {
-  border-style: solid;
-  border-width: 2px;
-  border-color: red;
-  height: 350px;
-  width: 350px;
-  position: absolute;
-  top: 0px;
-  bottom: 0px;
-  right: 0px;
-  left: 0px;
-  margin: auto;
-}
-</style>

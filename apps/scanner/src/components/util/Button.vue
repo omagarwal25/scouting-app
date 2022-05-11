@@ -1,5 +1,9 @@
 <template>
-  <button :class="color" @click="click" class="rounded p-2 text-white">
+  <button
+    :class="color"
+    @click="click"
+    class="rounded-md border-2 border-gray-400 p-2 text-white"
+  >
     <slot></slot>
   </button>
 </template>
