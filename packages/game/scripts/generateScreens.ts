@@ -147,7 +147,7 @@ file.addVariableStatement({
     {
       name: "gameSchema",
       initializer: `z.object({
-        gameInfo: infoSchema,
+        info: infoSchema,
         pregame: pregameSchema,
         auto: autoSchema,
         teleop: teleopSchema,
@@ -162,12 +162,6 @@ file.addTypeAlias({
   name: "Game",
   isExported: true,
   type: `z.infer<typeof gameSchema>`,
-});
-
-file.addTypeAlias({
-  name: "GameInfo",
-  isExported: true,
-  type: `z.infer<typeof gameInfoSchema>`,
 });
 
 file.saveSync();

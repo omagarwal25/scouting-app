@@ -4,7 +4,8 @@
   "description": "",
   "private": true,
   "scripts": {
-    "build": "yarn nuxi build app"
+    "build": "yarn nuxi build app",
+    "dev": "wireit"
   },
   "repository": {
     "type": "git",
@@ -16,11 +17,18 @@
     "url": "https://github.com/omagarwal25/scouting-app/issues"
   },
   "homepage": "https://github.com/omagarwal25/scouting-app#readme",
-  "dependencies": {
-    "turbo": "^1.2.5"
-  },
   "workspaces": [
     "packages/*",
     "apps/*"
-  ]
+  ],
+  "devDependencies": {
+    "prettier": "^2.6.2",
+    "prettier-plugin-tailwindcss": "^0.1.10",
+    "wireit": "^0.2.1"
+  },
+  "wireit": {
+    "dev": {
+      "command": ""
+    }
+  }
 }

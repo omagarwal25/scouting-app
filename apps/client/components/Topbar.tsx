@@ -1,21 +1,21 @@
 import { useAtom } from 'jotai';
 import { StyleSheet } from 'react-native';
 import Colors from '../constants/Colors';
-import { gameInfoAtom } from '../state';
+import { infoAtom } from '../state';
 import { font } from '../styles/font';
 import { Text, View } from './Themed';
 
 export const Topbar = () => {
-  const [gameInfo] = useAtom(gameInfoAtom);
+  const [info] = useAtom(infoAtom);
 
   const bar = [
     styles.bar,
-    gameInfo.teamColor === 'blue' ? styles.blueBar : styles.redBar,
+    info.scoutId.startsWith('B') ? styles.blueBar : styles.redBar,
   ];
 
   return (
     <View style={bar}>
-      <Text style={[font.white, font.bold]}>{gameInfo.teamNumber}</Text>
+      <Text style={[font.white, font.bold]}>{info.teamNumber}</Text>
     </View>
   );
 };
