@@ -1,1 +1,1 @@
-export * from 'scouting-app-game';
+export * from '@griffins-scout/game';

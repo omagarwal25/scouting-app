@@ -14,8 +14,10 @@ scoringElements:
       options:
         - Red 1
         - Red 2
+        - Red 3
         - Blue 1
         - Blue 2
+        - Blue 3
   - name: matchType
     label: Match Type
     screens:

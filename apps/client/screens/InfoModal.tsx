@@ -1,4 +1,4 @@
-import { infoKeys, infoSchema } from 'scouting-app-game';
+import { infoKeys, infoSchema } from '@griffins-scout/game';
 import { InputModal } from '../components/input/InputModal';
 import { infoAtom } from '../state';
 import { RootTabScreenProps } from '../types';

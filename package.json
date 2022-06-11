@@ -24,11 +24,17 @@
   "devDependencies": {
     "prettier": "^2.6.2",
     "prettier-plugin-tailwindcss": "^0.1.10",
-    "wireit": "^0.2.1"
+    "wireit": "^0.5.0"
   },
   "wireit": {
     "dev": {
-      "command": ""
+      "dependencies": [
+        "./apps/client:dev",
+        "./apps/scanner:dev",
+        "./apps/viewer:dev",
+        "./packages/api:build",
+        "./packages/game:build"
+      ]
     }
   }
 }

@@ -1,0 +1,36 @@
+{
+  "name": "@griffins-scout/api",
+  "version": "1.0.0",
+  "description": "The browser API collection for anything Griffins Scout",
+  "main": "./src/index.ts",
+  "files": [
+    "dist/**"
+  ],
+  "scripts": {
+    "build": "wireit"
+  },
+  "wireit": {
+    "build": {
+      "command": "tsc --build --pretty",
+      "clean": "if-file-deleted",
+      "files": [
+        "src/**"
+      ],
+      "output": [
+        "dist/**"
+      ],
+      "dependencies": [
+        "../game:build"
+      ]
+    }
+  },
+  "author": "omagarwal25",
+  "license": "MIT",
+  "private": false,
+  "devDependencies": {
+    "typescript": "^4.7.3"
+  },
+  "dependencies": {
+    "@griffins-scout/game": "*"
+  }
+}

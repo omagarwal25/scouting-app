@@ -1,43 +1,57 @@
 {
-  "name": "scouting-app-game",
+  "name": "@griffins-scout/game",
   "version": "1.0.0",
   "license": "MIT",
-  "main": "./dist/index.js",
+  "main": "./src/index.ts",
   "types": "./dist/index.d.ts",
   "source": "./src/index.ts",
   "files": [
     "dist/**"
   ],
   "scripts": {
-    "dev": "tsc -w",
-    "gen:game": "ts-node ./scripts/generateGame.ts",
-    "gen:screens": "ts-node ./scripts/generateScreens.ts",
-    "build": "yarn clean && yarn gen:game && yarn gen:screens && yarn format && tsc",
-    "test": "jest",
-    "format": "prettier --write './src/**/*.ts' './scripts/**/*.ts'",
-    "clean": "rm -rf dist && rm -rf ./src/game.ts && rm -rf ./src/screens.ts && rm -rf ./src/defaults.ts"
+    "gen:game": "wireit",
+    "gen:screens": "wireit",
+    "build": "wireit"
   },
   "wireit": {
-    "build": {
-      "command": "tsc",
+    "gen:game": {
+      "command": "ts-node ./scripts/generateGame.ts",
+      "files": [
+        "scripts/generateGame.ts",
+        "game.yaml"
+      ],
+      "output": [
+        "src/game.ts"
+      ]
+    },
+    "gen:screens": {
+      "command": "ts-node ./scripts/generateScreens.ts",
+      "files": [
+        "scripts/generateScreens.ts",
+        "screens.yaml"
+      ],
+      "output": [
+        "src/screens.ts",
+        "src/defaults.ts"
+      ],
       "dependencies": [
-        "format",
-        "clean",
+        "gen:game"
+      ]
+    },
+    "build": {
+      "command": "tsc --build --pretty",
+      "dependencies": [
         "gen:game",
         "gen:screens"
+      ],
+      "files": [
+        "src",
+        "tsconfig.json"
+      ],
+      "output": [
+        "dist"
       ]
-    },
-    "format": {
-      "command": "prettier --write './src/**/*.ts' './scripts/**/*.ts'",
-      "dependencies": [
-        "gen"
-      ]
-    },
-    "clean": {
-      "command": "rm -rf dist && rm -rf ./src/game.ts && rm -rf ./src/screens.ts && rm -rf ./src/defaults.ts"
-
     }
-    
   },
   "devDependencies": {
     "@types/node": "^17.0.25",
@@ -47,16 +61,11 @@
     "ts-morph": "^14.0.0",
     "ts-node": "^10.7.0",
     "typescript": "^4.6.3",
-    "wireit": "^0.2.1",
+    "wireit": "^0.5.0",
     "yaml": "^2.0.1",
     "zod-to-json-schema": "^3.11.3"
   },
   "dependencies": {
     "zod": "^3.14.4"
-  },
-  "jest": {
-    "transform": {
-      "^.+\\.[t|j]sx?$": "babel-jest"
-    }
   }
 }

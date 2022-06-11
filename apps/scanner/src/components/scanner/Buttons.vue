@@ -1,27 +1,38 @@
 <template>
-  <FlexVert
-    class="col-span-2 row-span-2 h-full w-full items-center justify-between gap-5"
+  <div
+    class="col-span-2 grid h-full w-full grid-cols-2 grid-rows-2 items-center justify-between gap-5"
   >
-    <Button color="w-full h-full bg-phoenix-red font-whtie text-4xl">
-      Undo
-    </Button>
     <Button
-      color="w-full h-full bg-griffins-blue font-whtie text-4xl"
-      @click="onNextGame"
+      color="w-full h-full bg-griffins-blue font-white text-4xl"
+      @click="onNext"
     >
       Next Game
     </Button>
-  </FlexVert>
+    <Button
+      color="w-full h-full bg-phoenix-red font-white text-4xl"
+      @click="onUndo"
+    >
+      Undo
+    </Button>
+    <Button
+      color="w-full h-full bg-griffins-blue font-white text-4xl col-span-2"
+    >
+      Fetch New TBA Data
+    </Button>
+  </div>
 </template>
 
 <script setup lang="ts">
-import FlexVert from '~/components/util/FlexVert.vue';
 import Button from '~/components/util/Button.vue';
 import { useCurrentGameStore } from '~/store';
 
-const currentGame = useCurrentGameStore();
+const store = useCurrentGameStore();
 
-const onNextGame = async () => {
-  await currentGame.nextGame();
+const onUndo = () => {
+  store.undo();
+};
+
+const onNext = async () => {
+  await store.nextGame();
 };
 </script>

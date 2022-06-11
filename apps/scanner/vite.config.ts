@@ -10,4 +10,12 @@ export default defineConfig({
       '~/': `${path.resolve(__dirname, 'src')}/`,
     },
   },
+  optimizeDeps: {
+    // link: ['@griffins-scout/game'],
+  },
+  build: {
+    commonjsOptions: {
+      include: [/@griffins-scout\/game/, /node_modules/],
+    },
+  },
 });

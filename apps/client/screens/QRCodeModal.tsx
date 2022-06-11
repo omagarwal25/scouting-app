@@ -2,7 +2,7 @@ import { View, ScrollView } from '../components/Themed';
 
 // import { gameAtom, saveGameAtom } from '../state';
 import QRCode from 'react-native-qrcode-svg';
-import { encode, encodeGame } from 'scouting-app-game';
+import { encode, encodeGame } from '@griffins-scout/game';
 import { useAtom } from 'jotai';
 import { container } from '../styles/container';
 import layout from '../constants/Layout';
