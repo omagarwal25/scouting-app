@@ -1,13 +1,13 @@
-import { api } from '~/api';
 import { Game } from '@griffins-scout/game';
 import { defineStore } from 'pinia';
-import { GameQuery } from '@griffins-scout/api';
+import { Game as DBGame } from '@griffins-scout/api';
+import { client } from '~/api';
 // import { getNextGame } from '~/api';
 
 export const useCurrentGameStore = defineStore('currentGameStore', {
   state: () => {
     return {
-      currentMatch: { number: 1, type: 'QUALIFYING' } as GameQuery,
+      currentMatch: undefined as DBGame | undefined,
       records: [] as Game[],
     };
   },
@@ -16,14 +16,30 @@ export const useCurrentGameStore = defineStore('currentGameStore', {
     currentRecord(): Game | undefined {
       return this.records.at(-1);
     },
+
+    async games(): Promise<DBGame[]> {
+      return client.query('game.findAll');
+    },
   },
 
   actions: {
-    async nextGame() {
-      const requests = this.records.map((record) => api.game.postData(record));
-      await Promise.all(requests);
+    async nextGame(id: number) {
+      if (this.currentMatch !== undefined) {
+        const record = await client.query(
+          'record.findById',
+          this.currentMatch.id
+        );
 
-      this.records = [];
+        if (record) {
+          record.data.push(...this.records.map((e) => JSON.stringify(e)));
+
+          await client.mutation('record.updateOne', {
+            id: record.id,
+            data: record.data,
+          });
+        }
+        this.records = [];
+      }
     },
 
     async undo() {

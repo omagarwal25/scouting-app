@@ -24,7 +24,7 @@
       "command": "remix dev",
       "dependencies": [
         "build:css",
-        "../../packages/api:build",
+        "../controller:start",
         "../../packages/game:build"
       ],
       "files": [
@@ -35,7 +35,7 @@
       "command": "remix build",
       "dependencies": [
         "build:css",
-        "../../packages/api:build",
+        "../controller:start",
         "../../packages/game:build"
       ],
       "files": [

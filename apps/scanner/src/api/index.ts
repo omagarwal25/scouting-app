@@ -1,3 +1,6 @@
-import { createApi, createInstance } from '@griffins-scout/api';
+import type { AppRouter } from '@griffins-scout/api';
+import { createTRPCClient } from '@trpc/client';
 
-export const api = createApi(createInstance('http://localhost:8080'));
+export const client = createTRPCClient<AppRouter>({
+  url: 'http://localhost:8080/trpc',
+});

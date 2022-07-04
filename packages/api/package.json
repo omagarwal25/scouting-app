@@ -18,9 +18,6 @@
       ],
       "output": [
         "dist/**"
-      ],
-      "dependencies": [
-        "../game:build"
       ]
     }
   },
