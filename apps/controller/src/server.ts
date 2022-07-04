@@ -1,7 +1,7 @@
-import { router } from "@trpc/server";
+import * as trpc from "@trpc/server";
 import * as trpcExpress from "@trpc/server/adapters/express";
 import express from "express";
-import { Context, createContext } from "./context";
+import { Context, createContext, createRouter } from "./context";
 import { gameRouter } from "./game";
 import { recordRouter } from "./record";
 
@@ -10,8 +10,6 @@ export type { Game, Record, Team, Station, GameType } from "@prisma/client";
 const PORT = 8080;
 
 const app = express();
-
-export const createRouter = () => router<Context>();
 
 const appRouter = createRouter()
   .merge("game.", gameRouter)

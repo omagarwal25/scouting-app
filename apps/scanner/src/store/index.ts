@@ -23,7 +23,7 @@ export const useCurrentGameStore = defineStore('currentGameStore', {
   },
 
   actions: {
-    async nextGame(id: number) {
+    async nextGame() {
       if (this.currentMatch !== undefined) {
         const record = await client.query(
           'record.findById',

@@ -1,6 +1,6 @@
 import { RecordModel } from "./../prisma/zod/record";
 import { z } from "zod";
-import { createRouter } from "./server";
+import { createRouter } from "./context";
 
 export const recordRouter = createRouter()
   .query("findById", {
