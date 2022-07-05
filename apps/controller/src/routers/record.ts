@@ -21,6 +21,20 @@ export const recordRouter = createRouter()
         data: rest,
       });
     },
+  })
+  .query("findByGameKeyAndTeam", {
+    input: z.object({
+      gameKey: z.string(),
+      team: z.number(),
+    }),
+    async resolve({ ctx, input }) {
+      return ctx.prisma.record.findFirst({
+        where: {
+          Game: { key: input.gameKey },
+          Team: { number: input.team },
+        },
+      });
+    },
   });
 
 export type RecordRouter = typeof recordRouter;

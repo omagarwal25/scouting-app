@@ -13,7 +13,6 @@
 <script lang="ts" setup>
 import { decodeGame } from '@griffins-scout/game';
 import { ref } from 'vue';
-import 'vue-loading-overlay/dist/vue-loading.css';
 // @ts-ignore
 import { QrStream } from 'vue3-qr-reader';
 import { useCurrentGameStore } from '~/store';

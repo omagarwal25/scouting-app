@@ -27,7 +27,9 @@ scoringElements:
       options:
         - Practice
         - Qualification
-        - Elimination
+        - Quarterfinal
+        - Semifinal
+        - Final
 
   - name: matchNumber
     label: Match Number

@@ -2,7 +2,6 @@ import { Game } from '@griffins-scout/game';
 import { defineStore } from 'pinia';
 import { Game as DBGame } from '@griffins-scout/api';
 import { client } from '~/api';
-// import { getNextGame } from '~/api';
 
 export const useCurrentGameStore = defineStore('currentGameStore', {
   state: () => {
@@ -17,29 +16,46 @@ export const useCurrentGameStore = defineStore('currentGameStore', {
       return this.records.at(-1);
     },
 
-    async games(): Promise<DBGame[]> {
+    async games() {
       return client.query('game.findAll');
     },
   },
 
   actions: {
-    async nextGame() {
+    async clear() {
       if (this.currentMatch !== undefined) {
-        const record = await client.query(
-          'record.findById',
-          this.currentMatch.id
+        const game = await client.query(
+          'game.findByKey',
+          this.currentMatch.key
         );
 
-        if (record) {
-          record.data.push(...this.records.map((e) => JSON.stringify(e)));
+        if (game !== null) {
+          // iterate over all the records, fetch them from db and update
+          for (const record of this.records) {
+            const dbRecord = await client.query('record.findByGameKeyAndTeam', {
+              gameKey: game.key,
+              team: record.info.teamNumber,
+            });
 
-          await client.mutation('record.updateOne', {
-            id: record.id,
-            data: record.data,
-          });
+            if (dbRecord !== null) {
+              dbRecord.data.push(JSON.stringify(record));
+
+              await client.mutation('record.updateOne', {
+                id: dbRecord.id,
+                data: dbRecord.data,
+              });
+            } else {
+              // TODO figure some way to handle this
+            }
+          }
         }
-        this.records = [];
+
+        // TODO deal with the off case
+        // BUG THIS IS IMPORTANT BECAUSE OF PRACTICE MATCH SCOUTING.
+        // IT WILL NOT EXIST IN TBA. ALSO WE NEED AN ESCAPE HATCH
       }
+
+      this.records = [];
     },
 
     async undo() {

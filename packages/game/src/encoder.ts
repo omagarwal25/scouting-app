@@ -1,6 +1,5 @@
 // encodes and decodes game state, using auto and other screens
 
-import { gameDefault } from "./defaults";
 import { game } from "./game";
 import {
   autoKeys,
@@ -12,6 +11,12 @@ import {
   infoKeys,
 } from "./screens";
 
+/**
+ * Encodes a game state into a string.
+ * @param state current game state
+ * @param keys keys to encode
+ * @returns string encoded state
+ */
 export const encode = <T extends string>(
   state: Record<T, number | string | boolean>,
   keys: readonly T[]
@@ -37,6 +42,12 @@ export const encode = <T extends string>(
   }, "");
 };
 
+/**
+ * Decodes a string into a game state. Pass a generic that specifies the shape of the state.
+ * @param str string to decode
+ * @param keys keys that are needed in the correct order
+ * @returns decoded state
+ */
 export const decode = <B extends { [key: string]: string | number | boolean }>(
   str: string,
   keys: readonly (keyof B)[]
@@ -69,6 +80,11 @@ export const decode = <B extends { [key: string]: string | number | boolean }>(
   return state;
 };
 
+/**
+ * Encodes a game state into a string
+ * @param game the game to encode
+ * @returns encoded game using @ and $ as separators
+ */
 export const encodeGame = (game: Game) => {
   const auto = encode(game.auto, autoKeys);
   const endgame = encode(game.endgame, endgameKeys);
@@ -79,6 +95,11 @@ export const encodeGame = (game: Game) => {
   return `${auto}@${endgame}@${postgame}@${teleop}@${pregame}@${info}`;
 };
 
+/**
+ * Decodes a string @ and $ separated string into a game object.
+ * @param str - string to decode
+ * @returns a fully decoded game
+ */
 export const decodeGame = (str: string): Game => {
   const split = str.split("@");
   const game: Game = {

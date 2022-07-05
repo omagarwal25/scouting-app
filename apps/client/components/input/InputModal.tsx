@@ -1,12 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAtom, WritableAtom } from 'jotai';
-import {
-  DeepPartial,
-  FieldError,
-  Path,
-  UnpackNestedValue,
-  useForm,
-} from 'react-hook-form';
+import { DeepPartial, FieldError, Path, useForm } from 'react-hook-form';
 import { game, ScoringElement } from '../../models';
 import { RootStackParamList, RootTabScreenProps } from '../../types';
 import { Topbar } from '../Topbar';
@@ -45,7 +39,7 @@ export const InputModal = <
     formState: { errors },
   } = useForm<T>({
     resolver: zodResolver(zodSchema),
-    defaultValues: state as UnpackNestedValue<DeepPartial<T>>,
+    defaultValues: state as DeepPartial<T>,
   });
 
   const onSubmit = handleSubmit((f) => {
@@ -55,9 +49,11 @@ export const InputModal = <
     );
   });
 
-  const scoringElements = game.scoringElements.reduce<
-    Record<string, ScoringElement>
-  >((acc, curr) => ({ ...acc, [curr.name]: curr }), {});
+  const scoringElements = new Map<string, ScoringElement>();
+
+  game.scoringElements.forEach((element) => {
+    scoringElements.set(element.name, element);
+  });
 
   return (
     <>
@@ -69,9 +65,9 @@ export const InputModal = <
             error={
               (errors as Record<keyof T, FieldError>)[e as unknown as keyof T]
             }
-            field={scoringElements[e].field}
-            label={scoringElements[e].label}
-            key={scoringElements[e].hash}
+            field={scoringElements.get(e)!!.field}
+            label={scoringElements.get(e)!!.label}
+            key={scoringElements.get(e)!!.hash}
           />
         ))}
         <Button label="Next" onPress={onSubmit} />

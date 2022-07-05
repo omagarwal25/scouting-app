@@ -4,9 +4,11 @@ import { CompleteRecord, RelatedRecordModel } from "./index"
 
 export const GameModel = z.object({
   id: z.number().int(),
+  key: z.string(),
   time: z.date(),
   type: z.nativeEnum(GameType),
   number: z.number().int(),
+  set: z.number().int(),
   createdAt: z.date(),
   updatedAt: z.date(),
 })

@@ -33,6 +33,6 @@ const onUndo = () => {
 };
 
 const onNext = async () => {
-  await store.nextGame();
+  await store.clear();
 };
 </script>
