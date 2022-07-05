@@ -52,7 +52,7 @@ scoringElements:
   - name: scoutName
     label: Scout Name
     screens:
-      - Info
+      - Postgame
     field:
       fieldType: Text
 

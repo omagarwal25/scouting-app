@@ -1,4 +1,4 @@
-import { createRouter } from "./context";
+import { createRouter } from "../context";
 
 export const gameRouter = createRouter().query("findAll", {
   async resolve({ ctx }) {

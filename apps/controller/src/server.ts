@@ -2,8 +2,8 @@ import * as trpc from "@trpc/server";
 import * as trpcExpress from "@trpc/server/adapters/express";
 import express from "express";
 import { Context, createContext, createRouter } from "./context";
-import { gameRouter } from "./game";
-import { recordRouter } from "./record";
+import { gameRouter } from "./routers/game";
+import { recordRouter } from "./routers/record";
 
 export type { Game, Record, Team, Station, GameType } from "@prisma/client";
 

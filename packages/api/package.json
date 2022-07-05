@@ -23,7 +23,7 @@
   },
   "author": "omagarwal25",
   "license": "MIT",
-  "private": false,
+  "private": true,
   "devDependencies": {
     "typescript": "^4.7.3"
   },

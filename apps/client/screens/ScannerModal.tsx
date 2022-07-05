@@ -4,14 +4,14 @@ import { Pressable, StyleSheet } from 'react-native';
 import { container } from '../styles/container';
 import { Text, View, ScrollView } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
-import { gameInfoAtom } from '../state';
+import { infoAtom } from '../state';
 import { useAtom } from 'jotai';
-// import { decodeGameInfo } from '../utils/csv';
+import { decode, Info, infoKeys } from '@griffins-scout/game';
 
 export const ScannerModal = ({ navigation }: RootTabScreenProps<'TabOne'>) => {
   const [hasPermission, setHasPermission] = useState<null | boolean>(null);
   const [scanned, setScanned] = useState(false);
-  const [_, setGameInfo] = useAtom(gameInfoAtom);
+  const [_, setGameInfo] = useAtom(infoAtom);
 
   useEffect(() => {
     (async () => {
@@ -25,7 +25,7 @@ export const ScannerModal = ({ navigation }: RootTabScreenProps<'TabOne'>) => {
     data,
   }) => {
     setScanned(true);
-    // await setGameInfo(decodeGameInfo(data));
+    await setGameInfo(decode<Info>(data, infoKeys));
 
     navigation.navigate('Pregame');
   };
