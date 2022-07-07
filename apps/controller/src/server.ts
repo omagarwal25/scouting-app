@@ -1,13 +1,13 @@
+import { gameDefault } from "@griffins-scout/game";
 import * as trpcExpress from "@trpc/server/adapters/express";
+import { expressHandler } from "trpc-playground/handlers/express";
 import { envsafe, port, str, url } from "envsafe";
 import express from "express";
 import { createContext, createRouter } from "./context";
-import { blueAllianceRouter } from "./routers/blueAlliance";
-import { gameRouter } from "./routers/game";
 import cors from "cors";
-import { recordRouter } from "./routers/record";
-
-export type { Game, Record, Team, Station, GameType } from "@prisma/client";
+import "dotenv/config";
+import mongoose from "mongoose";
+import { recordRouter } from "./router/record";
 
 export const env = envsafe({
   NODE_ENV: str({
@@ -22,26 +22,51 @@ export const env = envsafe({
   EVENT_CODE: str(),
 });
 
-const app = express();
-
-const appRouter = createRouter()
-  .merge("game.", gameRouter)
-  .merge("record.", recordRouter)
-  .merge("blueAlliance.", blueAllianceRouter);
+const appRouter = createRouter().merge("record.", recordRouter);
+// .merge("game.", gameRouter)
+// .merge("blueAlliance.", blueAllianceRouter);
 
 export type AppRouter = typeof appRouter;
 
-app.use(cors());
-app.use(express.json());
-app.use(
-  "/trpc",
-  trpcExpress.createExpressMiddleware({
-    router: appRouter,
-    createContext,
-  })
-);
-app.get("/", (req, res) => res.send("Express + Prisma + tRPC + tRPC Shield"));
+const trpcEndpoint = "/trpc";
+const trpcPlaygroundEndpoint = "/trpc-playground";
+const main = async () => {
+  const app = express();
 
-app.listen(env.PORT, () => {
-  console.log(`server listening at http://localhost:${env.PORT}`);
-});
+  app.use(cors());
+  app.use(express.json());
+  app.use(
+    trpcEndpoint,
+    trpcExpress.createExpressMiddleware({
+      router: appRouter,
+      createContext,
+    })
+  );
+  app.use(
+    trpcPlaygroundEndpoint,
+    await expressHandler({
+      trpcApiEndpoint: trpcEndpoint,
+      playgroundEndpoint: trpcPlaygroundEndpoint,
+      router: appRouter,
+      request: {
+        superjson: true,
+      },
+    })
+  );
+
+  app.get("/", (req, res) => res.send("Express + Prisma + tRPC + tRPC Shield"));
+
+  console.log(`Connecting to database... @ ${env.DATABASE_URL}`);
+  await mongoose.connect(env.DATABASE_URL, {
+    family: 4,
+  });
+  console.log("Connected to database.");
+  app.listen(env.PORT, () => {
+    console.log(`server listening at http://localhost:${env.PORT}`);
+    console.log(
+      `tRPC playground listening at http://localhost:${env.PORT}${trpcPlaygroundEndpoint}`
+    );
+  });
+};
+
+main();

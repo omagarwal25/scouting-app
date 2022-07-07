@@ -1,7 +1,7 @@
-import { CompLevel, Match } from "../models/match";
-import { createRouter } from "../context";
-import { env, Station } from "../server";
-import { TBATeam } from "../models/team";
+import { CompLevel, Match } from "../controller/src/models/match";
+import { createRouter } from "../controller/src/context";
+import { env, Station } from "../controller/src/server";
+import { TBATeam } from "../controller/src/models/team";
 
 const tbaBaseUrl = "https://www.thebluealliance.com/api/v3";
 const indexToStation = (index: number, color: "RED" | "BLUE"): Station => {
@@ -58,7 +58,6 @@ export const blueAllianceRouter = createRouter().query("fetch", {
               time: new Date(game.predicted_time * 1000),
               type: tbaGameTypeToDbGameType[game.comp_level],
               number: game.match_number,
-              set: game.set_number,
             },
           });
 

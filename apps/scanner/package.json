@@ -28,6 +28,7 @@
     "node-fetch": "^3.2.6",
     "pinia": "^2.0.11",
     "qrcode.vue": "^3.3.3",
+    "superjson": "^1.9.1",
     "vue": "^3.2.37",
     "vue3-qr-reader": "^1.0.0"
   },
