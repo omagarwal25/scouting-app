@@ -4,8 +4,8 @@ A scouting app designed for FRC by Team 1884 but can be used to scout VEX and FT
 
 Currently, this is a work in progress.
 
-- [] Create viewer app
-- [] add subjective data
+- [ ] Create viewer app
+- [ ] add subjective data
 
 ## Usage
 
