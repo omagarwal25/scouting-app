@@ -19,7 +19,9 @@
       "command": "ts-node ./scripts/generateGame.ts",
       "files": [
         "scripts/generateGame.ts",
-        "game.yaml"
+        "game.yaml",
+        "game.toml",
+        "game.json"
       ],
       "output": [
         "src/game.ts"
@@ -68,6 +70,7 @@
     "zod-to-json-schema": "^3.17.0"
   },
   "dependencies": {
+    "@ltd/j-toml": "^1.30.0",
     "zod": "^3.17.3"
   }
 }

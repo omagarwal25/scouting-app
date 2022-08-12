@@ -3,7 +3,7 @@
     <Scanner class="col-span-4 row-span-3" />
     <p class="col-span-2 row-span-1 font-code text-xl">
       <p>Scout ID: {{ store.currentRecord?.info.scoutId }}</p>
-      <p>Scout Name: {{ store.currentRecord?.info.scoutName }}</p>
+      <p>Scout Name: {{ store.currentRecord?.postgame.scoutName }}</p>
       <p>Match Type: {{ store.currentRecord?.info.matchType }}</p>
       <p>Match Number: {{ store.currentRecord?.info.matchNumber }}</p>
       <p>Team Number: {{ store.currentRecord?.info.teamNumber }}</p>

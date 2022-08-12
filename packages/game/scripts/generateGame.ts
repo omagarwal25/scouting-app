@@ -4,10 +4,32 @@ import fs from "fs";
 import jsonSchemaToZod from "json-schema-to-zod";
 import { JSONSchema7 } from "json-schema";
 import { CodeBlockWriter, Project, VariableDeclarationKind } from "ts-morph";
+import TOML from "@ltd/j-toml";
 
-const file = fs.readFileSync("game.yaml", "utf8");
+// check if game.yaml exists
+function getType() {
+  if (fs.existsSync("./game.yaml")) {
+    return "yaml";
+  } else if (fs.existsSync("./game.toml")) {
+    return "toml";
+  } else {
+    return "json";
+  }
+}
 
-const info = parse(file) as YearGame;
+function getYearGame(type: ReturnType<typeof getType>) {
+  const file = fs.readFileSync(`./game.${type}`, "utf8");
+
+  if (type === "yaml") {
+    return parse(file) as YearGame;
+  } else if (type === "toml") {
+    return TOML.parse(file, { bigint: false }) as unknown as YearGame;
+  } else {
+    return JSON.parse(file) as YearGame;
+  }
+}
+
+const info = getYearGame(getType());
 
 const scoringElements = info.scoringElements.map((scoringElement) => {
   const hash = hashCode(scoringElement.name);
@@ -46,6 +68,22 @@ const scoringElements = info.scoringElements.map((scoringElement) => {
     hash,
     field: scoringElement.field,
   };
+});
+
+// the following scoring elements must exist. "scoutId" | "scoutName" | "matchType" | "matchNumber" | "teamNumber"
+const names = scoringElements.map((scoringElement) => scoringElement.name);
+const required = [
+  "scoutId",
+  "scoutName",
+  "matchType",
+  "matchNumber",
+  "teamNumber",
+];
+
+required.forEach((name) => {
+  if (!names.includes(name)) {
+    throw new Error(`❌ Scoring element ${name} is required`);
+  }
 });
 
 function lowerCaseFirstLetter(str: string) {

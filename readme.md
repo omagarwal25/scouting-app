@@ -1,4 +1,4 @@
-# Griffins Scout
+#Griffins Scout
 
 A scouting app designed for FRC by Team 1884 but can be used to scout VEX and FTC.
 
@@ -6,6 +6,7 @@ Currently, this is a work in progress.
 
 - [ ] Create viewer app
 - [ ] add subjective data
+- [ ] blue alliance integration
 
 [Old Client](https://github.com/omagarwal25/scouting-client)
 [Old Server](httpsL//github.com/omagarwal25/scouting-server)
