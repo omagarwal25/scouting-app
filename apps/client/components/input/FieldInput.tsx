@@ -1,14 +1,14 @@
-import { FieldError, UseControllerProps } from 'react-hook-form';
-import { Field } from '../../models';
-import { input } from '../../styles/input';
+import { FieldError, FieldValues, UseControllerProps } from 'react-hook-form';
+import { Field } from '@/models';
+import { input } from '@/styles/input';
 import { IncrementInput } from './IncrementInput';
 import { NumericInput } from './NumericInput';
 import { PickerInput } from './PickerInput';
 import { SwitchInput } from './SwitchInput';
 import { TextInput } from './TextInput';
-import { Text } from '../Themed';
+import { Text } from '@/components/Themed';
 
-type Props<T> = {
+type Props<T extends FieldValues> = {
   field: Field;
   label: string;
   error: FieldError | undefined;

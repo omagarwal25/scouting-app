@@ -1,10 +1,14 @@
-import { useController, UseControllerProps } from 'react-hook-form';
-import { Text, View } from '../Themed';
-import { getInput, input } from '../../styles/input';
-import useColorScheme from '../../hooks/useColorScheme';
+import {
+  FieldValues,
+  useController,
+  UseControllerProps,
+} from 'react-hook-form';
+import { Text, View } from '@/components/Themed';
+import { getInput, input } from '@/styles/input';
+import useColorScheme from '@/hooks/useColorScheme';
 import { TextInput } from 'react-native';
 
-type Props<T> = {
+type Props<T extends FieldValues> = {
   control: UseControllerProps<T>;
   label: string;
 };

@@ -1,11 +1,15 @@
-import { useController, UseControllerProps } from 'react-hook-form';
-import { Text, View } from '../Themed';
-import { getPicker, getPickerItemStyle, input } from '../../styles/input';
+import {
+  FieldValues,
+  useController,
+  UseControllerProps,
+} from 'react-hook-form';
+import { Text, View } from '@/components/Themed';
+import { getPicker, getPickerItemStyle, input } from '@/styles/input';
 import { Picker } from '@react-native-picker/picker';
-import useColorScheme from '../../hooks/useColorScheme';
+import useColorScheme from '@/hooks/useColorScheme';
 import * as Haptics from 'expo-haptics';
 
-type Props<T> = {
+type Props<T extends FieldValues> = {
   control: UseControllerProps<T>;
   label: string;
   items: string[];

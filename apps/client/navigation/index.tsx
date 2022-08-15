@@ -14,25 +14,24 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { ColorSchemeName } from 'react-native';
 
-import Colors from '../constants/Colors';
-import useColorScheme from '../hooks/useColorScheme';
-import { AutoModal } from '../screens/AutoModal';
-import { EndgameModal } from '../screens/EndgameModal';
-import { InfoModal } from '../screens/InfoModal';
-
-import NotFoundScreen from '../screens/NotFoundScreen';
-import { PostgameModal } from '../screens/PostgameModal';
-import { PregameModal } from '../screens/PregameModal';
-import { PreviewModal } from '../screens/PreviewModal';
-import { QRCodeModal } from '../screens/QRCodeModal';
-import { ScannerModal } from '../screens/ScannerModal';
-import TabOneScreen from '../screens/TabOneScreen';
-import { TeleopModal } from '../screens/TeleopModal';
+import Colors from '@/constants/Colors';
+import useColorScheme from '@/hooks/useColorScheme';
+import { AutoModal } from '@/screens/AutoModal';
+import { EndgameModal } from '@/screens/EndgameModal';
+import { InfoModal } from '@/screens/InfoModal';
+import NotFoundScreen from '@/screens/NotFoundScreen';
+import { PostgameModal } from '@/screens/PostgameModal';
+import { PregameModal } from '@/screens/PregameModal';
+import { PreviewModal } from '@/screens/PreviewModal';
+import { QRCodeModal } from '@/screens/QRCodeModal';
+import { ScannerModal } from '@/screens/ScannerModal';
+import TabOneScreen from '@/screens/TabOneScreen';
+import { TeleopModal } from '@/screens/TeleopModal';
 import {
   RootStackParamList,
   RootTabParamList,
   RootTabScreenProps,
-} from '../types';
+} from '@/types';
 import LinkingConfiguration from './LinkingConfiguration';
 
 export default function Navigation({

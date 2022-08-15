@@ -1,8 +1,8 @@
 import { useAtom } from 'jotai';
 import { StyleSheet } from 'react-native';
-import Colors from '../constants/Colors';
-import { infoAtom } from '../state';
-import { font } from '../styles/font';
+import Colors from '@/constants/Colors';
+import { infoAtom } from '@/state';
+import { font } from '@/styles/font';
 import { Text, View } from './Themed';
 
 export const Topbar = () => {

@@ -1,7 +1,7 @@
-import { InputModal } from '../components/input/InputModal';
-import { pregameKeys, pregameSchema } from '../models';
-import { pregameAtom } from '../state';
-import { RootTabScreenProps } from '../types';
+import { InputModal } from '@/components/input/InputModal';
+import { pregameKeys, pregameSchema } from '@/models';
+import { pregameAtom } from '@/state';
+import { RootTabScreenProps } from '@/types';
 
 export function PregameModal(navigation: RootTabScreenProps<'TabOne'>) {
   return (

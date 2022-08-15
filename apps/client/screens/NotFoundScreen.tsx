@@ -1,7 +1,7 @@
 import { StyleSheet, TouchableOpacity } from 'react-native';
 
-import { ScrollView, Text } from '../components/Themed';
-import { RootStackScreenProps } from '../types';
+import { ScrollView, Text } from '@/components/Themed';
+import { RootStackScreenProps } from '@/types';
 
 export default function NotFoundScreen({
   navigation,

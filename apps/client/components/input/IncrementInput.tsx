@@ -1,15 +1,18 @@
-import { useController, UseControllerProps } from 'react-hook-form';
-import { Text, View } from '../Themed';
-import { getInput, input } from '../../styles/input';
-import useColorScheme from '../../hooks/useColorScheme';
+import {
+  FieldValues,
+  useController,
+  UseControllerProps,
+} from 'react-hook-form';
+import { Text, View } from '@/components/Themed';
+import { input } from '@/styles/input';
+import useColorScheme from '@/hooks/useColorScheme';
 import { Pressable, TextInput } from 'react-native';
-import { Button } from '../Button';
 import { FontAwesome } from '@expo/vector-icons';
-import Colors from '../../constants/Colors';
-import { increment } from '../../styles/increment';
+import Colors from '@/constants/Colors';
+import { increment } from '@/styles/increment';
 import * as Haptic from 'expo-haptics';
 
-type Props<T> = {
+type Props<T extends FieldValues> = {
   control: UseControllerProps<T>;
   label: string;
 };

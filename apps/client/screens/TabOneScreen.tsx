@@ -1,12 +1,12 @@
 import { useAtom } from 'jotai';
 import { StyleSheet } from 'react-native';
 
-import { Text, View, ScrollView } from '../components/Themed';
+import { Text, View, ScrollView } from '@/components/Themed';
 
-import { resetGameAtom } from '../state';
-import { container } from '../styles/container';
-import { RootTabScreenProps } from '../types';
-import { Button } from '../components/Button';
+import { resetGameAtom } from '@/state';
+import { container } from '@/styles/container';
+import { RootTabScreenProps } from '@/types';
+import { Button } from '@/components/Button';
 
 export default function TabOneScreen({
   navigation,

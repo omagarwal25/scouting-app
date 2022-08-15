@@ -1,10 +1,14 @@
-import { useController, UseControllerProps } from 'react-hook-form';
-import { Text, View } from '../Themed';
-import { checkboxInput, input } from '../../styles/input';
+import {
+  FieldValues,
+  useController,
+  UseControllerProps,
+} from 'react-hook-form';
+import { Text, View } from '@/components/Themed';
+import { checkboxInput, input } from '@/styles/input';
 import { Switch } from 'react-native';
 import * as Haptics from 'expo-haptics';
 
-type Props<T> = {
+type Props<T extends FieldValues> = {
   control: UseControllerProps<T>;
   label: string;
 };

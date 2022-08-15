@@ -1,17 +1,17 @@
-import { View, ScrollView } from '../components/Themed';
+import { View, ScrollView } from '@/components/Themed';
 
-// import { gameAtom, saveGameAtom } from '../state';
+// import { gameAtom, saveGameAtom } from '@/state';
 import QRCode from 'react-native-qrcode-svg';
 import { encode, encodeGame } from '@griffins-scout/game';
 import { useAtom } from 'jotai';
-import { container } from '../styles/container';
-import layout from '../constants/Layout';
-import { Topbar } from '../components/Topbar';
-import { RootTabScreenProps } from '../types';
-import { Button } from '../components/Button';
-import useColorScheme from '../hooks/useColorScheme';
-import Colors from '../constants/Colors';
-import { gameAtom } from '../state';
+import { container } from '@/styles/container';
+import layout from '@/constants/Layout';
+import { Topbar } from '@/components/Topbar';
+import { RootTabScreenProps } from '@/types';
+import { Button } from '@/components/Button';
+import useColorScheme from '@/hooks/useColorScheme';
+import Colors from '@/constants/Colors';
+import { gameAtom } from '@/state';
 import { Alert } from 'react-native';
 
 export function QRCodeModal({ navigation }: RootTabScreenProps<'TabOne'>) {

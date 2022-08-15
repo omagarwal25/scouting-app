@@ -1,10 +1,10 @@
 import { BarCodeScannedCallback, BarCodeScanner } from 'expo-barcode-scanner';
 import { useEffect, useState } from 'react';
 import { Pressable, StyleSheet } from 'react-native';
-import { container } from '../styles/container';
-import { Text, View, ScrollView } from '../components/Themed';
-import { RootTabScreenProps } from '../types';
-import { infoAtom } from '../state';
+import { container } from '@/styles/container';
+import { Text, View, ScrollView } from '@/components/Themed';
+import { RootTabScreenProps } from '@/types';
+import { infoAtom } from '@/state';
 import { useAtom } from 'jotai';
 import { decode, Info, infoKeys } from '@griffins-scout/game';
 

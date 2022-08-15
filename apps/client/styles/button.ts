@@ -1,5 +1,5 @@
 import { StyleSheet, ColorSchemeName } from 'react-native';
-import Colors from '../constants/Colors';
+import Colors from '@/constants/Colors';
 
 export const button = StyleSheet.create({
   btnText: {

@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { PressableProps, Pressable } from 'react-native';
-import useColorScheme from '../hooks/useColorScheme';
-import { button, getButton } from '../styles/button';
+import useColorScheme from '@/hooks/useColorScheme';
+import { button, getButton } from '@/styles/button';
 import { TextProps, Text } from './Themed';
 
 type Props = {
