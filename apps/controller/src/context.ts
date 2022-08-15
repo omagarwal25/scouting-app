@@ -1,5 +1,5 @@
 import superjson from "superjson";
-import * as trpc from "@trpc/server";
+import trpc from "@trpc/server";
 
 export const createContext = () => {};
 

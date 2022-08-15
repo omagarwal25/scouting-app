@@ -1,20 +1,21 @@
-import { View, ScrollView } from '@/components/Themed';
+import { View } from 'react-native';
 
-// import { gameAtom, saveGameAtom } from '@/state';
+// import { gameAtom, saveGameAtom } from '~/state';
 import QRCode from 'react-native-qrcode-svg';
-import { encode, encodeGame } from '@griffins-scout/game';
+import { encodeGame } from '@griffins-scout/game';
 import { useAtom } from 'jotai';
-import { container } from '@/styles/container';
-import layout from '@/constants/Layout';
-import { Topbar } from '@/components/Topbar';
-import { RootTabScreenProps } from '@/types';
-import { Button } from '@/components/Button';
-import useColorScheme from '@/hooks/useColorScheme';
-import Colors from '@/constants/Colors';
-import { gameAtom } from '@/state';
+import layout from '~/constants/Layout';
+import { Topbar } from '~/components/Topbar';
+import { RootTabScreenProps } from '~/types';
+import { Button } from '~/components/Button';
+import useColorScheme from '~/hooks/useColorScheme';
+import Colors from '~/constants/Colors';
+import { gameAtom } from '~/state';
 import { Alert } from 'react-native';
+import { Container } from '~/components/Container';
+import tw from '~/utils/tailwind';
 
-export function QRCodeModal({ navigation }: RootTabScreenProps<'TabOne'>) {
+export function QRCodeCard({ navigation }: RootTabScreenProps) {
   const [game] = useAtom(gameAtom);
   const colorScheme = useColorScheme();
   // const [_, saveGame] = useAtom(saveGameAtom);
@@ -31,7 +32,7 @@ export function QRCodeModal({ navigation }: RootTabScreenProps<'TabOne'>) {
         {
           text: 'Confirm',
           style: 'destructive',
-          onPress: () => navigation.navigate('TabOne'),
+          onPress: () => navigation.navigate('Root'),
         },
       ]
     );
@@ -39,7 +40,7 @@ export function QRCodeModal({ navigation }: RootTabScreenProps<'TabOne'>) {
   return (
     <>
       <Topbar />
-      <ScrollView style={container.container}>
+      <Container>
         <QRCode
           value={encodeGame(game)}
           // value={JSON.stringify(game.gameInfo)}
@@ -50,10 +51,10 @@ export function QRCodeModal({ navigation }: RootTabScreenProps<'TabOne'>) {
             : { color: Colors['light'].tint })}
         />
 
-        <View style={{ padding: 2 }} />
+        <View style={tw`p-0.5`} />
 
-        <Button onPress={() => createAlert()} label="Go Home!"></Button>
-      </ScrollView>
+        <Button onPress={() => createAlert()} label="Go Home!" />
+      </Container>
     </>
   );
 }

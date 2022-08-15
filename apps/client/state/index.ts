@@ -1,4 +1,5 @@
-import { Game, gameDefault } from '@/models/index';
+import type { Game} from '~/models/index';
+import { gameDefault } from '~/models/index';
 import { atom } from 'jotai';
 import { focusAtom } from 'jotai/optics';
 import { atomWithStorage, createJSONStorage } from 'jotai/utils';

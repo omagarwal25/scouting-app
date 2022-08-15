@@ -1,41 +1,19 @@
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
+import { Text } from 'react-native';
+import { Container } from '~/components/Container';
+import { RootTabScreenProps } from '~/types';
+import tw from '~/utils/tailwind';
 
-import { ScrollView, Text } from '@/components/Themed';
-import { RootStackScreenProps } from '@/types';
-
-export default function NotFoundScreen({
-  navigation,
-}: RootStackScreenProps<'NotFound'>) {
+export default function NotFoundScreen({ navigation }: RootTabScreenProps) {
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.title}>This screen doesn't exist.</Text>
+    <Container>
+      <Text style={tw`text-xl font-bold`}>This screen doesn't exist.</Text>
       <TouchableOpacity
         onPress={() => navigation.replace('Root')}
-        style={styles.link}
+        style={tw`mt-4 py-4`}
       >
-        <Text style={styles.linkText}>Go to home screen!</Text>
+        <Text style={tw`text-griffins-blue`}>Go to home screen!</Text>
       </TouchableOpacity>
-    </ScrollView>
+    </Container>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  link: {
-    marginTop: 15,
-    paddingVertical: 15,
-  },
-  linkText: {
-    fontSize: 14,
-    color: '#2e78b7',
-  },
-});

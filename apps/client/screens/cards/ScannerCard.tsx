@@ -1,14 +1,17 @@
-import { BarCodeScannedCallback, BarCodeScanner } from 'expo-barcode-scanner';
+import type { BarCodeScannedCallback } from 'expo-barcode-scanner';
+import { BarCodeScanner } from 'expo-barcode-scanner';
 import { useEffect, useState } from 'react';
-import { Pressable, StyleSheet } from 'react-native';
-import { container } from '@/styles/container';
-import { Text, View, ScrollView } from '@/components/Themed';
-import { RootTabScreenProps } from '@/types';
-import { infoAtom } from '@/state';
+import { Pressable } from 'react-native';
+import { Text } from 'react-native';
+import type { RootTabScreenProps } from '~/types';
+import { infoAtom } from '~/state';
 import { useAtom } from 'jotai';
-import { decode, Info, infoKeys } from '@griffins-scout/game';
+import type { Info } from '@griffins-scout/game';
+import { decode, infoKeys } from '@griffins-scout/game';
+import { Container } from '~/components/Container';
+import tw from '~/utils/tailwind';
 
-export const ScannerModal = ({ navigation }: RootTabScreenProps<'TabOne'>) => {
+export const ScannerCard = ({ navigation }: RootTabScreenProps) => {
   const [hasPermission, setHasPermission] = useState<null | boolean>(null);
   const [scanned, setScanned] = useState(false);
   const [_, setGameInfo] = useAtom(infoAtom);
@@ -20,10 +23,7 @@ export const ScannerModal = ({ navigation }: RootTabScreenProps<'TabOne'>) => {
     })();
   }, []);
 
-  const handleBarCodeScanned: BarCodeScannedCallback = async ({
-    type,
-    data,
-  }) => {
+  const handleBarCodeScanned: BarCodeScannedCallback = async ({ data }) => {
     setScanned(true);
     await setGameInfo(decode<Info>(data, infoKeys));
 
@@ -38,16 +38,16 @@ export const ScannerModal = ({ navigation }: RootTabScreenProps<'TabOne'>) => {
   }
 
   return (
-    <ScrollView style={container.container}>
+    <Container>
       <BarCodeScanner
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-        style={StyleSheet.absoluteFillObject}
+        style={tw`absolute top-0 bottom-0 left-0 right-0`}
       />
       {scanned && (
         <Pressable onPress={() => setScanned(false)}>
           <Text>Tap to Scan again</Text>
         </Pressable>
       )}
-    </ScrollView>
+    </Container>
   );
 };

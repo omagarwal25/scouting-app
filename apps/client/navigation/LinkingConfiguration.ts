@@ -7,10 +7,10 @@
 import { LinkingOptions } from '@react-navigation/native';
 import * as Linking from 'expo-linking';
 
-import { RootStackParamList } from '@/types';
+import { RootStackParamList } from '~/types';
 
 const linking: LinkingOptions<RootStackParamList> = {
-  prefixes: [Linking.makeUrl('/')],
+  prefixes: [Linking.createURL('/')],
   config: {
     screens: {
       Root: {
@@ -24,6 +24,13 @@ const linking: LinkingOptions<RootStackParamList> = {
       },
       Auto: 'Auto',
       Endgame: 'Endgame',
+      Info: 'Info',
+      Postgame: 'Postgame',
+      Pregame: 'Pregame',
+      Preview: 'Preview',
+      QR: 'QR',
+      Scanner: 'Scanner',
+      Teleop: 'Teleop',
 
       NotFound: '*',
     },

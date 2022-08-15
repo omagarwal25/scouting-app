@@ -3,14 +3,14 @@ import {
   useController,
   UseControllerProps,
 } from 'react-hook-form';
-import { Text, View } from '@/components/Themed';
-import { input } from '@/styles/input';
-import useColorScheme from '@/hooks/useColorScheme';
-import { Pressable, TextInput } from 'react-native';
+import { View } from 'react-native';
+import { InputWrapper } from './InputWrapper';
+import { Pressable } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
-import Colors from '@/constants/Colors';
-import { increment } from '@/styles/increment';
+import Colors from '~/constants/Colors';
 import * as Haptic from 'expo-haptics';
+import tw from '~/utils/tailwind';
+import useColorScheme from '~/hooks/useColorScheme';
 
 type Props<T extends FieldValues> = {
   control: UseControllerProps<T>;
@@ -21,13 +21,6 @@ export const IncrementInput = <T extends object>(props: Props<T>) => {
   const {
     field: { value, onChange, onBlur },
   } = useController(props.control);
-
-  const incrementBtn = [
-    increment.incrementButton,
-    colorScheme === 'dark'
-      ? increment.darkIncrementButton
-      : increment.lightIncrementButton,
-  ];
 
   const onIncrement = async () => {
     onChange(Number(value) + 1);
@@ -40,33 +33,23 @@ export const IncrementInput = <T extends object>(props: Props<T>) => {
   };
 
   return (
-    <View style={input.inputWrapper}>
-      <Text style={{ flexGrow: 1 }}>
-        {props.label}: {value}
-      </Text>
+    <InputWrapper label={`${props.label}: ${value}`}>
       <View
-        style={{
-          flex: 1,
-          flexDirection: 'row',
-          height: 45,
-          maxWidth: '20%',
-          padding: 2,
-          alignItems: 'center',
-          justifyContent: 'center',
-          marginRight: 0,
-          marginLeft: 'auto',
-        }}
+        style={tw`flex flex-row h-11 p-0.5 items-center justify-center mr-0 ml-auto`}
       >
-        <Pressable onPress={onIncrement} style={[incrementBtn]}>
+        <Pressable
+          onPress={onIncrement}
+          style={tw`border rounded p-3 border-griffins-blue dark:border-pheonix-red`}
+        >
           <FontAwesome color={Colors[colorScheme].tint} name="plus" />
         </Pressable>
         <Pressable
           onPress={onDecrement}
-          style={[incrementBtn, { marginLeft: 10 }]}
+          style={tw`border rounded p-3 border-griffins-blue dark:border-pheonix-red ml-2.5`}
         >
           <FontAwesome name="minus" color={Colors[colorScheme].tint} />
         </Pressable>
       </View>
-    </View>
+    </InputWrapper>
   );
 };

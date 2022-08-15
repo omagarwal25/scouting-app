@@ -1,5 +1,5 @@
 import { gameDefault } from "@griffins-scout/game";
-import * as trpcExpress from "@trpc/server/adapters/express";
+import trpcExpress from "@trpc/server/adapters/express";
 import { expressHandler } from "trpc-playground/handlers/express";
 import { envsafe, port, str, url } from "envsafe";
 import express from "express";

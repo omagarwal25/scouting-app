@@ -1,12 +1,12 @@
 import { FieldError, FieldValues, UseControllerProps } from 'react-hook-form';
-import { Field } from '@/models';
-import { input } from '@/styles/input';
+import { Field } from '~/models';
 import { IncrementInput } from './IncrementInput';
 import { NumericInput } from './NumericInput';
 import { PickerInput } from './PickerInput';
 import { SwitchInput } from './SwitchInput';
 import { TextInput } from './TextInput';
-import { Text } from '@/components/Themed';
+import { Text } from 'react-native';
+import tw from '~/utils/tailwind';
 
 type Props<T extends FieldValues> = {
   field: Field;
@@ -39,7 +39,7 @@ export const FieldInput = <T extends object>(props: Props<T>) => {
     <>
       {inputElement}
       {props.error && (
-        <Text style={input.errorText}>{props.error.message}</Text>
+        <Text style={tw`text-pheonix-red`}>{props.error.message}</Text>
       )}
     </>
   );

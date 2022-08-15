@@ -1,8 +1,7 @@
 import { FC } from 'react';
 import { PressableProps, Pressable } from 'react-native';
-import useColorScheme from '@/hooks/useColorScheme';
-import { button, getButton } from '@/styles/button';
-import { TextProps, Text } from './Themed';
+import tw from '~/utils/tailwind';
+import { TextProps, Text } from 'react-native';
 
 type Props = {
   text?: Omit<TextProps, 'style'>;
@@ -10,16 +9,20 @@ type Props = {
 } & Omit<PressableProps, 'style'>;
 
 export const Button: FC<Props> = (props) => {
-  const colorScheme = useColorScheme();
-
   const { text, label, children, ...pressableProps } = props;
   return (
     <Pressable
-      style={({ pressed }) => getButton(colorScheme, pressed)}
+      style={({ pressed }) =>
+        tw.style(
+          'items-center justify-center py-[12px] px-[32px] rounded elevation-3',
+          pressed && 'opacity-50',
+          'dark:bg-pheonix-red bg-griffins-blue'
+        )
+      }
       {...pressableProps}
     >
       {children || (
-        <Text style={button.btnText} {...text}>
+        <Text style={tw`text-white`} {...text}>
           {label}
         </Text>
       )}

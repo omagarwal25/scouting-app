@@ -1,21 +1,20 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAtom, WritableAtom } from 'jotai';
 import { DeepPartial, FieldError, Path, useForm } from 'react-hook-form';
-import { game, ScoringElement } from '@/models';
-import { RootStackParamList, RootTabScreenProps } from '@/types';
-import { Topbar } from '@/components/Topbar';
-import { Button } from '@/components/Button';
-import { ScrollView } from '@/components/Themed';
+import { game, ScoringElement } from '~/models';
+import { RootStackParamList, RootTabScreenProps } from '~/types';
+import { Topbar } from '~/components/Topbar';
+import { Button } from '~/components/Button';
 import { FieldInput } from './FieldInput';
-import { container } from '@/styles/container';
 import { ZodSchema } from 'zod';
+import { Container } from '~/components/Container';
 
 type Props<
   T extends Record<string, any>,
   B extends keyof RootStackParamList
 > = {
   atom: WritableAtom<T, T>;
-  navigation: RootTabScreenProps<'TabOne'>;
+  navigation: RootTabScreenProps;
   nextPage: B;
   readonly keys: readonly Path<T>[];
   zodSchema: ZodSchema;
@@ -45,7 +44,7 @@ export const InputModal = <
   const onSubmit = handleSubmit((f) => {
     setState(f as T);
     navigation.navigation.navigate(
-      ...([nextPage] as [screen: keyof RootStackParamList | 'TabOne'])
+      ...([nextPage] as [screen: keyof RootStackParamList])
     );
   });
 
@@ -58,7 +57,7 @@ export const InputModal = <
   return (
     <>
       <Topbar />
-      <ScrollView style={container.container}>
+      <Container>
         {keys.map((e) => (
           <FieldInput
             control={{ control, name: e }}
@@ -71,7 +70,7 @@ export const InputModal = <
           />
         ))}
         <Button label="Next" onPress={onSubmit} />
-      </ScrollView>
+      </Container>
     </>
   );
 };

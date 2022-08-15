@@ -3,8 +3,6 @@
  * https://reactnavigation.org/docs/getting-started
  *
  */
-import { FontAwesome } from '@expo/vector-icons';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
   NavigationContainer,
   DefaultTheme,
@@ -14,24 +12,21 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { ColorSchemeName } from 'react-native';
 
-import Colors from '@/constants/Colors';
-import useColorScheme from '@/hooks/useColorScheme';
-import { AutoModal } from '@/screens/AutoModal';
-import { EndgameModal } from '@/screens/EndgameModal';
-import { InfoModal } from '@/screens/InfoModal';
-import NotFoundScreen from '@/screens/NotFoundScreen';
-import { PostgameModal } from '@/screens/PostgameModal';
-import { PregameModal } from '@/screens/PregameModal';
-import { PreviewModal } from '@/screens/PreviewModal';
-import { QRCodeModal } from '@/screens/QRCodeModal';
-import { ScannerModal } from '@/screens/ScannerModal';
-import TabOneScreen from '@/screens/TabOneScreen';
-import { TeleopModal } from '@/screens/TeleopModal';
 import {
-  RootStackParamList,
-  RootTabParamList,
-  RootTabScreenProps,
-} from '@/types';
+  AutoCard,
+  EndgameCard,
+  InfoCard,
+  PostgameCard,
+  PregameCard,
+  PreviewCard,
+  QRCodeCard,
+  RootScreen,
+  ScannerCard,
+  TeleopCard,
+} from '~/screens';
+import NotFoundScreen from '~/screens/NotFoundScreen';
+
+import { RootStackParamList } from '~/types';
 import LinkingConfiguration from './LinkingConfiguration';
 
 export default function Navigation({
@@ -60,7 +55,7 @@ function RootNavigator() {
     <Stack.Navigator>
       <Stack.Screen
         name="Root"
-        component={BottomTabNavigator}
+        component={RootScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen
@@ -68,71 +63,17 @@ function RootNavigator() {
         component={NotFoundScreen}
         options={{ title: 'Oops!' }}
       />
-      <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name="Info" component={InfoModal} />
-        <Stack.Screen name="Pregame" component={PregameModal} />
-        <Stack.Screen name="Auto" component={AutoModal} />
-        <Stack.Screen name="Teleop" component={TeleopModal} />
-        <Stack.Screen name="Endgame" component={EndgameModal} />
-        <Stack.Screen name="Postgame" component={PostgameModal} />
-        <Stack.Screen name="QR" component={QRCodeModal} />
-        <Stack.Screen name="Scanner" component={ScannerModal} />
-        <Stack.Screen name="Preview" component={PreviewModal} />
+      <Stack.Group screenOptions={{ presentation: 'card' }}>
+        <Stack.Screen name="Info" component={InfoCard} />
+        <Stack.Screen name="Pregame" component={PregameCard} />
+        <Stack.Screen name="Auto" component={AutoCard} />
+        <Stack.Screen name="Teleop" component={TeleopCard} />
+        <Stack.Screen name="Endgame" component={EndgameCard} />
+        <Stack.Screen name="Postgame" component={PostgameCard} />
+        <Stack.Screen name="QR" component={QRCodeCard} />
+        <Stack.Screen name="Scanner" component={ScannerCard} />
+        <Stack.Screen name="Preview" component={PreviewCard} />
       </Stack.Group>
     </Stack.Navigator>
   );
-}
-
-/**
- * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
- * https://reactnavigation.org/docs/bottom-tab-navigator
- */
-const BottomTab = createBottomTabNavigator<RootTabParamList>();
-
-function BottomTabNavigator() {
-  const colorScheme = useColorScheme();
-
-  return (
-    <BottomTab.Navigator
-      initialRouteName="TabOne"
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme].tint,
-      }}
-    >
-      <BottomTab.Screen
-        name="TabOne"
-        component={TabOneScreen}
-        options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
-          title: 'Tab One',
-          tabBarIcon: ({ color }) => <TabBarIcon name="at" color={color} />,
-          headerRight: () => (
-            // <Pressable
-            //   onPress={() => navigation.navigate("Modal")}
-            //   style={({ pressed }) => ({
-            //     opacity: pressed ? 0.5 : 1,
-            //   })}
-            // >
-            //   <FontAwesome
-            //     name="info-circle"
-            //     size={25}
-            //     color={Colors[colorScheme].text}
-            //     style={{ marginRight: 15 }}
-            //   />
-            // </Pressable>
-            <></>
-          ),
-        })}
-      />
-    </BottomTab.Navigator>
-  );
-}
-
-/**
- * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
- */
-function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>['name'];
-  color: string;
-}) {
-  return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
 }

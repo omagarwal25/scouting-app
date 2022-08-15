@@ -1,9 +1,9 @@
 import { infoKeys, infoSchema } from '@griffins-scout/game';
-import { InputModal } from '@/components/input/InputModal';
-import { infoAtom } from '@/state';
-import { RootTabScreenProps } from '@/types';
+import { InputModal } from '~/components/input/InputModal';
+import { infoAtom } from '~/state';
+import { RootTabScreenProps } from '~/types';
 
-export function InfoModal(navigation: RootTabScreenProps<'TabOne'>) {
+export function InfoCard(navigation: RootTabScreenProps) {
   return (
     <InputModal
       atom={infoAtom}
