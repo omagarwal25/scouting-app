@@ -1,6 +1,6 @@
 # Griffins Scout
 
-A scouting app designed for FRC by Team 1884 but can be used to scout VEX and FTC.
+A scouting app designed for FRC by Team 1884 but can also be used to scout VEX and FTC.
 
 Currently, this is a work in progress.
 
