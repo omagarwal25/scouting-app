@@ -1,0 +1,65 @@
+{
+  "name": "@griffins-scout/controller",
+  "version": "1.0.0",
+  "main": "dist/server.js",
+  "private": true,
+  "license": "MIT",
+  "_moduleAliases": {
+    "@": "dist"
+  },
+  "scripts": {
+    "build": "wireit",
+    "start": "wireit",
+    "dev": "concurrently --kill-others --names \"BUILD,RUN\" -c \"bgBlue.bold,bgMagenta.bold\" \"tsc --build -w\" \"nodemon -q -w dist dist/server.js\""
+  },
+  "wireit": {
+    "build": {
+      "command": "tsc --build --pretty",
+      "files": [
+        "src/**/*.ts",
+        "tsconfig.json"
+      ],
+      "output": [
+        "dist/**"
+      ],
+      "clean": "if-file-deleted",
+      "dependencies": [
+        "../../packages/game:build"
+      ]
+    },
+    "start": {
+      "command": "node dist/src/server.js",
+      "dependencies": [
+        "build"
+      ],
+      "files": [
+        "dist/**",
+        "src/**/*.ts",
+        "tsconfig.json"
+      ],
+      "clean": "if-file-deleted"
+    }
+  },
+  "dependencies": {
+    "@griffins-scout/api": "*",
+    "@griffins-scout/game": "*",
+    "@trpc/server": "^9.27.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "envsafe": "^2.0.3",
+    "express": "^4.18.1",
+    "mongoose": "^6.5.2",
+    "superjson": "^1.9.1",
+    "trpc-playground": "^0.3.1",
+    "zod": "^3.18.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.13",
+    "@types/node": "^18.7.4",
+    "concurrently": "^7.3.0",
+    "nodemon": "^2.0.19",
+    "prettier": "^2.7.1",
+    "typescript": "^4.7.3"
+  }
+}

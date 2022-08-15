@@ -1,17 +1,19 @@
-import { useController, UseControllerProps } from 'react-hook-form';
-import { Text, View } from '../Themed';
-import { getPicker, getPickerItemStyle, input } from '../../styles/input';
+import {
+  FieldValues,
+  useController,
+  UseControllerProps,
+} from 'react-hook-form';
 import { Picker } from '@react-native-picker/picker';
-import useColorScheme from '../../hooks/useColorScheme';
 import * as Haptics from 'expo-haptics';
+import { InputWrapper } from './InputWrapper';
+import tw from '~/utils/tailwind';
 
-type Props<T> = {
+type Props<T extends FieldValues> = {
   control: UseControllerProps<T>;
   label: string;
   items: string[];
 };
 export const PickerInput = <T extends object>(props: Props<T>) => {
-  const colorScheme = useColorScheme();
   const {
     field: { value, onChange },
   } = useController(props.control);
@@ -22,18 +24,17 @@ export const PickerInput = <T extends object>(props: Props<T>) => {
   };
 
   return (
-    <View style={input.inputWrapper}>
-      <Text>{props.label}</Text>
+    <InputWrapper label={props.label}>
       <Picker
-        style={getPicker(colorScheme)}
+        style={tw`w-1/2 rounded mr-0 ml-auto border dark:border-pheonix-red border-griffins-blue dark:text-white`}
         selectedValue={value}
-        itemStyle={getPickerItemStyle(colorScheme)}
-        onValueChange={(itemValue, itemIndex) => onPick(itemValue)}
+        itemStyle={tw`dark:text-white text-black`}
+        onValueChange={(itemValue) => onPick(itemValue)}
       >
         {props.items.map((e) => (
           <Picker.Item label={e} value={e} key={e} />
         ))}
       </Picker>
-    </View>
+    </InputWrapper>
   );
 };

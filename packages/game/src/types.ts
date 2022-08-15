@@ -1,5 +1,4 @@
-import { ZodSchema } from "zod";
-
+import { z, ZodSchema } from "zod";
 export interface ScoringElement {
   name: string;
   label: string;
@@ -9,7 +8,7 @@ export interface ScoringElement {
   hash: number;
 }
 
-type Screen = "Auto" | "Teleop" | "Endgame" | "Pregame" | "Postgame";
+type Screen = "Auto" | "Teleop" | "Endgame" | "Pregame" | "Postgame" | "Info";
 
 export type Field =
   | { fieldType: "Boolean" | "Text" }

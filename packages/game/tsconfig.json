@@ -4,6 +4,7 @@
     "declaration": true,
     "declarationMap": true,
     "outDir": "dist",
+    "lib": ["es2015"],
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "inlineSources": false,

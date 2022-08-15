@@ -2,11 +2,10 @@
   "name": "scouting-app",
   "version": "1.0.0",
   "description": "",
+  "private": true,
   "scripts": {
-    "build": "cd packages/game && npm run build",
-    "clean": "rm -rf ./apps/client/node_modules/scouting-app-game",
-    "copy": "cp -R packages/game apps/client/node_modules/scouting-app-game",
-    "sync": "npm run build && npm run clean && npm run copy"
+    "build": "yarn nuxi build app",
+    "dev": "wireit"
   },
   "repository": {
     "type": "git",
@@ -17,5 +16,24 @@
   "bugs": {
     "url": "https://github.com/omagarwal25/scouting-app/issues"
   },
-  "homepage": "https://github.com/omagarwal25/scouting-app#readme"
+  "homepage": "https://github.com/omagarwal25/scouting-app#readme",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "devDependencies": {
+    "prettier": "^2.6.2",
+    "prettier-plugin-tailwindcss": "^0.1.10",
+    "wireit": "^0.7.1"
+  },
+  "wireit": {
+    "dev": {
+      "dependencies": [
+        "./apps/client:dev",
+        "./apps/scanner:dev",
+        "./packages/api:build",
+        "./packages/game:build"
+      ]
+    }
+  }
 }

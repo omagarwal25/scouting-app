@@ -1,44 +1,76 @@
 {
-  "name": "scouting-app-game",
+  "name": "@griffins-scout/game",
   "version": "1.0.0",
   "license": "MIT",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "source": "./src/index.ts",
+  "private": true,
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
   "files": [
-    "dist/**"
+    "dist/**",
+    "package.json"
   ],
   "scripts": {
-    "dev": "tsc -w",
-    "gen:game": "ts-node ./scripts/generateGame.ts",
-    "gen:screens": "ts-node ./scripts/generateScreens.ts",
-    "build": "yarn clean && yarn gen:game && yarn gen:screens && yarn format && tsc",
-    "test": "jest",
-    "format": "prettier --write './src/**/*.ts' './scripts/**/*.ts'",
-    "clean": "rm -rf dist && rm -rf ./src/game.ts && rm -rf ./src/screens.ts && rm -rf ./src/defaults.ts"
+    "gen:game": "wireit",
+    "gen:screens": "wireit",
+    "build": "wireit"
+  },
+  "wireit": {
+    "gen:game": {
+      "command": "ts-node ./scripts/generateGame.ts",
+      "files": [
+        "scripts/generateGame.ts",
+        "game.yaml",
+        "game.toml",
+        "game.json"
+      ],
+      "output": [
+        "src/game.ts"
+      ]
+    },
+    "gen:screens": {
+      "command": "ts-node ./scripts/generateScreens.ts",
+      "files": [
+        "scripts/generateScreens.ts",
+        "screens.yaml"
+      ],
+      "output": [
+        "src/screens.ts",
+        "src/defaults.ts"
+      ],
+      "dependencies": [
+        "gen:game"
+      ]
+    },
+    "build": {
+      "command": "rollup -c",
+      "dependencies": [
+        "gen:game",
+        "gen:screens"
+      ],
+      "files": [
+        "src",
+        "tsconfig.json"
+      ],
+      "output": [
+        "dist"
+      ]
+    }
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.16.11",
-    "@babel/preset-typescript": "^7.16.7",
-    "@types/jest": "^27.4.1",
-    "@types/node": "^17.0.25",
-    "babel-jest": "^27.5.1",
-    "jest": "^27.5.1",
+    "@types/node": "^18.7.4",
     "json-schema": "^0.4.0",
-    "prettier": "^2.6.2",
-    "ts-morph": "^14.0.0",
-    "ts-node": "^10.7.0",
-    "typescript": "^4.6.3",
-    "zod-to-json-schema": "^3.11.3"
+    "json-schema-to-zod": "^0.1.5",
+    "prettier": "^2.7.1",
+    "rollup": "^2.78.0",
+    "rollup-plugin-typescript2": "^0.32.1",
+    "ts-morph": "^15.1.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.7.4",
+    "yaml": "^2.1.1",
+    "zod-to-json-schema": "^3.17.1"
   },
   "dependencies": {
-    "json-schema-to-zod": "^0.0.0-beta.0",
-    "yaml": "^2.0.1",
-    "zod": "^3.14.4"
-  },
-  "jest": {
-    "transform": {
-      "^.+\\.[t|j]sx?$": "babel-jest"
-    }
+    "@ltd/j-toml": "^1.33.0",
+    "zod": "^3.18.0"
   }
 }

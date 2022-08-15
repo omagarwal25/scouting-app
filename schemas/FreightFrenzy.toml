@@ -1,0 +1,206 @@
+#:schema https://raw.githubusercontent.com/omagarwal25/scouting-app/turbo-repo/packages/game/schemas/game.schema.json
+name = "FreightFrenzy"
+description = "Ducks Balls Cubes FTC"
+year = 2021
+
+[[scoringElements]]
+name = "scoutId"
+label = "Scout ID"
+screens = ["Info"]
+
+[scoringElements.field]
+fieldType = "Dropdown"
+options = ["Red 1", "Red 2", "Red 3", "Blue 1", "Blue 2", "Blue 3"]
+
+[[scoringElements]]
+name = "matchType"
+label = "Match Type"
+screens = ["Info"]
+
+[scoringElements.field]
+fieldType = "Dropdown"
+options = ["Practice", "Qualification", "Quarterfinal", "Semifinal", "Final"]
+
+[[scoringElements]]
+name = "matchNumber"
+label = "Match Number"
+screens = ["Info"]
+
+[scoringElements.field]
+fieldType = "Numeric"
+isInteger = true
+incrementable = false
+min = 0
+
+[[scoringElements]]
+name = "teamNumber"
+label = "Team Number"
+screens = ["Info"]
+
+[scoringElements.field]
+fieldType = "Numeric"
+isInteger = true
+incrementable = false
+min = 0
+
+[[scoringElements]]
+name = "scoutName"
+label = "Scout Name"
+screens = ["Postgame"]
+
+[scoringElements.field]
+fieldType = "Text"
+
+[[scoringElements]]
+name = "duckDelivery"
+label = "Duck Delivery"
+screens = ["Auto", "Endgame"]
+
+[scoringElements.field]
+fieldType = "Numeric"
+min = 0
+isInteger = true
+incrementable = true
+
+[[scoringElements]]
+name = "parking"
+label = "Parking"
+screens = ["Auto", "Postgame"]
+
+[scoringElements.field]
+fieldType = "Dropdown"
+options = [
+  "None",
+  "Warehouse Fully",
+  "Warehouse Partially (auto only)",
+  "Storage Fully",
+  "Storage Partially (auto only)",
+]
+
+[[scoringElements]]
+name = "freightShippingHub"
+label = "Freight Shipping Hub (any level)"
+screens = ["Auto"]
+
+[scoringElements.field]
+fieldType = "Numeric"
+min = 0
+isInteger = true
+incrementable = true
+
+[[scoringElements]]
+name = "freightStorageUnit"
+label = "Freight Storage Unit"
+screens = ["Auto", "Teleop", "Endgame"]
+
+[scoringElements.field]
+fieldType = "Numeric"
+min = 0
+isInteger = true
+incrementable = true
+
+[[scoringElements]]
+name = "autoBonus"
+label = "Auto Bonus"
+screens = ["Auto"]
+
+[scoringElements.field]
+fieldType = "Dropdown"
+options = ["None", "Team Shipping Element", "Duck"]
+
+[[scoringElements]]
+name = "allianceShippingHubLevelOne"
+label = "Alliance Hub 1"
+screens = ["Teleop", "Endgame"]
+
+[scoringElements.field]
+fieldType = "Numeric"
+min = 0
+isInteger = true
+incrementable = true
+
+[[scoringElements]]
+name = "allianceShippingHubLevelTwo"
+label = "Alliance Hub 2"
+screens = ["Teleop", "Endgame"]
+
+[scoringElements.field]
+fieldType = "Numeric"
+min = 0
+isInteger = true
+incrementable = true
+
+[[scoringElements]]
+name = "allianceShippingHubLevelThree"
+label = "Alliance Hub 3"
+screens = ["Teleop", "Endgame"]
+
+[scoringElements.field]
+fieldType = "Numeric"
+min = 0
+isInteger = true
+incrementable = true
+
+[[scoringElements]]
+name = "sharedShippingHub"
+label = "Shared Shipping Hub"
+screens = ["Teleop", "Endgame"]
+
+[scoringElements.field]
+fieldType = "Numeric"
+min = 0
+isInteger = true
+incrementable = true
+
+[[scoringElements]]
+name = "allianceShippingHubBalanced"
+label = "Alliance Hub Balanced"
+screens = ["Postgame"]
+
+[scoringElements.field]
+fieldType = "Boolean"
+
+[[scoringElements]]
+name = "sharedShippingHubUnbalanced"
+label = "Shared Hub Unbalanced (in favor)"
+screens = ["Postgame"]
+
+[scoringElements.field]
+fieldType = "Boolean"
+
+[[scoringElements]]
+name = "capped"
+label = "Capped"
+screens = ["Postgame"]
+
+[scoringElements.field]
+fieldType = "Boolean"
+
+[[scoringElements]]
+name = "startingPosition"
+label = "Starting Position"
+screens = ["Pregame"]
+
+[scoringElements.field]
+fieldType = "Dropdown"
+options = ["Freightside", "Duckside"]
+
+[[scoringElements]]
+name = "preload"
+label = "Preload"
+screens = ["Pregame"]
+
+[scoringElements.field]
+fieldType = "Boolean"
+
+[[scoringElements]]
+name = "rating"
+label = "Rating"
+screens = ["Postgame"]
+
+[scoringElements.field]
+fieldType = "Numeric"
+min = 1
+max = 5
+isInteger = true
+incrementable = false
