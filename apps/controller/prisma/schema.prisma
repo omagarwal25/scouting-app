@@ -1,0 +1,51 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Record {
+  id   Int  @id @default(autoincrement())
+  data Json
+
+  team       Team? @relation(fields: [teamNumber], references: [teamNumber])
+  teamNumber Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Match {
+  id     Int       @id @default(autoincrement())
+  number Int
+  type   MatchType
+
+  blueTeams Team[] @relation("blue")
+  redTeams  Team[] @relation("red")
+
+  @@unique([number, type])
+}
+
+enum MatchType {
+  PRACTICE
+  QUALIFICATION
+  QUARTERFINAL
+  SEMIFINAL
+  FINAL
+}
+
+model Team {
+  teamNumber Int    @id
+  name       String
+  weight     Float
+
+  records Record[]
+  blueIn  Match[]  @relation("blue")
+  redIn   Match[]  @relation("red")
+}

@@ -1,4 +1,4 @@
-import { gameDefault } from "@griffins-scout/game";
+import { matchRouter } from "./router/match";
 import trpcExpress from "@trpc/server/adapters/express";
 import { expressHandler } from "trpc-playground/handlers/express";
 import { envsafe, port, str, url } from "envsafe";
@@ -8,22 +8,13 @@ import cors from "cors";
 import "dotenv/config";
 import mongoose from "mongoose";
 import { recordRouter } from "./router/record";
+import { env } from "./utils/env";
 
-export const env = envsafe({
-  NODE_ENV: str({
-    devDefault: "development",
-    choices: ["development", "test", "production"],
-  }),
-  PORT: port({
-    devDefault: 8080,
-  }),
-  X_TBA_AUTH_KEY: str(),
-  DATABASE_URL: url(),
-  EVENT_CODE: str(),
-});
+export type { Record, Match, MatchType, Team } from "@prisma/client";
 
-const appRouter = createRouter().merge("record.", recordRouter);
-// .merge("game.", gameRouter)
+const appRouter = createRouter()
+  .merge("record.", recordRouter)
+  .merge("match.", matchRouter);
 // .merge("blueAlliance.", blueAllianceRouter);
 
 export type AppRouter = typeof appRouter;

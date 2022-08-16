@@ -8,6 +8,9 @@ Currently, this is a work in progress.
 - [ ] add subjective data
 - [ ] blue alliance integration
 - [ ] app UI redesign, bigger and easier to use buttons
+- [ ] scanner app needs to be able to go next match etc.
+- [ ] finish controller
+- [ ] write a giant script that spins everything up at the same time
 
 [Old Client](https://github.com/omagarwal25/scouting-client)
 [Old Server](httpsL//github.com/omagarwal25/scouting-server)

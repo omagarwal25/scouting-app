@@ -1,31 +1,40 @@
 import { gameSchema } from "@griffins-scout/game";
 import { z } from "zod";
 import { createRouter } from "../context";
-import { RecordModel } from "../models/record";
 
 export const recordRouter = createRouter()
   .mutation("createRecord", {
     input: gameSchema,
-    async resolve({ input }) {
-      const record = new RecordModel(input);
-      await record.save();
+    async resolve({ input, ctx: { prisma } }) {
+      const teamNumber = input.info.teamNumber;
+      const record = prisma.record.create({
+        data: {
+          data: input,
+          team: {
+            connectOrCreate: {
+              where: { teamNumber },
+              create: { teamNumber, weight: 0, name: "None" },
+            },
+          },
+        },
+      });
 
       return record;
     },
   })
   .query("findAll", {
-    async resolve() {
-      return RecordModel.find().exec();
+    async resolve({ ctx: { prisma } }) {
+      return await prisma.record.findMany();
     },
   })
   .mutation("deleteAll", {
-    async resolve() {
-      await RecordModel.deleteMany({}).exec();
+    async resolve({ ctx: { prisma } }) {
+      await prisma.record.deleteMany();
     },
   })
   .query("findByTeam", {
     input: z.number().nonnegative().int(),
-    async resolve({ input }) {
-      return RecordModel.find({ "info.teamNumber": input }).exec();
+    async resolve({ input, ctx: { prisma } }) {
+      return prisma.record.findMany({ where: { teamNumber: input } });
     },
   });

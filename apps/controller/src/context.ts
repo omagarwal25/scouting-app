@@ -1,7 +1,27 @@
 import superjson from "superjson";
 import trpc from "@trpc/server";
+import { PrismaClient } from "@prisma/client";
 
-export const createContext = () => {};
+export const createContext = () => {
+  const prisma = new PrismaClient({
+    log: [
+      {
+        emit: "event",
+        level: "query",
+      },
+      "info",
+      "warn",
+      "error",
+    ],
+  });
+
+  prisma.$on("query", (e) => {
+    console.log("Query: " + e.query);
+    console.log("Duration: " + e.duration + "ms");
+  });
+
+  return { prisma };
+};
 
 export type Context = trpc.inferAsyncReturnType<typeof createContext>;
 

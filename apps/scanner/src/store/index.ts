@@ -1,12 +1,12 @@
 import { Game } from '@griffins-scout/game';
 import { defineStore } from 'pinia';
-import { Game as DBGame } from '@griffins-scout/api';
 import { client } from '~/api';
+import { Match } from '@griffins-scout/api';
 
 export const useCurrentGameStore = defineStore('currentGameStore', {
   state: () => {
     return {
-      currentMatch: undefined as DBGame | undefined,
+      currentMatch: undefined as Match | undefined,
       records: [] as Game[],
     };
   },
@@ -16,44 +16,18 @@ export const useCurrentGameStore = defineStore('currentGameStore', {
       return this.records.at(-1);
     },
 
-    async games() {
-      return client.query('game.findAll');
+    async matches() {
+      return client.query('match.findAll');
     },
   },
 
   actions: {
     async clear() {
-      if (this.currentMatch !== undefined) {
-        const game = await client.query(
-          'game.findByKey',
-          this.currentMatch.key
-        );
+      // TODO all we have to do is just send off the matches
 
-        if (game !== null) {
-          // iterate over all the records, fetch them from db and update
-          for (const record of this.records) {
-            const dbRecord = await client.query('record.findByGameKeyAndTeam', {
-              gameKey: game.key,
-              team: record.info.teamNumber,
-            });
-
-            if (dbRecord !== null) {
-              dbRecord.data.push(JSON.stringify(record));
-
-              await client.mutation('record.updateOne', {
-                id: dbRecord.id,
-                data: dbRecord.data,
-              });
-            } else {
-              // TODO figure some way to handle this
-            }
-          }
-        }
-
-        // TODO deal with the off case
-        // BUG THIS IS IMPORTANT BECAUSE OF PRACTICE MATCH SCOUTING.
-        // IT WILL NOT EXIST IN TBA. ALSO WE NEED AN ESCAPE HATCH
-      }
+      // TODO deal with the off case
+      // BUG THIS IS IMPORTANT BECAUSE OF PRACTICE MATCH SCOUTING.
+      // IT WILL NOT EXIST IN TBA. ALSO WE NEED AN ESCAPE HATCH
 
       this.records = [];
     },

@@ -1,4 +1,4 @@
-export interface Match {
+export interface TBAMatch {
   actual_time: number;
   alliances: Alliances;
   comp_level: CompLevel;
@@ -14,31 +14,31 @@ export interface Match {
   winning_alliance: WinningAlliance;
 }
 
-export interface Alliances {
+interface Alliances {
   blue: AlliancesBlue;
   red: AlliancesBlue;
 }
 
-export interface AlliancesBlue {
+interface AlliancesBlue {
   dq_team_keys: string[];
   score: number;
   surrogate_team_keys: any[];
   team_keys: string[];
 }
 
-export enum CompLevel {
+enum CompLevel {
   F = "f",
   Qf = "qf",
   Qm = "qm",
   Sf = "sf",
 }
 
-export interface ScoreBreakdown {
+interface ScoreBreakdown {
   blue: ScoreBreakdownBlue;
   red: ScoreBreakdownBlue;
 }
 
-export interface ScoreBreakdownBlue {
+interface ScoreBreakdownBlue {
   adjustPoints: number;
   autoCargoLowerBlue: number;
   autoCargoLowerFar: number;
@@ -81,7 +81,7 @@ export interface ScoreBreakdownBlue {
   totalPoints: number;
 }
 
-export enum EndgameRobot {
+enum EndgameRobot {
   High = "High",
   Low = "Low",
   Mid = "Mid",
@@ -89,21 +89,21 @@ export enum EndgameRobot {
   Traversal = "Traversal",
 }
 
-export enum TaxiRobot {
+enum TaxiRobot {
   No = "No",
   Yes = "Yes",
 }
 
-export interface Video {
+interface Video {
   key: string;
   type: Type;
 }
 
-export enum Type {
+enum Type {
   Youtube = "youtube",
 }
 
-export enum WinningAlliance {
+enum WinningAlliance {
   Blue = "blue",
   Empty = "",
   Red = "red",
