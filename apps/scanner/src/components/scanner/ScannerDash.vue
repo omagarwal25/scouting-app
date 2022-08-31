@@ -13,7 +13,7 @@
       <p >{{store.currentMatch?.type.toLowerCase()}} {{store.currentMatch?.number}}</p>
     </p>
     <p class="col-span-1 row-span-1 text-right font-code text-xl">
-      <Station v-for="station in ['RED_1', 'RED_2', 'RED_3', 'BLUE_1', 'BLUE_2', 'BLUE_3']" :station="(station as StationType)"/>
+      <Station v-for="station in infoSchema._def.shape().scoutId.Values" :station="(station as Game['info']['scoutId'])"/>
     </p>
     <Buttons />
   </div>
@@ -24,7 +24,7 @@ import Scanner from './Scanner.vue';
 import Buttons from './Buttons.vue';
 import { useCurrentGameStore } from '~/store';
 import Station from './Station.vue'
-import type { Station as StationType } from '@griffins-scout/api';
+import { Game, infoSchema } from '@griffins-scout/game';
 
 const store = useCurrentGameStore();
 </script>

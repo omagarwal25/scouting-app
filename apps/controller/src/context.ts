@@ -5,20 +5,20 @@ import { PrismaClient } from "@prisma/client";
 export const createContext = () => {
   const prisma = new PrismaClient({
     log: [
-      {
-        emit: "event",
-        level: "query",
-      },
+      // {
+      // emit: "event",
+      // level: "query",
+      // },
       "info",
       "warn",
       "error",
     ],
   });
 
-  prisma.$on("query", (e) => {
-    console.log("Query: " + e.query);
-    console.log("Duration: " + e.duration + "ms");
-  });
+  // prisma.$on("query", (e) => {
+  //   console.log("Query: " + e.query);
+  //   console.log("Duration: " + e.duration + "ms");
+  // });
 
   return { prisma };
 };
@@ -35,7 +35,12 @@ export function createRouter() {
       const durationMs = Date.now() - start;
       result.ok
         ? console.info("OK request timing:", { path, type, durationMs })
-        : console.warn("Non-OK request timing", { path, type, durationMs });
+        : console.warn("Non-OK request timing", {
+            path,
+            type,
+            durationMs,
+            error: result.error,
+          });
 
       return result;
     });

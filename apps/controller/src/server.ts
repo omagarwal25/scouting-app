@@ -1,14 +1,15 @@
-import { matchRouter } from "./router/match";
-import trpcExpress from "@trpc/server/adapters/express";
-import { expressHandler } from "trpc-playground/handlers/express";
-import { envsafe, port, str, url } from "envsafe";
-import express from "express";
-import { createContext, createRouter } from "./context";
-import cors from "cors";
 import "dotenv/config";
-import mongoose from "mongoose";
-import { recordRouter } from "./router/record";
-import { env } from "./utils/env";
+
+import express from "express";
+import trpcExpress from "@trpc/server/adapters/express/dist/trpc-server-adapters-express.cjs.js";
+import { expressHandler } from "trpc-playground/handlers/express";
+
+import cors from "cors";
+
+import { createContext, createRouter } from "./context.js";
+import { recordRouter } from "./router/record.js";
+import { matchRouter } from "./router/match.js";
+import { env } from "./utils/env.js";
 
 export type { Record, Match, MatchType, Team } from "@prisma/client";
 
@@ -47,11 +48,6 @@ const main = async () => {
 
   app.get("/", (req, res) => res.send("Express + Prisma + tRPC + tRPC Shield"));
 
-  console.log(`Connecting to database... @ ${env.DATABASE_URL}`);
-  await mongoose.connect(env.DATABASE_URL, {
-    family: 4,
-  });
-  console.log("Connected to database.");
   app.listen(env.PORT, () => {
     console.log(`server listening at http://localhost:${env.PORT}`);
     console.log(

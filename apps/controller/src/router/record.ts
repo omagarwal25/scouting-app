@@ -1,6 +1,6 @@
 import { gameSchema } from "@griffins-scout/game";
 import { z } from "zod";
-import { createRouter } from "../context";
+import { createRouter } from "../context.js";
 
 export const recordRouter = createRouter()
   .mutation("createRecord", {
@@ -12,8 +12,8 @@ export const recordRouter = createRouter()
           data: input,
           team: {
             connectOrCreate: {
-              where: { teamNumber },
-              create: { teamNumber, weight: 0, name: "None" },
+              where: { number: teamNumber },
+              create: { number: teamNumber, weight: 0, name: "None" },
             },
           },
         },

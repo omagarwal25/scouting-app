@@ -1,16 +1,13 @@
 {
   "name": "@griffins-scout/controller",
   "version": "1.0.0",
-  "main": "dist/server.js",
+  "type": "module",
   "private": true,
   "license": "MIT",
-  "_moduleAliases": {
-    "@": "dist"
-  },
   "scripts": {
     "build": "wireit",
     "start": "wireit",
-    "dev": "concurrently --kill-others --names \"BUILD,RUN\" -c \"bgBlue.bold,bgMagenta.bold\" \"tsc --build -w\" \"nodemon -q -w dist dist/server.js\""
+    "dev": "concurrently --kill-others --names \"BUILD,RUN\" -c \"bgBlue.bold,bgMagenta.bold\" \"tsc --build -w\" \"nodemon -q -w dist dist/src/server.js\""
   },
   "wireit": {
     "build": {

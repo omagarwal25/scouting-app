@@ -14,7 +14,7 @@ model Record {
   id   Int  @id @default(autoincrement())
   data Json
 
-  team       Team? @relation(fields: [teamNumber], references: [teamNumber])
+  team       Team? @relation(fields: [teamNumber], references: [number])
   teamNumber Int?
 
   createdAt DateTime @default(now())
@@ -41,9 +41,9 @@ enum MatchType {
 }
 
 model Team {
-  teamNumber Int    @id
-  name       String
-  weight     Float
+  number Int    @id
+  name   String
+  weight Float
 
   records Record[]
   blueIn  Match[]  @relation("blue")

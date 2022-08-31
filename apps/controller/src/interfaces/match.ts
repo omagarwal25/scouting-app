@@ -26,12 +26,7 @@ interface AlliancesBlue {
   team_keys: string[];
 }
 
-enum CompLevel {
-  F = "f",
-  Qf = "qf",
-  Qm = "qm",
-  Sf = "sf",
-}
+type CompLevel = "f" | "qf" | "qm" | "sf";
 
 interface ScoreBreakdown {
   blue: ScoreBreakdownBlue;

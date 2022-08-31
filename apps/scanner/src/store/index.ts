@@ -1,12 +1,14 @@
 import { Game } from '@griffins-scout/game';
 import { defineStore } from 'pinia';
-import { client } from '~/api';
+import { client, inferQueryOutput } from '~/api';
 import { Match } from '@griffins-scout/api';
 
 export const useCurrentGameStore = defineStore('currentGameStore', {
   state: () => {
     return {
-      currentMatch: undefined as Match | undefined,
+      currentMatch: undefined as
+        | inferQueryOutput<'match.findAll'>[0]
+        | undefined,
       records: [] as Game[],
     };
   },
@@ -22,14 +24,29 @@ export const useCurrentGameStore = defineStore('currentGameStore', {
   },
 
   actions: {
-    async clear() {
+    async setGame(id: number) {
+      const matches = await this.matches;
+      this.currentMatch = matches.find((m) => m.id === id);
+    },
+
+    clearRecords() {
+      this.records = [];
+    },
+
+    async sendRecords() {
       // TODO all we have to do is just send off the matches
 
       // TODO deal with the off case
       // BUG THIS IS IMPORTANT BECAUSE OF PRACTICE MATCH SCOUTING.
       // IT WILL NOT EXIST IN TBA. ALSO WE NEED AN ESCAPE HATCH
+      // all goods
+      // tbh, i dont think it matters what game its associated
 
-      this.records = [];
+      await Promise.all(
+        this.records.map((record) =>
+          client.mutation('record.createRecord', record)
+        )
+      );
     },
 
     async undo() {
@@ -38,6 +55,20 @@ export const useCurrentGameStore = defineStore('currentGameStore', {
 
     async addRecord(record: Game) {
       this.records.push(record);
+    },
+
+    async getNextGame() {
+      const currentMatch = this.currentMatch;
+      const matches = await this.matches;
+
+      if (!currentMatch) return undefined;
+
+      const currentType = currentMatch.type;
+      const currentNumber = currentMatch.number;
+
+      return matches
+        .filter((match) => match.type === currentType)
+        .find((match) => match.number === currentNumber + 1)?.id;
     },
   },
 });
