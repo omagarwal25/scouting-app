@@ -7,10 +7,11 @@
   "scripts": {
     "build": "wireit",
     "start": "wireit",
-    "dev": "concurrently --kill-others --names \"BUILD,RUN\" -c \"bgBlue.bold,bgMagenta.bold\" \"tsc --build -w\" \"nodemon -q -w dist dist/src/server.js\""
+    "dev": "concurrently --kill-others --names \"BUILD,RUN\" -c \"bgBlue.bold,bgMagenta.bold\" \"tsc --build -w --pretty\" \"nodemon -q -w dist dist/src/server.js\""
   },
   "wireit": {
     "build": {
+      "server": true,
       "command": "tsc --build --pretty",
       "files": [
         "src/**/*.ts",

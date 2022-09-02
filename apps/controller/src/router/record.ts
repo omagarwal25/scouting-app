@@ -7,7 +7,7 @@ export const recordRouter = createRouter()
     input: gameSchema,
     async resolve({ input, ctx: { prisma } }) {
       const teamNumber = input.info.teamNumber;
-      const record = prisma.record.create({
+      const record = await prisma.record.create({
         data: {
           data: input,
           team: {

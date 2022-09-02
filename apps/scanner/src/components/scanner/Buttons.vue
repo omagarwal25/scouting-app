@@ -30,7 +30,7 @@
   </div>
 </template>
 
-<script async setup lang="ts">
+<script setup lang="ts">
 import { ref } from 'vue';
 import Button from '~/components/util/Button.vue';
 import { Suspense } from 'vue';
@@ -60,9 +60,6 @@ const onNext = async () => {
   } else {
     manualPicker.value = true;
   }
-
-  // const allMatches = await store.matches;
-  // store.setGame(allMatches[0].id);
 };
 
 const onFetchTBA = async () => {

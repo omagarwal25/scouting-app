@@ -12,9 +12,24 @@
   "scripts": {
     "gen:game": "wireit",
     "gen:screens": "wireit",
-    "build": "wireit"
+    "build": "wireit",
+    "dev": "wireit"
   },
   "wireit": {
+    "dev": {
+      "command": "rollup -c",
+      "dependencies": [
+        "gen:game",
+        "gen:screens"
+      ],
+      "files": [
+        "src",
+        "tsconfig.json"
+      ],
+      "output": [
+        "dist"
+      ] 
+    },
     "gen:game": {
       "command": "ts-node ./scripts/generateGame.ts",
       "files": [
