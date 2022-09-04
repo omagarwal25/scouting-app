@@ -7,6 +7,7 @@ import { RootTabScreenProps } from '~/types';
 import { Button } from '~/components/Button';
 import { gameAtom } from '~/state';
 import { Container } from '~/components/Container';
+import { encodeGame } from '~/models';
 
 export function PreviewCard({ navigation }: RootTabScreenProps) {
   const [game] = useAtom(gameAtom);
@@ -18,6 +19,9 @@ export function PreviewCard({ navigation }: RootTabScreenProps) {
       <Topbar />
       <Container>
         <Text>{JSON.stringify(game)}</Text>
+        <Text>
+          {encodeGame(game)} {encodeGame(game).length}
+        </Text>
         <Button
           onPress={() => {
             navigation.navigate('QR');

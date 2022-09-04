@@ -10,6 +10,7 @@ import type { Info } from '@griffins-scout/game';
 import { decode, infoKeys } from '@griffins-scout/game';
 import { Container } from '~/components/Container';
 import tw from '~/utils/tailwind';
+import { StyleSheet } from 'react-native';
 
 export const ScannerCard = ({ navigation }: RootTabScreenProps) => {
   const [hasPermission, setHasPermission] = useState<null | boolean>(null);
@@ -30,18 +31,20 @@ export const ScannerCard = ({ navigation }: RootTabScreenProps) => {
     navigation.navigate('Pregame');
   };
 
-  if (hasPermission === null) {
-    return <Text>Requesting for camera permission</Text>;
+  if (hasPermission === null || hasPermission === undefined) {
+    return <Text style={tw`text-white`}>Requesting for camera permission</Text>;
   }
+
   if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
+    return <Text style={tw`text-white`}>No access to camera</Text>;
   }
 
   return (
     <Container>
+      <Text style={tw`text-white`}>{hasPermission} Hello</Text>
       <BarCodeScanner
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-        style={tw`absolute top-0 bottom-0 left-0 right-0`}
+        style={StyleSheet.absoluteFillObject}
       />
       {scanned && (
         <Pressable onPress={() => setScanned(false)}>

@@ -4,8 +4,7 @@
   "description": "",
   "private": true,
   "scripts": {
-    "build": "yarn nuxi build app",
-    "dev": "concurrently --kill-others --names \"CONTROLLER,VIEWER,CLIENT,SCANNER\" -c \"bgYellow.bold,bgRed.bold,bgBlue.bold,bgGreen.bold\" \"cd apps/controller && yarn dev\" \"cd apps/viewer && yarn dev\" \"cd apps/client && yarn dev\" \"cd apps/scanner && yarn dev\""
+    "dev": "concurrently --handle-input --raw --kill-others --names \"CONTROLLER,VIEWER,CLIENT,SCANNER\" -c \"bgYellow.bold,bgRed.bold,bgBlue.bold,bgGreen.bold\" \"cd apps/controller && yarn dev\" \"cd apps/viewer && yarn dev\" \"cd apps/client && yarn dev\" \"cd apps/scanner && yarn dev\""
   },
   "repository": {
     "type": "git",

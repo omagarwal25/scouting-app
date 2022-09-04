@@ -11,6 +11,7 @@ Currently, this is a work in progress.
 - [x] scanner app needs to be able to go next match etc.
 - [x] finish controller
 - [x] write a giant script that spins everything up at the same time
+- [ ] import export data
 
 [Old Client](https://github.com/omagarwal25/scouting-client)
 [Old Server](httpsL//github.com/omagarwal25/scouting-server)
