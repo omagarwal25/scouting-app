@@ -1,4 +1,8 @@
 <template>
+  <span
+    class="mb-2 flex w-full items-center justify-center text-4xl font-bold lowercase"
+    >{{ match.type }} {{ match.number }}</span
+  >
   <div class="grid grid-cols-3 gap-2">
     <Code
       v-for="(team, index) in [...match.redTeams, ...match.blueTeams]"

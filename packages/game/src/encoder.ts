@@ -26,8 +26,8 @@ export const encode = <T extends string>(
     if (!scoringElement) return acc;
 
     if (scoringElement.field.fieldType === "Numeric")
-      // return acc + state[key].toString(36) + "$";
-      return acc + state[key].toString() + "$";
+      return acc + state[key].toString(16) + "$";
+    // return acc + state[key].toString() + "$";
     else if (scoringElement.field.fieldType === "Dropdown")
       return (
         acc +
@@ -62,8 +62,8 @@ export const decode = <B extends { [key: string]: string | number | boolean }>(
     if (!scoringElement) continue;
 
     if (scoringElement.field.fieldType === "Numeric") {
-      // state[key] = parseInt(split[i], 36) as B[typeof key];
-      state[key] = split[i] as B[typeof key];
+      state[key] = parseInt(split[i], 16) as B[typeof key];
+      // state[key] = split[i] as B[typeof key];
     } else if (scoringElement.field.fieldType === "Dropdown") {
       state[key] = scoringElement.field.options[
         parseInt(split[i], 10)
