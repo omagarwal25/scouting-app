@@ -1,5 +1,4 @@
 import { Text } from 'react-native';
-
 // import { gameAtom, saveGameAtom } from '~/state';
 import { useAtom } from 'jotai';
 import { Topbar } from '~/components/Topbar';
@@ -8,6 +7,7 @@ import { Button } from '~/components/Button';
 import { gameAtom } from '~/state';
 import { Container } from '~/components/Container';
 import { encodeGame } from '~/models';
+import tw from '~/utils/tailwind';
 
 export function PreviewCard({ navigation }: RootTabScreenProps) {
   const [game] = useAtom(gameAtom);
@@ -18,8 +18,8 @@ export function PreviewCard({ navigation }: RootTabScreenProps) {
     <>
       <Topbar />
       <Container>
-        <Text>{JSON.stringify(game)}</Text>
-        <Text>
+        <Text style={tw`dark:text-white`}>{JSON.stringify(game)}</Text>
+        <Text style={tw`dark:text-white`}>
           {encodeGame(game)} {encodeGame(game).length}
         </Text>
         <Button

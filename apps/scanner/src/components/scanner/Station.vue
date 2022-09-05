@@ -3,7 +3,7 @@
     :class="
       exists &&
       'font-bold ' +
-        (exists.includes('RED') ? 'text-phoenix-red' : 'text-griffins-blue')
+        ((exists as unknown as string).includes('Red') ? 'text-phoenix-red' : 'text-griffins-blue')
     "
   >
     {{ station }}

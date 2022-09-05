@@ -32,25 +32,26 @@ export const ScannerCard = ({ navigation }: RootTabScreenProps) => {
   };
 
   if (hasPermission === null || hasPermission === undefined) {
-    return <Text style={tw`text-white`}>Requesting for camera permission</Text>;
+    return (
+      <Text style={tw`dark:text-white`}>Requesting for camera permission</Text>
+    );
   }
 
   if (hasPermission === false) {
-    return <Text style={tw`text-white`}>No access to camera</Text>;
+    return <Text style={tw`dark:text-white`}>No access to camera</Text>;
   }
 
   return (
-    <Container>
-      <Text style={tw`text-white`}>{hasPermission} Hello</Text>
+    <>
       <BarCodeScanner
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         style={StyleSheet.absoluteFillObject}
       />
       {scanned && (
         <Pressable onPress={() => setScanned(false)}>
-          <Text>Tap to Scan again</Text>
+          <Text style={tw`dark:text-white`}>Tap to Scan again</Text>
         </Pressable>
       )}
-    </Container>
+    </>
   );
 };

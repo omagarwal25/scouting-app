@@ -12,6 +12,7 @@ Currently, this is a work in progress.
 - [x] finish controller
 - [x] write a giant script that spins everything up at the same time
 - [ ] import export data
+- [ ] escape hatch for scanner app that let s you pick match manually :)
 
 [Old Client](https://github.com/omagarwal25/scouting-client)
 [Old Server](httpsL//github.com/omagarwal25/scouting-server)

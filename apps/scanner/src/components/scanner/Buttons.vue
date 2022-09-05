@@ -3,11 +3,18 @@
     class="col-span-2 grid h-full w-full grid-cols-2 grid-rows-2 items-center justify-between gap-5"
   >
     <Button
+      color="w-full h-full bg-griffins-blue text-white text-4xl disabled:bg-gray-600"
+      @click="onNext"
+      :disabled="manualPicker"
+    >
+      Next Game (Auto)
+    </Button>
+    <Button
       v-if="!manualPicker"
       color="w-full h-full bg-griffins-blue text-white text-4xl"
-      @click="onNext"
+      @click="onPickerOpen"
     >
-      Next Game
+      Next Game (Manual)
     </Button>
     <div
       class="font-white h-full w-full rounded-3xl border-2 border-gray-400 bg-griffins-blue p-2 text-4xl text-white"
@@ -22,7 +29,7 @@
       Undo
     </Button>
     <Button
-      color="w-full h-full bg-griffins-blue text-4xl col-span-2"
+      color="w-full h-full bg-griffins-blue text-4xl col-span-1"
       @click="onFetchTBA"
     >
       Fetch New TBA Data
@@ -47,6 +54,10 @@ const onUndo = () => {
 
 const onPickerClose = () => {
   manualPicker.value = false;
+};
+
+const onPickerOpen = () => {
+  manualPicker.value = true;
 };
 
 const onNext = async () => {

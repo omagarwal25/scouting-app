@@ -2,7 +2,7 @@
   <div class="grid grid-cols-3 gap-2">
     <Code
       v-for="(team, index) in [...match.redTeams, ...match.blueTeams]"
-      :color="index < match.blueTeams.length ? '#9B3A2A' : '#013D61'"
+      :color="index < match.blueTeams.length ? 'red' : 'blue'"
       :info="{
         scoutId: scoutIds[index],
         matchType,

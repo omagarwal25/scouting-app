@@ -21,7 +21,7 @@ export function RootScreen({ navigation }: RootTabScreenProps) {
 
   return (
     <Container>
-      <Text style={tw`font-bold text-xl`}>Griffins Scout</Text>
+      <Text style={tw`font-bold text-xl dark:text-white`}>Griffins Scout</Text>
       <View style={tw`p-0.5`} />
       <Button label="Manual Entry" onPress={handleManual} />
       <View style={tw`p-0.5`} />
