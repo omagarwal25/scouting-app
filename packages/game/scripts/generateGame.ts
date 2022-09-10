@@ -1,10 +1,10 @@
-import { parse } from "yaml";
-import { YearGame, hashCode } from "../src/types";
-import fs from "fs";
-import jsonSchemaToZod from "json-schema-to-zod";
-import { JSONSchema7 } from "json-schema";
-import { CodeBlockWriter, Project, VariableDeclarationKind } from "ts-morph";
 import TOML from "@ltd/j-toml";
+import fs from "fs";
+import { JSONSchema7 } from "json-schema";
+import jsonSchemaToZod from "json-schema-to-zod";
+import { CodeBlockWriter, Project, VariableDeclarationKind } from "ts-morph";
+import { parse } from "yaml";
+import { hashCode, YearGame } from "../src/types";
 
 // check if game.yaml exists
 function getType() {

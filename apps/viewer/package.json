@@ -1,24 +1,45 @@
 {
-  "name": "vite-template-solid",
-  "version": "0.0.0",
-  "description": "",
+  "name": "@griffins-scout/viewer",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "serve": "vite preview"
-  },
-  "license": "MIT",
-  "devDependencies": {
-    "autoprefixer": "^10.4.8",
-    "postcss": "^8.4.16",
-    "tailwindcss": "^3.1.6",
-    "typescript": "^4.8.2",
-    "vite": "^3.0.9",
-    "vite-plugin-solid": "^2.3.0"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
+    "@trpc/client": "^9.27.2",
+    "@trpc/next": "^9.27.2",
+    "@trpc/react": "^9.27.2",
+    "@trpc/server": "^9.27.2",
     "@griffins-scout/api": "*",
-    "@griffins-scout/game": "*",
-    "solid-js": "^1.5.4"
+    "next": "12.2.5",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-query": "3.39.2",
+    "superjson": "^1.9.1",
+    "zod": "^3.18.0"
+  },
+  "devDependencies": {
+    "@types/node": "18.0.0",
+    "@types/react": "18.0.14",
+    "@types/react-dom": "18.0.5",
+    "@typescript-eslint/eslint-plugin": "^5.33.0",
+    "@typescript-eslint/parser": "^5.33.0",
+    "autoprefixer": "^10.4.8",
+    "eslint": "8.22.0",
+    "eslint-config-next": "12.2.5",
+    "postcss": "^8.4.16",
+    "tailwindcss": "^3.1.8",
+    "typescript": "4.7.4"
+  },
+  "ct3aMetadata": {
+    "initVersion": "5.10.0"
+  },
+  "workspaces": {
+    "nohoist": [
+      "**"
+    ]
   }
 }

@@ -1,4 +1,6 @@
 // encodes and decodes game state, using auto and other screens
+// fun compression algorithm
+// TODO when we add subjective scouting in the future we should use a prefix to indicate that, maybe s and r
 
 import { game } from "./game";
 import {

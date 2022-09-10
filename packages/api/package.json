@@ -2,7 +2,8 @@
   "name": "@griffins-scout/api",
   "version": "1.0.0",
   "description": "The browser API collection for anything Griffins Scout",
-  "main": "./src/index.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
   "files": [
     "dist/**"
   ],
@@ -12,7 +13,7 @@
   },
   "wireit": {
     "build": {
-      "command": "tsc --build --pretty",
+      "command": "rollup -c",
       "clean": "if-file-deleted",
       "files": [
         "src/**"
@@ -22,7 +23,7 @@
       ]
     },
     "dev": {
-      "command": "tsc --build --pretty",
+      "command": "rollup -c",
       "clean": "if-file-deleted",
       "files": [
         "src/**"
@@ -36,7 +37,7 @@
   "license": "MIT",
   "private": true,
   "devDependencies": {
-    "typescript": "^4.8.2"
+    
   },
   "dependencies": {
     "@griffins-scout/game": "*"

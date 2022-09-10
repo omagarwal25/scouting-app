@@ -1,22 +1,26 @@
-import { createTRPCClient } from "@trpc/client";
-import { createResource } from "solid-js";
-
-import type { inferHandlerInput } from "@trpc/server";
+// src/utils/trpc.ts
 import type { AppRouter } from "@griffins-scout/api";
+import { createReactQueryHooks } from "@trpc/react";
+import type { inferProcedureOutput, inferProcedureInput } from "@trpc/server";
 
-const client = createTRPCClient<AppRouter>({ url: "/api/trpc" });
+export const trpc = createReactQueryHooks<AppRouter>();
 
-type AppQueries = AppRouter["_def"]["queries"];
+/**
+ * This is a helper method to infer the output of a query resolver
+ * @example type HelloOutput = inferQueryOutput<'hello'>
+ */
+export type inferQueryOutput<
+  TRouteKey extends keyof AppRouter["_def"]["queries"]
+> = inferProcedureOutput<AppRouter["_def"]["queries"][TRouteKey]>;
 
-type AppQueryKeys = keyof AppQueries & string;
+export type inferQueryInput<
+  TRouteKey extends keyof AppRouter["_def"]["queries"]
+> = inferProcedureInput<AppRouter["_def"]["queries"][TRouteKey]>;
 
-export const createTrpcQuery = <TPath extends AppQueryKeys>(
-  path: TPath,
-  ...args: inferHandlerInput<AppQueries[TPath]>
-) => {
-  const fetchData = async () => {
-    return client.query(path, ...args);
-  };
+export type inferMutationOutput<
+  TRouteKey extends keyof AppRouter["_def"]["mutations"]
+> = inferProcedureOutput<AppRouter["_def"]["mutations"][TRouteKey]>;
 
-  return createResource(fetchData);
-};
+export type inferMutationInput<
+  TRouteKey extends keyof AppRouter["_def"]["mutations"]
+> = inferProcedureInput<AppRouter["_def"]["mutations"][TRouteKey]>;

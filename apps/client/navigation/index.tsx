@@ -4,14 +4,12 @@
  *
  */
 import {
-  NavigationContainer,
-  DefaultTheme,
   DarkTheme,
+  DefaultTheme,
+  NavigationContainer,
 } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Text } from 'react-native';
 import { ColorSchemeName } from 'react-native';
-
 import {
   AutoCard,
   EndgameCard,
@@ -25,12 +23,10 @@ import {
   TeleopCard,
 } from '~/screens';
 import NotFoundScreen from '~/screens/NotFoundScreen';
-
 import { RootStackParamList } from '~/types';
-import tw from '~/utils/tailwind';
 import LinkingConfiguration from './LinkingConfiguration';
 
-export default function Navigation({
+export default function avigation({
   colorScheme,
 }: {
   colorScheme: ColorSchemeName;

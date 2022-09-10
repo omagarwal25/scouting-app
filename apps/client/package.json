@@ -47,5 +47,8 @@
   },
   "version": "1.0.0",
   "private": true,
-  "name": "@griffins-scout/client"
+  "name": "@griffins-scout/client",
+  "workspaces": {
+    "nohoist": ["**"]
+  }
 }
