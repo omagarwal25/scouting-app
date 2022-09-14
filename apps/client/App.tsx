@@ -1,8 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import { Suspense } from 'react';
+import { Text } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useDeviceContext } from 'twrnc';
-import { Text } from 'react-native';
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
@@ -15,7 +15,7 @@ export default function App() {
   useDeviceContext(tw);
 
   if (!isLoadingComplete) {
-    return null;
+    return <div>Loading ...</div>;
   } else {
     return (
       <SafeAreaProvider>

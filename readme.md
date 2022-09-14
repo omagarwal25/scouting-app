@@ -4,7 +4,7 @@
 
 A scouting app designed for FRC by Team 1884 but can also be used to scout VEX and FTC.
 
-Paper getting hard to manage? Use scounting client to record teams on your phone and then save the data into a QR code. This is designed for events where wifi coverage is limited.
+Paper getting hard to manage? Use scouting client to record teams on your phone and then save the data into a QR code. This is designed for events where wifi coverage is limited.
 
 Currently, this is a work in progress.
 
@@ -13,8 +13,9 @@ Currently, this is a work in progress.
 - [x] write a giant script that spins everything up at the same time
 - [x] escape hatch for scanner app that lets you pick match manually :)
 - [ ] Create viewer app
+- [ ] Better Expo Go Experience aaagh
 - [ ] add subjective data
-- [ ] blue alliance integration
+- [ ] blue alliance integration (pulling match data)
 - [ ] app UI redesign, bigger and easier to use buttons
 - [ ] import export data
 
@@ -30,6 +31,8 @@ In order to use anything you will need to spin up a client which requires a post
 Make sure you run `yarn` before running anything.
 
 Big script that will spin up everything.
+
+**NOTE** YOU MUST USE YARN, NPM AND PNPM WILL NOT WORK.
 
 ```bash
 yarn dev

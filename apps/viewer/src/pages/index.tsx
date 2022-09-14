@@ -5,7 +5,6 @@ import { trpc } from "../utils/trpc";
 const Home: NextPage = () => {
   const { data: record } = trpc.useQuery([
     "record.findAll",
-    { match: true, team: true },
   ]);
 
   return (

@@ -9,6 +9,6 @@ export const env = envsafe({
     devDefault: 8080,
   }),
   X_TBA_AUTH_KEY: str(),
-  // DATABASE_URL: url(),
+  DATABASE_URL: url(),
   EVENT_CODE: str(),
 });
