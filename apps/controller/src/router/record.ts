@@ -1,7 +1,21 @@
-import { infoMatchTypeToMatchType } from "@griffins-scout/api";
-import { gameSchema } from "@griffins-scout/game";
+import { gameSchema, Info } from "@griffins-scout/game";
+import { MatchType } from "@prisma/client";
 import { z } from "zod";
 import { createRouter } from "../context.js";
+
+const infoMatchTypeToMatchType = (
+  infoMatchType: Info["matchType"]
+): MatchType => {
+  const map = new Map<Info["matchType"], MatchType>([
+    ["Final", "FINAL"],
+    ["Qualification", "QUALIFICATION"],
+    ["Practice", "PRACTICE"],
+    ["Semifinal", "SEMIFINAL"],
+    ["Quarterfinal", "QUARTERFINAL"],
+  ]);
+
+  return map.get(infoMatchType) ?? "PRACTICE";
+};
 
 export const recordRouter = createRouter()
   .mutation("createRecord", {

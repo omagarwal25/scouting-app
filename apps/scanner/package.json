@@ -20,7 +20,6 @@
     }
   },
   "dependencies": {
-    "@griffins-scout/api": "*",
     "@griffins-scout/game": "*",
     "@trpc/client": "^9.27.2",
     "@trpc/server": "^9.27.2",
@@ -33,6 +32,7 @@
     "vue3-qr-reader": "^1.0.0"
   },
   "devDependencies": {
+    "@griffins-scout/api": "*",
     "@types/node": "^18.7.14",
     "@vitejs/plugin-vue": "^3.0.3",
     "autoprefixer": "^10.4.8",
