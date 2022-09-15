@@ -15,7 +15,7 @@ export default function App() {
   useDeviceContext(tw);
 
   if (!isLoadingComplete) {
-    return <div>Loading ...</div>;
+    return <Text style={tw`dark:text-white`}>Loading ...</Text>;
   } else {
     return (
       <SafeAreaProvider>
