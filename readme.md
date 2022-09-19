@@ -20,6 +20,7 @@ Currently, this is a work in progress.
 - [ ] import export data
 - [ ] OPR calculations
 - [ ] points field onto scoring elements so that the app can do math?
+- [ ] data sharing systems
 
 [Old Client](https://github.com/omagarwal25/scouting-client)
 [Old Server](httpsL//github.com/omagarwal25/scouting-server)
