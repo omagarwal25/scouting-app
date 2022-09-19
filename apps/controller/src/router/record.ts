@@ -1,5 +1,5 @@
-import { gameSchema, Info } from "@griffins-scout/game";
-import { MatchType } from "@prisma/client";
+import { Game, gameSchema, Info } from "@griffins-scout/game";
+import { Match, MatchType, Record, Team } from "@prisma/client";
 import { z } from "zod";
 import { createRouter } from "../context.js";
 
@@ -91,9 +91,13 @@ export const recordRouter = createRouter()
   })
   .query("findAll", {
     async resolve({ ctx: { prisma } }) {
-      return await prisma.record.findMany({
+      return (await prisma.record.findMany({
         include: { team: true, match: true },
-      });
+      })) as (Omit<Record, "data"> & {
+        data: Game;
+        team: Team | null;
+        match: Match | null;
+      })[];
     },
   })
   .mutation("deleteAll", {
@@ -104,6 +108,8 @@ export const recordRouter = createRouter()
   .query("findByTeam", {
     input: z.number().nonnegative().int(),
     async resolve({ input, ctx: { prisma } }) {
-      return prisma.record.findMany({ where: { teamNumber: input } });
+      return (await prisma.record.findMany({
+        where: { teamNumber: input },
+      })) as (Omit<Record, "data"> & { data: Game })[];
     },
   });

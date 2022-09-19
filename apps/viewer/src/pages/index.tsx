@@ -1,11 +1,99 @@
+import {
+  autoKeys,
+  endgameKeys,
+  game,
+  infoKeys,
+  postgameKeys,
+  pregameKeys,
+  teleopKeys,
+} from "@griffins-scout/game";
+import { createColumnHelper } from "@tanstack/react-table";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { trpc } from "../utils/trpc";
+import { useMemo } from "react";
+import { inferQueryOutput, trpc } from "../utils/trpc";
 
 const Home: NextPage = () => {
-  const { data: record } = trpc.useQuery([
-    "record.findAll",
-  ]);
+  const columnHelper =
+    createColumnHelper<inferQueryOutput<"record.findAll">[number]>();
+  const columns = useMemo(
+    () => [
+      columnHelper.display({
+        id: "actions",
+      }),
+      columnHelper.group({
+        header: "Info",
+        columns: infoKeys.map((key) =>
+          columnHelper.accessor((row) => row.data.info[key], {
+            id: `info.${key}`,
+            header:
+              game.scoringElements.find((e) => e.name === key)?.label ?? key,
+            cell: (info) => info.getValue(),
+          })
+        ),
+      }),
+      columnHelper.group({
+        header: "Pregame",
+        columns: pregameKeys.map((key) =>
+          columnHelper.accessor((row) => row.data.pregame[key], {
+            id: `pregame.${key}`,
+            header:
+              game.scoringElements.find((e) => e.name === key)?.label ?? key,
+            cell: (pregame) => pregame.getValue(),
+          })
+        ),
+      }),
+      columnHelper.group({
+        header: "Auto",
+        columns: autoKeys.map((key) =>
+          columnHelper.accessor((row) => row.data.auto[key], {
+            id: `auto.${key}`,
+            header:
+              game.scoringElements.find((e) => e.name === key)?.label ?? key,
+            cell: (auto) => auto.getValue(),
+          })
+        ),
+      }),
+      columnHelper.group({
+        header: "Teleop",
+        columns: teleopKeys.map((key) =>
+          columnHelper.accessor((row) => row.data.teleop[key], {
+            id: `teleop.${key}`,
+            header:
+              game.scoringElements.find((e) => e.name === key)?.label ?? key,
+            cell: (teleop) => teleop.getValue(),
+          })
+        ),
+      }),
+      columnHelper.group({
+        header: "Endgame",
+        columns: endgameKeys.map((key) =>
+          columnHelper.accessor((row) => row.data.endgame[key], {
+            id: `endgame.${key}`,
+            header:
+              game.scoringElements.find((e) => e.name === key)?.label ?? key,
+            cell: (endgame) => endgame.getValue(),
+          })
+        ),
+      }),
+      columnHelper.group({
+        header: "Postgame",
+        columns: postgameKeys.map((key) =>
+          columnHelper.accessor((row) => row.data.postgame[key], {
+            id: `postgame.${key}`,
+            header:
+              game.scoringElements.find((e) => e.name === key)?.label ?? key,
+            cell: (postgame) => postgame.getValue(),
+          })
+        ),
+      }),
+
+      // add columns for links to games and teams
+    ],
+
+    [columnHelper]
+  );
+  const { data: record } = trpc.useQuery(["record.findAll"]);
 
   return (
     <>

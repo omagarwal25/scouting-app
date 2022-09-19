@@ -18,6 +18,8 @@ Currently, this is a work in progress.
 - [ ] blue alliance integration (pulling match data)
 - [ ] app UI redesign, bigger and easier to use buttons
 - [ ] import export data
+- [ ] OPR calculations
+- [ ] points field onto scoring elements so that the app can do math?
 
 [Old Client](https://github.com/omagarwal25/scouting-client)
 [Old Server](httpsL//github.com/omagarwal25/scouting-server)

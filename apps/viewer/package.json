@@ -9,11 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@griffins-scout/api": "*",
+    "@griffins-scout/game": "*",
+    "@tanstack/react-table": "^8.5.13",
     "@trpc/client": "^9.27.2",
     "@trpc/next": "^9.27.2",
     "@trpc/react": "^9.27.2",
     "@trpc/server": "^9.27.2",
-    "@griffins-scout/api": "*",
+    "fuse.js": "^6.6.2",
     "next": "12.2.5",
     "react": "18.2.0",
     "react-dom": "18.2.0",
