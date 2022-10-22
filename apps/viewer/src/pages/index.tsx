@@ -7,10 +7,15 @@ import {
   pregameKeys,
   teleopKeys,
 } from "@griffins-scout/game";
-import { createColumnHelper } from "@tanstack/react-table";
+import {
+  createColumnHelper,
+  getCoreRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useMemo } from "react";
+import { useDataHandler } from "../hooks/useDataHandler";
 import { inferQueryOutput, trpc } from "../utils/trpc";
 
 const Home: NextPage = () => {
@@ -94,6 +99,24 @@ const Home: NextPage = () => {
     [columnHelper]
   );
   const { data: record } = trpc.useQuery(["record.findAll"]);
+  const [
+    searchedData,
+    filters,
+    addFilter,
+    removeFilter,
+    sort,
+    setSort,
+    search,
+    setSearch,
+  ] = useDataHandler(record ?? []);
+
+  const {} = useReactTable({
+    data: record ?? [],
+    columns: columns,
+    getCoreRowModel: getCoreRowModel(),
+  });
+
+  // todo implement sorts and filters
 
   return (
     <>

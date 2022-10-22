@@ -15,6 +15,7 @@ Currently, this is a work in progress.
 - [ ] Create viewer app
 - [ ] Better Expo Go Experience aaagh
 - [ ] add subjective data
+- [ ] pit scouting
 - [ ] blue alliance integration (pulling match data)
 - [ ] app UI redesign, bigger and easier to use buttons
 - [ ] import export data
