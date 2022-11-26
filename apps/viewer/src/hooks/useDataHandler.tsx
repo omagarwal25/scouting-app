@@ -5,27 +5,27 @@ type Primitive = string | number | symbol;
 
 type GenericObject = Record<Primitive, unknown>;
 
-// type Join<
-//   L extends Primitive | undefined,
-//   R extends Primitive | undefined
-// > = L extends string | number
-//   ? R extends string | number
-//     ? `${L}.${R}`
-//     : L
-//   : R extends string | number
-//   ? R
-//   : undefined;
+type Join<
+  L extends Primitive | undefined,
+  R extends Primitive | undefined
+> = L extends string | number
+  ? R extends string | number
+    ? `${L}.${R}`
+    : L
+  : R extends string | number
+  ? R
+  : never;
 
-// type Union<
-//   L extends unknown | undefined,
-//   R extends unknown | undefined
-// > = L extends undefined
-//   ? R extends undefined
-//     ? undefined
-//     : R
-//   : R extends undefined
-//   ? L
-//   : L | R;
+type Union<
+  L extends unknown | undefined,
+  R extends unknown | undefined
+> = L extends undefined
+  ? R extends undefined
+    ? undefined
+    : R
+  : R extends undefined
+  ? L
+  : L | R;
 
 /**
  * NestedPaths
@@ -34,24 +34,19 @@ type GenericObject = Record<Primitive, unknown>;
  * type Keys = NestedPaths<{ a: { b: { c: string } }>
  * // 'a' | 'a.b' | 'a.b.c'
  */
-// export type NestedPaths<
-//   T extends GenericObject,
-//   Prev extends Primitive | undefined = undefined,
-//   Path extends Primitive | undefined = undefined
-// > = {
-//   [K in keyof T]: T[K] extends GenericObject
-//     ? NestedPaths<T[K], Union<Prev, Path>, Join<Path, K>>
-//     : Union<Union<Prev, Path>, Join<Path, K>>;
-// }[keyof T];
+export type NestedPaths<T extends GenericObject> = {
+  [K in keyof T]: T[K] extends GenericObject
+    ? NestedPaths1<T[K], Union<undefined, undefined>, Join<undefined, K>>
+    : Union<Union<undefined, undefined>, Join<undefined, K>>;
+}[keyof T];
 
-export type NestedPaths<ObjectType extends GenericObject> = {
-  [Key in keyof ObjectType &
-    (string | number)]: ObjectType[Key] extends GenericObject
-    ? `${Key}` | `${Key}.${NestedPaths<ObjectType[Key]>}`
-    : `${Key}`;
-}[keyof ObjectType & (string | number)];
-
-// export type NestedPaths<T extends GenericObject> = string;
+type NestedPaths1<
+  T extends GenericObject,
+  Prev extends Primitive | undefined = undefined,
+  Path extends Primitive | undefined = undefined
+> = {
+  [K in keyof T]: Union<Union<Prev, Path>, Join<Path, K>>;
+}[keyof T];
 
 /**
  * TypeFromPath
@@ -62,25 +57,50 @@ export type NestedPaths<ObjectType extends GenericObject> = {
  */
 export type TypeFromPath<
   T extends GenericObject,
-  Path extends string // Or, if you prefer, NestedPaths<T>
+  Path extends NestedPaths<T>
 > = {
   [K in Path]: K extends keyof T
     ? T[K]
     : K extends `${infer P}.${infer S}`
     ? T[P] extends GenericObject
-      ? TypeFromPath<T[P], S>
+      ? S extends NestedPaths<T[P]>
+        ? TypeFromPath<T[P], S>
+        : never
       : never
     : never;
 }[Path];
+
+export type NestedPathsByType<
+  T extends GenericObject,
+  Type
+> = NestedPaths<T> extends infer P
+  ? P extends NestedPaths<T>
+    ? TypeFromPath<T, P> extends Type
+      ? P
+      : never
+    : never
+  : never;
 
 export type Filter<T extends GenericObject> = {
   id: NestedPaths<T>;
   fn: (value: T) => boolean;
 };
 
+type Lest = {
+  a: {
+    b: number;
+    // c: number;
+  };
+  b: {
+    c: number;
+  };
+};
+
+type Paths = NestedPaths<Lest>;
+
 /**
  *
- * @param options is where we pass in our data
+ * @param data we pass in our data here
  * @returns
  */
 export const useDataHandler = <T extends GenericObject>(data: T[]) => {
@@ -137,36 +157,81 @@ export const useDataHandler = <T extends GenericObject>(data: T[]) => {
   ] as const;
 };
 
-// export const createNumericalFilter = <T extends GenericObject>(
-//   id: T extends unknown ? NestedPaths<T> : string,
-//   min: number,
-//   max: number
-// ): Filter<T> => ({
-//   id,
-//   fn: (value: T) =>
-//     // id.split(".").reduce((curr, acc) => acc[curr], value) >= min &&
-//     // value[id] <= max,
-// });
+/**
+ * Nasty code to get the type of the value from the path. Bit hacky, but this is the best I could come up with.
+ * @param id
+ * @param data
+ * @returns
+ */
+const nestedPathToValue = <
+  T extends GenericObject,
+  K extends NestedPaths<T>,
+  R extends TypeFromPath<T, K>
+>(
+  id: K,
+  data: T
+): R => {
+  const split = (id as string).split(".");
+  return split.reduce(
+    (acc, curr) =>
+      typeof acc === "object" ? (acc as GenericObject)[curr] : acc,
+    data as unknown
+  ) as R;
+};
+
+/**
+ * Creates a numerical filter, you have to specify the generic T in order to get better type hints
+ * @param id path of values
+ * @param min minimum
+ * @param max maximum
+ * @returns
+ */
+export const createNumericalFilter = <T extends GenericObject>(
+  id: NestedPathsByType<T, number>,
+  min: number,
+  max: number
+): Filter<T> => ({
+  id,
+  fn: (value: T) =>
+    nestedPathToValue(id, value) >= min && nestedPathToValue(id, value) <= max,
+});
+
+type Test = {
+  a: {
+    b: boolean;
+    e: string;
+  };
+};
+
+type E = TypeFromPath<Test, NestedPathsByType<Test, boolean>>;
+
+export const createBooleanFilter = <T extends GenericObject>(
+  id: NestedPathsByType<T, boolean>,
+  value: boolean
+): Filter<T> => ({
+  id,
+  fn: (val: T) => nestedPathToValue(id, val) === value,
+});
 
 export const createDropDownFilter = <
   T extends GenericObject,
-  K extends NestedPaths<T>
+  K extends NestedPathsByType<T, string>
 >(
   id: K,
   is: TypeFromPath<T, K>[]
 ): Filter<T> => ({
   id,
-  fn: (value) =>
-    is.includes(id.split(".").reduce((curr, acc) => acc[curr], value)),
+  fn: (value) => is.includes(nestedPathToValue(id, value)),
 });
 
 export const createTextFilter = <
   T extends GenericObject,
-  K extends NestedPaths<T>
+  K extends NestedPathsByType<T, string>
 >(
   id: K,
   text: string
 ): Filter<T> => ({
   id,
-  fn: (value: T) => (value[id] as string).includes(text),
+  fn: (value: T) => nestedPathToValue<T, K, string>(id, value).includes(text),
 });
+1;

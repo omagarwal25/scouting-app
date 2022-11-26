@@ -1,13 +1,13 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAtom, WritableAtom } from 'jotai';
 import { DeepPartial, FieldError, Path, useForm } from 'react-hook-form';
+import { ZodSchema } from 'zod';
+import { Button } from '~/components/Button';
+import { Container } from '~/components/Container';
+import { Topbar } from '~/components/Topbar';
 import { game, ScoringElement } from '~/models';
 import { RootStackParamList, RootTabScreenProps } from '~/types';
-import { Topbar } from '~/components/Topbar';
-import { Button } from '~/components/Button';
 import { FieldInput } from './FieldInput';
-import { ZodSchema } from 'zod';
-import { Container } from '~/components/Container';
 
 type Props<
   T extends Record<string, any>,
@@ -74,3 +74,21 @@ export const InputModal = <
     </>
   );
 };
+
+export const scoringCardFactory =
+  <T extends object, B extends keyof RootStackParamList>({
+    atom,
+    keys,
+    nextPage,
+    zodSchema,
+  }: Omit<Props<T, B>, 'navigation'>) =>
+  (navigation: RootTabScreenProps) =>
+    (
+      <InputModal
+        atom={atom}
+        navigation={navigation}
+        keys={keys}
+        nextPage={nextPage}
+        zodSchema={zodSchema}
+      />
+    );

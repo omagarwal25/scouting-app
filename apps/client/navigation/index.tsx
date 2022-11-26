@@ -10,19 +10,31 @@ import {
 } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ColorSchemeName } from 'react-native';
+import { scoringCardFactory } from '~/components/input/ScoringCard';
 import {
-  AutoCard,
-  EndgameCard,
-  InfoCard,
-  PostgameCard,
-  PregameCard,
-  PreviewCard,
-  QRCodeCard,
-  RootScreen,
-  ScannerCard,
-  TeleopCard,
-} from '~/screens';
+  autoKeys,
+  autoSchema,
+  endgameKeys,
+  endgameSchema,
+  infoKeys,
+  infoSchema,
+  postgameKeys,
+  postgameSchema,
+  pregameKeys,
+  pregameSchema,
+  teleopKeys,
+  teleopSchema,
+} from '~/models';
+import { PreviewCard, QRCodeCard, RootScreen, ScannerCard } from '~/screens';
 import NotFoundScreen from '~/screens/NotFoundScreen';
+import {
+  autoAtom,
+  endgameAtom,
+  infoAtom,
+  postgameAtom,
+  pregameAtom,
+  teleopAtom,
+} from '~/state';
 import { RootStackParamList } from '~/types';
 import LinkingConfiguration from './LinkingConfiguration';
 
@@ -48,6 +60,66 @@ export default function avigation({
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
+  const scoringCards: {
+    factory: ReturnType<typeof scoringCardFactory>;
+    name: keyof RootStackParamList;
+  }[] = [
+    {
+      name: 'Info',
+      factory: scoringCardFactory({
+        atom: infoAtom,
+        keys: infoKeys,
+        nextPage: 'Pregame',
+        zodSchema: infoSchema,
+      }),
+    },
+    {
+      name: 'Pregame',
+      factory: scoringCardFactory({
+        atom: pregameAtom,
+        keys: pregameKeys,
+        nextPage: 'Auto',
+        zodSchema: pregameSchema,
+      }),
+    },
+    {
+      name: 'Auto',
+      factory: scoringCardFactory({
+        atom: autoAtom,
+        keys: autoKeys,
+        nextPage: 'Teleop',
+        zodSchema: autoSchema,
+      }),
+    },
+    {
+      name: 'Teleop',
+      factory: scoringCardFactory({
+        atom: teleopAtom,
+        keys: teleopKeys,
+        nextPage: 'Endgame',
+        zodSchema: teleopSchema,
+      }),
+    },
+    {
+      name: 'Endgame',
+      factory: scoringCardFactory({
+        atom: endgameAtom,
+        keys: endgameKeys,
+        nextPage: 'Postgame',
+        zodSchema: endgameSchema,
+      }),
+    },
+    {
+      name: 'Postgame',
+      factory: scoringCardFactory({
+        atom: postgameAtom,
+        keys: postgameKeys,
+        nextPage: 'Preview',
+        zodSchema: postgameSchema,
+      }),
+    },
+  ];
+
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -61,12 +133,9 @@ function RootNavigator() {
         options={{ title: 'Oops!' }}
       />
       <Stack.Group screenOptions={{ presentation: 'card' }}>
-        <Stack.Screen name="Info" component={InfoCard} />
-        <Stack.Screen name="Pregame" component={PregameCard} />
-        <Stack.Screen name="Auto" component={AutoCard} />
-        <Stack.Screen name="Teleop" component={TeleopCard} />
-        <Stack.Screen name="Endgame" component={EndgameCard} />
-        <Stack.Screen name="Postgame" component={PostgameCard} />
+        {scoringCards.map((e) => (
+          <Stack.Screen key={e.name} name={e.name} component={e.factory} />
+        ))}
         <Stack.Screen name="QR" component={QRCodeCard} />
         <Stack.Screen name="Scanner" component={ScannerCard} />
         <Stack.Screen name="Preview" component={PreviewCard} />
