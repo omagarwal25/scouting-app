@@ -6,11 +6,11 @@ import { game } from "./game";
 import {
   autoKeys,
   endgameKeys,
+  Game,
+  infoKeys,
   postgameKeys,
   pregameKeys,
   teleopKeys,
-  Game,
-  infoKeys,
 } from "./screens";
 
 /**
@@ -24,21 +24,25 @@ export const encode = <T extends string>(
   keys: readonly T[]
 ) => {
   return keys.reduce((acc, key) => {
-    const scoringElement = game.scoringElements.find((se) => se.name === key);
-    if (!scoringElement) return acc;
+    const objectiveElement = game.objectiveElements.find(
+      (se) => se.name === key
+    );
+    if (!objectiveElement) return acc;
 
-    if (scoringElement.field.fieldType === "Numeric")
+    if (objectiveElement.field.fieldType === "Numeric")
       return acc + state[key].toString(16) + "$";
     // return acc + state[key].toString() + "$";
-    else if (scoringElement.field.fieldType === "Dropdown")
+    else if (objectiveElement.field.fieldType === "Dropdown")
       return (
         acc +
-        scoringElement.field.options.indexOf(state[key] as string).toString() +
+        objectiveElement.field.options
+          .indexOf(state[key] as string)
+          .toString() +
         "$"
       );
-    else if (scoringElement.field.fieldType === "Boolean")
+    else if (objectiveElement.field.fieldType === "Boolean")
       return acc + (state[key] ? "1" : "0") + "$";
-    else if (scoringElement.field.fieldType === "Text")
+    else if (objectiveElement.field.fieldType === "Text")
       return ((acc + state[key]) as string) + "$";
     else return acc + state[key] + "$";
   }, "");
@@ -59,20 +63,22 @@ export const decode = <B extends { [key: string]: string | number | boolean }>(
 
   for (let i = 0; i < keys.length; i++) {
     const key = keys[i];
-    const scoringElement = game.scoringElements.find((se) => se.name === key);
+    const objectiveElement = game.objectiveElements.find(
+      (se) => se.name === key
+    );
 
-    if (!scoringElement) continue;
+    if (!objectiveElement) continue;
 
-    if (scoringElement.field.fieldType === "Numeric") {
+    if (objectiveElement.field.fieldType === "Numeric") {
       state[key] = parseInt(split[i], 16) as B[typeof key];
       // state[key] = split[i] as B[typeof key];
-    } else if (scoringElement.field.fieldType === "Dropdown") {
-      state[key] = scoringElement.field.options[
+    } else if (objectiveElement.field.fieldType === "Dropdown") {
+      state[key] = objectiveElement.field.options[
         parseInt(split[i], 10)
       ] as B[typeof key];
-    } else if (scoringElement.field.fieldType === "Boolean") {
+    } else if (objectiveElement.field.fieldType === "Boolean") {
       state[key] = (split[i] === "1") as B[typeof key];
-    } else if (scoringElement.field.fieldType === "Text") {
+    } else if (objectiveElement.field.fieldType === "Text") {
       state[key] = split[i] as B[typeof key];
     } else {
       state[key] = split[i] as B[typeof key];

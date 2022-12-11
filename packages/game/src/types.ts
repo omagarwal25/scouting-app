@@ -1,5 +1,5 @@
-import { z, ZodSchema } from "zod";
-export interface ScoringElement {
+import { ZodSchema } from "zod";
+export interface objectiveElement {
   name: string;
   label: string;
   screens: Screen[];
@@ -25,7 +25,7 @@ export interface YearGame {
   year: number;
   description: string;
 
-  scoringElements: ScoringElement[];
+  objectiveElements: objectiveElement[];
 }
 
 export function hashCode(str: string) {

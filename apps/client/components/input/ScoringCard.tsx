@@ -5,7 +5,7 @@ import { ZodSchema } from 'zod';
 import { Button } from '~/components/Button';
 import { Container } from '~/components/Container';
 import { Topbar } from '~/components/Topbar';
-import { game, ScoringElement } from '~/models';
+import { game, objectiveElement } from '~/models';
 import { RootStackParamList, RootTabScreenProps } from '~/types';
 import { FieldInput } from './FieldInput';
 
@@ -48,10 +48,10 @@ export const InputModal = <
     );
   });
 
-  const scoringElements = new Map<string, ScoringElement>();
+  const objectiveElements = new Map<string, objectiveElement>();
 
-  game.scoringElements.forEach((element) => {
-    scoringElements.set(element.name, element);
+  game.objectiveElements.forEach((element) => {
+    objectiveElements.set(element.name, element);
   });
 
   return (
@@ -64,9 +64,9 @@ export const InputModal = <
             error={
               (errors as Record<keyof T, FieldError>)[e as unknown as keyof T]
             }
-            field={scoringElements.get(e)!!.field}
-            label={scoringElements.get(e)!!.label}
-            key={scoringElements.get(e)!!.hash}
+            field={objectiveElements.get(e)!!.field}
+            label={objectiveElements.get(e)!!.label}
+            key={objectiveElements.get(e)!!.hash}
           />
         ))}
         <Button label="Next" onPress={onSubmit} />

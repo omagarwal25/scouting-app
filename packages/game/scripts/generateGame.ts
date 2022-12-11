@@ -31,47 +31,49 @@ function getYearGame(type: ReturnType<typeof getType>) {
 
 const info = getYearGame(getType());
 
-const scoringElements = info.scoringElements.map((scoringElement) => {
-  const hash = hashCode(scoringElement.name);
+const objectiveElements = info.objectiveElements.map((objectiveElement) => {
+  const hash = hashCode(objectiveElement.name);
   const schema: JSONSchema7 = {};
 
-  if (scoringElement.field.fieldType === "Boolean") {
+  if (objectiveElement.field.fieldType === "Boolean") {
     schema.type = "boolean";
-  } else if (scoringElement.field.fieldType === "Text") {
+  } else if (objectiveElement.field.fieldType === "Text") {
     schema.type = "string";
-  } else if (scoringElement.field.fieldType === "Numeric") {
+  } else if (objectiveElement.field.fieldType === "Numeric") {
     schema.type = "number";
-    if (scoringElement.field.min !== undefined) {
-      schema.minimum = scoringElement.field.min;
+    if (objectiveElement.field.min !== undefined) {
+      schema.minimum = objectiveElement.field.min;
     } else {
       schema.default = 0;
     }
-    if (scoringElement.field.max !== undefined) {
-      schema.maximum = scoringElement.field.max;
+    if (objectiveElement.field.max !== undefined) {
+      schema.maximum = objectiveElement.field.max;
     }
-    if (scoringElement.field.isInteger) {
+    if (objectiveElement.field.isInteger) {
       schema.multipleOf = 1;
     }
-  } else if (scoringElement.field.fieldType === "Dropdown") {
+  } else if (objectiveElement.field.fieldType === "Dropdown") {
     schema.type = "string";
-    schema.enum = scoringElement.field.options;
+    schema.enum = objectiveElement.field.options;
   }
   const zSchema = jsonSchemaToZod(schema, undefined, false)
     .split("=")[1]
     .replace(";", "");
 
   return {
-    name: scoringElement.name,
-    label: scoringElement.label,
-    screens: scoringElement.screens,
+    name: objectiveElement.name,
+    label: objectiveElement.label,
+    screens: objectiveElement.screens,
     schema: zSchema,
     hash,
-    field: scoringElement.field,
+    field: objectiveElement.field,
   };
 });
 
 // the following scoring elements must exist. "scoutId" | "scoutName" | "matchType" | "matchNumber" | "teamNumber"
-const names = scoringElements.map((scoringElement) => scoringElement.name);
+const names = objectiveElements.map(
+  (objectiveElement) => objectiveElement.name
+);
 const required = [
   "scoutId",
   "scoutName",
@@ -105,18 +107,18 @@ main.addVariableStatement({
           writer.writeLine(`name: "${info.name}",`);
           writer.writeLine(`description: "${info.description}",`);
           writer.writeLine(`year: ${info.year},`);
-          writer.writeLine(`scoringElements: [`);
-          scoringElements.forEach((scoringElement) => {
+          writer.writeLine(`objectiveElements: [`);
+          objectiveElements.forEach((objectiveElement) => {
             writer.block(() => {
-              writer.writeLine(`hash: ${scoringElement.hash},`);
-              writer.writeLine(`name: "${scoringElement.name}",`);
-              writer.writeLine(`label: "${scoringElement.label}",`);
+              writer.writeLine(`hash: ${objectiveElement.hash},`);
+              writer.writeLine(`name: "${objectiveElement.name}",`);
+              writer.writeLine(`label: "${objectiveElement.label}",`);
               writer.writeLine(
-                `screens: ${JSON.stringify(scoringElement.screens)},`
+                `screens: ${JSON.stringify(objectiveElement.screens)},`
               );
               writer.writeLine(`field:`);
-              writer.writeLine(JSON.stringify(scoringElement.field) + ",");
-              writer.writeLine(`schema: ${scoringElement.schema}`);
+              writer.writeLine(JSON.stringify(objectiveElement.field) + ",");
+              writer.writeLine(`schema: ${objectiveElement.schema}`);
             });
 
             writer.writeLine(",");

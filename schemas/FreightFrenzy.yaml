@@ -4,7 +4,7 @@ name: FreightFrenzy
 description: Ducks Balls Cubes FTC
 year: 2021
 
-scoringElements:
+objectiveElements:
   - name: scoutId
     label: Scout ID
     screens:

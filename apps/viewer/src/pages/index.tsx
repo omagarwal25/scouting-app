@@ -32,7 +32,7 @@ const Home: NextPage = () => {
           columnHelper.accessor((row) => row.data.info[key], {
             id: `info.${key}`,
             header:
-              game.scoringElements.find((e) => e.name === key)?.label ?? key,
+              game.objectiveElements.find((e) => e.name === key)?.label ?? key,
             cell: (info) => info.getValue(),
           })
         ),
@@ -43,7 +43,7 @@ const Home: NextPage = () => {
           columnHelper.accessor((row) => row.data.pregame[key], {
             id: `pregame.${key}`,
             header:
-              game.scoringElements.find((e) => e.name === key)?.label ?? key,
+              game.objectiveElements.find((e) => e.name === key)?.label ?? key,
             cell: (pregame) => pregame.getValue(),
           })
         ),
@@ -54,7 +54,7 @@ const Home: NextPage = () => {
           columnHelper.accessor((row) => row.data.auto[key], {
             id: `auto.${key}`,
             header:
-              game.scoringElements.find((e) => e.name === key)?.label ?? key,
+              game.objectiveElements.find((e) => e.name === key)?.label ?? key,
             cell: (auto) => auto.getValue(),
           })
         ),
@@ -65,7 +65,7 @@ const Home: NextPage = () => {
           columnHelper.accessor((row) => row.data.teleop[key], {
             id: `teleop.${key}`,
             header:
-              game.scoringElements.find((e) => e.name === key)?.label ?? key,
+              game.objectiveElements.find((e) => e.name === key)?.label ?? key,
             cell: (teleop) => teleop.getValue(),
           })
         ),
@@ -76,7 +76,7 @@ const Home: NextPage = () => {
           columnHelper.accessor((row) => row.data.endgame[key], {
             id: `endgame.${key}`,
             header:
-              game.scoringElements.find((e) => e.name === key)?.label ?? key,
+              game.objectiveElements.find((e) => e.name === key)?.label ?? key,
             cell: (endgame) => endgame.getValue(),
           })
         ),
@@ -87,7 +87,7 @@ const Home: NextPage = () => {
           columnHelper.accessor((row) => row.data.postgame[key], {
             id: `postgame.${key}`,
             header:
-              game.scoringElements.find((e) => e.name === key)?.label ?? key,
+              game.objectiveElements.find((e) => e.name === key)?.label ?? key,
             cell: (postgame) => postgame.getValue(),
           })
         ),

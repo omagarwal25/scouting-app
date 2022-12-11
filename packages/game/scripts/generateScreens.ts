@@ -1,11 +1,9 @@
 import { JSONSchema7 } from "json-schema";
-import { CodeBlockWriter, Project, VariableDeclarationKind } from "ts-morph";
-import { z, ZodType } from "zod";
-import { game } from "../src/game";
-import zodToJsonSchema from "zod-to-json-schema";
 import jsonSchemaToZod from "json-schema-to-zod";
+import { CodeBlockWriter, Project, VariableDeclarationKind } from "ts-morph";
+import { game } from "../src/game";
 // get all screens remove dupes
-const screens = game.scoringElements
+const screens = game.objectiveElements
   .map((i) => i.screens)
   .flat()
   .filter((i, index, self) => self.indexOf(i) === index);
@@ -26,7 +24,7 @@ defaultFile.addImportDeclaration({
 
 // for every screen, get all the elements with that screen and then generate types and more zod schemas
 screens.forEach((screen) => {
-  const elements = game.scoringElements.filter((i) =>
+  const elements = game.objectiveElements.filter((i) =>
     i.screens.includes(screen)
   );
 

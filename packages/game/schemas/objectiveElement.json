@@ -1,5 +1,5 @@
 {
-  "$id": "https://raw.githubusercontent.com/omagarwal25/scouting-app/turbo-repo/packages/game/schemas/scoringElement.schema.json",
+  "$id": "https://raw.githubusercontent.com/omagarwal25/scouting-app/turbo-repo/packages/game/schemas/objectiveElement.schema.json",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "required": ["name", "screens", "field", "label"],
   "type": "object",
