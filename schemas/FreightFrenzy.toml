@@ -1,4 +1,4 @@
-#:schema https://raw.githubusercontent.com/omagarwal25/scouting-app/turbo-repo/packages/game/schemas/game.schema.json
+#:schema https://raw.githubusercontent.com/omagarwal25/scouting-app/main/packages/game/schemas/game.schema.json
 name = "FreightFrenzy"
 description = "Ducks Balls Cubes FTC"
 year = 2021
