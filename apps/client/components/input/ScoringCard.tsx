@@ -5,7 +5,7 @@ import { ZodSchema } from 'zod';
 import { Button } from '~/components/Button';
 import { Container } from '~/components/Container';
 import { Topbar } from '~/components/Topbar';
-import { game, objectiveElement } from '~/models';
+import { game, ObjectiveElement } from '~/models';
 import { RootStackParamList, RootTabScreenProps } from '~/types';
 import { FieldInput } from './FieldInput';
 
@@ -48,7 +48,7 @@ export const InputModal = <
     );
   });
 
-  const objectiveElements = new Map<string, objectiveElement>();
+  const objectiveElements = new Map<string, ObjectiveElement>();
 
   game.objectiveElements.forEach((element) => {
     objectiveElements.set(element.name, element);
