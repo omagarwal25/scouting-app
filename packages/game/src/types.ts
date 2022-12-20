@@ -5,10 +5,11 @@ export interface ObjectiveElement {
   screens: Screen[];
   field: Field;
   schema: ZodSchema;
-  hash: number;
 }
 
-type Screen = "Auto" | "Teleop" | "Endgame" | "Pregame" | "Postgame" | "Info";
+export type SubjectiveElement = Omit<ObjectiveElement, "screens">;
+
+type Screen = "Auto" | "Teleop" | "Endgame" | "Pregame" | "Postgame";
 
 export type Field =
   | { fieldType: "Boolean" | "Text" }
@@ -26,17 +27,6 @@ export interface YearGame {
   description: string;
 
   objectiveElements: ObjectiveElement[];
-}
-
-export function hashCode(str: string) {
-  var hash = 0,
-    i,
-    chr;
-  if (str.length === 0) return hash;
-  for (i = 0; i < str.length; i++) {
-    chr = str.charCodeAt(i);
-    hash = (hash << 5) - hash + chr;
-    hash |= 0; // Convert to 32bit integer
-  }
-  return hash;
+  subjectiveElements: SubjectiveElement[];
+  infoElements: SubjectiveElement[];
 }

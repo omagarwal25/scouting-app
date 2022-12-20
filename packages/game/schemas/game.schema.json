@@ -20,6 +20,13 @@
       "items": {
         "$ref": "https://raw.githubusercontent.com/omagarwal25/scouting-app/main/packages/game/schemas/subjectiveElement.schema.json"
       }
+    },
+    "infoElements": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "https://raw.githubusercontent.com/omagarwal25/scouting-app/main/packages/game/schemas/subjectiveElement.schema.json"
+      }
     }
   },
   "required": ["name", "description", "year"]

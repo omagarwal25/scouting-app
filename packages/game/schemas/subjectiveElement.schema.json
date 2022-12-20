@@ -12,16 +12,6 @@
       "type": "string",
       "description": "The name of the scoring element (for internals)"
     },
-    "screens": {
-      "type": "array",
-      "description": "The screens that this scoring element is on",
-      "minItems": 1,
-      "items": {
-        "type": "string",
-        "enum": ["Auto", "Teleop", "Endgame", "Postgame", "Pregame", "Info"],
-        "description": "The name of the screen"
-      }
-    },
     "field": {
       "type": "object",
       "description": "The name of the field that this scoring element is on",
