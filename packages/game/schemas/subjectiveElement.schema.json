@@ -1,7 +1,7 @@
 {
   "$id": "https://raw.githubusercontent.com/omagarwal25/scouting-app/main/packages/game/schemas/subjectiveElement.schema.json",
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "required": ["name", "screens", "field", "label"],
+  "required": ["name", "field", "label"],
   "type": "object",
   "properties": {
     "label": {

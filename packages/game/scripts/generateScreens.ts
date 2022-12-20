@@ -145,7 +145,6 @@ file.addVariableStatement({
     {
       name: "gameSchema",
       initializer: `z.object({
-        info: infoSchema,
         pregame: pregameSchema,
         auto: autoSchema,
         teleop: teleopSchema,

@@ -1,4 +1,4 @@
-#:schema https://raw.githubusercontent.com/omagarwal25/scouting-app/main/packages/game/schemas/game.schema.json
+#:schema ./schemas/game.schema.json
 name = "FreightFrenzy"
 description = "Ducks Balls Cubes FTC"
 year = 2021
@@ -15,7 +15,7 @@ options = ["Red 1", "Red 2", "Red 3", "Blue 1", "Blue 2", "Blue 3"]
 [[objectiveElements]]
 name = "matchType"
 label = "Match Type"
-screens = ["Info"]
+screens = [""]
 
 [objectiveElements.field]
 fieldType = "Dropdown"
