@@ -22,10 +22,14 @@ import {
   postgameSchema,
   pregameKeys,
   pregameSchema,
+  subjectiveKeys,
+  subjectiveSchema,
+  subjInfoKeys,
+  subjInfoSchema,
   teleopKeys,
   teleopSchema,
 } from '~/models';
-import { PreviewCard, QRCodeCard, RootScreen, ScannerCard } from '~/screens';
+import { QRCodeCard, RootScreen, ScannerCard } from '~/screens';
 import NotFoundScreen from '~/screens/NotFoundScreen';
 import {
   autoAtom,
@@ -33,6 +37,10 @@ import {
   infoAtom,
   postgameAtom,
   pregameAtom,
+  subjInfoAtom,
+  subjTeamOneAtom,
+  subjTeamThreeAtom,
+  subjTeamTwoAtom,
   teleopAtom,
 } from '~/state';
 import { RootStackParamList } from '~/types';
@@ -69,6 +77,7 @@ function RootNavigator() {
       factory: scoringCardFactory({
         atom: infoAtom,
         keys: infoKeys,
+        type: 'info',
         nextPage: 'Pregame',
         zodSchema: infoSchema,
       }),
@@ -77,6 +86,7 @@ function RootNavigator() {
       name: 'Pregame',
       factory: scoringCardFactory({
         atom: pregameAtom,
+        type: 'objective',
         keys: pregameKeys,
         nextPage: 'Auto',
         zodSchema: pregameSchema,
@@ -86,6 +96,7 @@ function RootNavigator() {
       name: 'Auto',
       factory: scoringCardFactory({
         atom: autoAtom,
+        type: 'objective',
         keys: autoKeys,
         nextPage: 'Teleop',
         zodSchema: autoSchema,
@@ -95,6 +106,7 @@ function RootNavigator() {
       name: 'Teleop',
       factory: scoringCardFactory({
         atom: teleopAtom,
+        type: 'objective',
         keys: teleopKeys,
         nextPage: 'Endgame',
         zodSchema: teleopSchema,
@@ -104,6 +116,7 @@ function RootNavigator() {
       name: 'Endgame',
       factory: scoringCardFactory({
         atom: endgameAtom,
+        type: 'objective',
         keys: endgameKeys,
         nextPage: 'Postgame',
         zodSchema: endgameSchema,
@@ -113,9 +126,50 @@ function RootNavigator() {
       name: 'Postgame',
       factory: scoringCardFactory({
         atom: postgameAtom,
+        type: 'objective',
         keys: postgameKeys,
-        nextPage: 'Preview',
+        nextPage: 'QR',
         zodSchema: postgameSchema,
+      }),
+    },
+    {
+      name: 'Subjective Info',
+      factory: scoringCardFactory({
+        atom: subjInfoAtom,
+        type: 'info',
+        keys: subjInfoKeys,
+        nextPage: 'Subjective Team One',
+        zodSchema: subjInfoSchema,
+      }),
+    },
+    {
+      name: 'Subjective Team One',
+      factory: scoringCardFactory({
+        atom: subjTeamOneAtom,
+        type: 'subjective',
+        keys: subjectiveKeys,
+        nextPage: 'Subjective Team Two',
+        zodSchema: subjectiveSchema,
+      }),
+    },
+    {
+      name: 'Subjective Team Two',
+      factory: scoringCardFactory({
+        atom: subjTeamTwoAtom,
+        type: 'subjective',
+        keys: subjectiveKeys,
+        nextPage: 'Subjective Team Three',
+        zodSchema: subjectiveSchema,
+      }),
+    },
+    {
+      name: 'Subjective Team Three',
+      factory: scoringCardFactory({
+        atom: subjTeamThreeAtom,
+        type: 'subjective',
+        keys: subjectiveKeys,
+        nextPage: 'Root',
+        zodSchema: subjectiveSchema,
       }),
     },
   ];
@@ -138,7 +192,7 @@ function RootNavigator() {
         ))}
         <Stack.Screen name="QR" component={QRCodeCard} />
         <Stack.Screen name="Scanner" component={ScannerCard} />
-        <Stack.Screen name="Preview" component={PreviewCard} />
+        {/* <Stack.Screen name="Preview" component={PreviewCard} /> */}
       </Stack.Group>
     </Stack.Navigator>
   );

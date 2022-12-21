@@ -23,6 +23,10 @@ export type RootStackParamList = {
   QR: undefined;
   Scanner: undefined;
   Preview: undefined;
+  'Subjective Info': undefined;
+  'Subjective Team One': undefined;
+  'Subjective Team Two': undefined;
+  'Subjective Team Three': undefined;
 };
 
 export type RootTabScreenProps = NativeStackScreenProps<RootStackParamList>;

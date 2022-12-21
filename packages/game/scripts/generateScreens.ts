@@ -1,6 +1,7 @@
 import { JSONSchema7 } from "json-schema";
 import jsonSchemaToZod from "json-schema-to-zod";
 import { CodeBlockWriter, Project, VariableDeclarationKind } from "ts-morph";
+import { SubjectiveElement } from "../src";
 import { game } from "../src/game";
 // get all screens remove dupes
 const screens = game.objectiveElements
@@ -12,6 +13,10 @@ const project = new Project();
 const file = project.createSourceFile("src/screens.ts");
 const defaultFile = project.createSourceFile("src/defaults.ts");
 
+function lowerCaseFirstLetter(str: string) {
+  return str.charAt(0).toLowerCase() + str.slice(1);
+}
+
 file.addImportDeclaration({
   moduleSpecifier: "zod",
   namedImports: ["z"],
@@ -22,12 +27,7 @@ defaultFile.addImportDeclaration({
   namedImports: ["z"],
 });
 
-// for every screen, get all the elements with that screen and then generate types and more zod schemas
-screens.forEach((screen) => {
-  const elements = game.objectiveElements.filter((i) =>
-    i.screens.includes(screen)
-  );
-
+function writeSchema(screen: string, elements: SubjectiveElement[]) {
   const objectMap: Record<string, { zod: string; default: string }> = {};
 
   elements.forEach((element) => {
@@ -83,7 +83,7 @@ screens.forEach((screen) => {
     isExported: true,
     declarations: [
       {
-        name: screen.toLowerCase() + "Schema",
+        name: lowerCaseFirstLetter(screen) + "Schema",
         initializer: (w: CodeBlockWriter) => {
           w.write("z.object(");
           w.block(() => {
@@ -96,7 +96,7 @@ screens.forEach((screen) => {
         },
       },
       {
-        name: screen.toLowerCase() + "Keys",
+        name: lowerCaseFirstLetter(screen) + "Keys",
         initializer: (w: CodeBlockWriter) => {
           w.write("[");
 
@@ -114,7 +114,7 @@ screens.forEach((screen) => {
     declarationKind: VariableDeclarationKind.Const,
     declarations: [
       {
-        name: screen.toLowerCase() + "Schema",
+        name: lowerCaseFirstLetter(screen) + "Schema",
         initializer: (w: CodeBlockWriter) => {
           w.write("z.object(");
           w.block(() => {
@@ -134,9 +134,41 @@ screens.forEach((screen) => {
   file.addTypeAlias({
     name: capitalizeFirstLetter(screen),
     isExported: true,
-    type: `z.infer<typeof ${screen.toLowerCase() + "Schema"}>`,
+    type: `z.infer<typeof ${lowerCaseFirstLetter(screen) + "Schema"}>`,
   });
+}
+
+// for every screen, get all the elements with that screen and then generate types and more zod schemas
+screens.forEach((screen) => {
+  const elements = game.objectiveElements.filter((i) =>
+    i.screens.includes(screen)
+  );
+
+  writeSchema(screen, elements);
 });
+
+writeSchema("subjective", game.subjectiveElements);
+writeSchema("info", game.infoElements);
+const teamNumber = game.infoElements.find((i) => i.name === "teamNumber")!!;
+// subjective info will always have 3 team numbers, but we need to change the team number and the label
+writeSchema("subjInfo", [
+  ...game.infoElements.filter((i) => i.name !== "teamNumber"),
+  {
+    ...teamNumber,
+    name: "teamOneNumber",
+    label: "Team One Number",
+  },
+  {
+    ...teamNumber,
+    name: "teamTwoNumber",
+    label: "Team Two Number",
+  },
+  {
+    ...teamNumber,
+    name: "teamThreeNumber",
+    label: "Team Three Number",
+  },
+]);
 
 file.addVariableStatement({
   declarationKind: VariableDeclarationKind.Const,
@@ -150,6 +182,7 @@ file.addVariableStatement({
         teleop: teleopSchema,
         endgame: endgameSchema,
         postgame: postgameSchema,
+        info: infoSchema
       })`,
     },
   ],
@@ -159,6 +192,28 @@ file.addTypeAlias({
   name: "Game",
   isExported: true,
   type: `z.infer<typeof gameSchema>`,
+});
+
+file.addVariableStatement({
+  declarationKind: VariableDeclarationKind.Const,
+  isExported: true,
+  declarations: [
+    {
+      name: "allianceSubjectiveSchema",
+      initializer: `z.object({
+        teamOne: subjectiveSchema,
+        teamTwo: subjectiveSchema,
+        teamThree: subjectiveSchema,
+        info: subjInfoSchema
+      })`,
+    },
+  ],
+});
+
+file.addTypeAlias({
+  name: "AllianceSubjective",
+  isExported: true,
+  type: `z.infer<typeof allianceSubjectiveSchema>`,
 });
 
 file.saveSync();
@@ -184,6 +239,38 @@ defaultFile.addVariableStatement({
               }.default(${screen.toLocaleLowerCase() + "Schema"}.parse({})),`
             );
           });
+
+          w.write("info: infoSchema.default(infoSchema.parse({}))");
+        });
+
+        w.write(")");
+      },
+    },
+  ],
+});
+
+defaultFile.addVariableStatement({
+  declarationKind: VariableDeclarationKind.Const,
+  declarations: [
+    {
+      name: "allianceSubjectiveZod",
+      initializer: (w: CodeBlockWriter) => {
+        w.write("z.object(");
+        w.block(() => {
+          // grab all the screens
+          w.write(
+            "teamOne: subjectiveSchema.default(subjectiveSchema.parse({})),"
+          );
+
+          w.write(
+            "teamTwo: subjectiveSchema.default(subjectiveSchema.parse({})),"
+          );
+
+          w.write(
+            "teamThree: subjectiveSchema.default(subjectiveSchema.parse({})),"
+          );
+
+          w.write("info: subjInfoSchema.default(subjInfoSchema.parse({}))");
         });
 
         w.write(")");
@@ -199,6 +286,17 @@ defaultFile.addVariableStatement({
     {
       name: "gameDefault",
       initializer: "gameZod.parse({})",
+    },
+  ],
+});
+
+defaultFile.addVariableStatement({
+  declarationKind: VariableDeclarationKind.Const,
+  isExported: true,
+  declarations: [
+    {
+      name: "allianceSubjectiveDefault",
+      initializer: "allianceSubjectiveZod.parse({})",
     },
   ],
 });

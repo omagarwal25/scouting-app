@@ -3,41 +3,47 @@ name = "FreightFrenzy"
 description = "Ducks Balls Cubes FTC"
 year = 2021
 
-[[objectiveElements]]
+[[infoElements]]
 name = "scoutId"
 label = "Scout ID"
 screens = ["Info"]
 
-[objectiveElements.field]
+[infoElements.field]
 fieldType = "Dropdown"
-options = ["Red 1", "Red 2", "Red 3", "Blue 1", "Blue 2", "Blue 3"]
+options = [
+  "Red 1",
+  "Red 2",
+  "Red 3",
+  "Blue 1",
+  "Blue 2",
+  "Blue 3",
+  "Red S",
+  "Blue S",
+]
 
-[[objectiveElements]]
+[[infoElements]]
 name = "matchType"
 label = "Match Type"
-screens = [""]
 
-[objectiveElements.field]
+[infoElements.field]
 fieldType = "Dropdown"
 options = ["Practice", "Qualification", "Quarterfinal", "Semifinal", "Final"]
 
-[[objectiveElements]]
+[[infoElements]]
 name = "matchNumber"
 label = "Match Number"
-screens = ["Info"]
 
-[objectiveElements.field]
+[infoElements.field]
 fieldType = "Numeric"
 isInteger = true
 incrementable = false
 min = 0
 
-[[objectiveElements]]
+[[infoElements]]
 name = "teamNumber"
 label = "Team Number"
-screens = ["Info"]
 
-[objectiveElements.field]
+[infoElements.field]
 fieldType = "Numeric"
 isInteger = true
 incrementable = false
@@ -204,3 +210,10 @@ min = 1
 max = 5
 isInteger = true
 incrementable = false
+
+[[subjectiveElements]]
+name = "notes"
+label = "Notes"
+
+[subjectiveElements.field]
+fieldType = "Text"

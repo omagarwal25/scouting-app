@@ -45,7 +45,7 @@ function getSchema(field: Field) {
     }
     return schema;
   } else if (field.fieldType === "Dropdown") {
-    return `z.enum([${field.options.join(", ")}])`;
+    return `z.enum([${field.options.map(o => `"${o}"`).join(", ")}])`;
   } else {
     throw new Error(`❌ Unknown field type ${field.fieldType}`);
   }
@@ -145,7 +145,7 @@ main.addVariableStatement({
 
             writer.writeLine(",");
           });
-          writer.writeLine("]");
+          writer.writeLine("],");
 
           writer.writeLine(`subjectiveElements: [`);
           subjectiveElements.forEach((subjectiveElement) => {
@@ -159,7 +159,7 @@ main.addVariableStatement({
 
             writer.writeLine(",");
           });
-          writer.writeLine("]");
+          writer.writeLine("],");
 
           writer.writeLine(`infoElements: [`);
           infoElements.forEach((infoElement) => {
@@ -187,4 +187,4 @@ main.addImportDeclarations([
 ]);
 main.saveSync();
 
-console.log("🥳 Generated game.ts at ", main.getFilePath());
+console.log("🥳🎉 Generated game.ts at ", main.getFilePath());
