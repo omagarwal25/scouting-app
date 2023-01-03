@@ -10,6 +10,9 @@ export type ObjectiveElement = BaseElement & { screens: ObjectiveScreen[] };
 export type SubjectiveElement = BaseElement & {
   screens: SubjectiveScreen[];
 };
+export type PitElement = BaseElement & { screens: PitScreen[] };
+
+export type ScoutingElement = ObjectiveElement | SubjectiveElement | PitElement;
 
 type ObjectiveScreen = `Objective${
   | "Auto"
@@ -19,6 +22,14 @@ type ObjectiveScreen = `Objective${
   | "Postgame"
   | "Info"}`;
 type SubjectiveScreen = `Subjective${"Team" | "Other" | "Info"}`;
+type PitScreen = `Pit${
+  | "Info"
+  | "Specifications"
+  | "Drive"
+  | "Auto"
+  | "Teleop"
+  | "Endgame"
+  | "Other"}`;
 
 export type Field =
   | { fieldType: "Boolean" | "Text" }
@@ -38,4 +49,5 @@ export interface YearGame {
 
   objectiveElements: ObjectiveElement[];
   subjectiveElements: SubjectiveElement[];
+  pitElements: PitElement[];
 }

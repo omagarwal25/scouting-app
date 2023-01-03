@@ -21,7 +21,21 @@
       "items": {
         "$ref": "https://raw.githubusercontent.com/omagarwal25/scouting-app/main/packages/game/schemas/subjectiveElement.schema.json"
       }
+    },
+    "pitElements": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "https://raw.githubusercontent.com/omagarwal25/scouting-app/main/packages/game/schemas/pitElement.schema.json"
+      }
     }
   },
-  "required": ["name", "description", "year", "allianceSize"]
+  "required": [
+    "name",
+    "description",
+    "year",
+    "allianceSize",
+    "objectiveElements",
+    "subjectiveElements"
+  ]
 }

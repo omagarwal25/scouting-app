@@ -197,7 +197,7 @@ file.addVariableStatement({
         teamOne: subjectiveTeamSchema,
         teamTwo: subjectiveTeamSchema,
         ${game.allianceSize === 3 ? "teamThree: subjectiveTeamSchema" : ""},
-        info: subjectiveInfoSchema
+        info: subjectiveInfoSchema,
         other: subjectiveOtherSchema
       })`,
     },
@@ -205,17 +205,17 @@ file.addVariableStatement({
 });
 
 file.addTypeAlias({
-  name: "AllianceSubjective",
+  name: "SubjectiveRecord",
   isExported: true,
-  type: `z.infer<typeof allianceSubjectiveSchema>`,
+  type: `z.infer<typeof subjectiveRecordSchema>`,
 });
 
 file.saveSync();
 
 // // Capitalize First Letter
-// function capitalizeFirstLetter(str: string) {
-//   return str.charAt(0).toUpperCase() + str.slice(1);
-// }
+function capitalizeFirstLetter(str: string) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
 
 // defaultFile.addVariableStatement({
 //   declarationKind: VariableDeclarationKind.Const,
