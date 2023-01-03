@@ -10,7 +10,7 @@
       "minItems": 1,
       "items": {
         "type": "string",
-        "enum": ["ObjectiveTeam", "ObjectiveInfo", "ObjectiveOther"],
+        "enum": ["SubjectiveTeam", "SubjectiveInfo", "SubjectiveOther"],
         "description": "The name of the screen"
       }
     },
