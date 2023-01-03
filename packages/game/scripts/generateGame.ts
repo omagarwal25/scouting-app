@@ -78,6 +78,18 @@ const subjectiveElements = info.subjectiveElements.map((element) => {
   };
 });
 
+const pitElements = info.pitElements.map((element) => {
+  const zSchema = getSchema(element.field);
+
+  return {
+    name: element.name,
+    label: element.label,
+    screens: element.screens,
+    schema: zSchema,
+    field: element.field,
+  };
+});
+
 const objectiveNames = objectiveElements.map(
   (objectiveElement) => objectiveElement.name
 );
@@ -119,9 +131,14 @@ subjectiveRequired.forEach((name) => {
   }
 });
 
-function lowerCaseFirstLetter(str: string) {
-  return str.charAt(0).toLowerCase() + str.slice(1);
-}
+const pitNames = pitElements.map((objectiveElement) => objectiveElement.name);
+const pitRequired = ["teamNumber", "scoutName"];
+
+pitRequired.forEach((name) => {
+  if (!pitNames.includes(name)) {
+    throw new Error(`❌ Scoring element ${name} is required in pitElements`);
+  }
+});
 
 const project = new Project();
 
@@ -168,6 +185,23 @@ main.addVariableStatement({
               writer.writeLine(`field:`);
               writer.writeLine(JSON.stringify(subjectiveElement.field) + ",");
               writer.writeLine(`schema: ${subjectiveElement.schema}`);
+            });
+
+            writer.writeLine(",");
+          });
+          writer.writeLine("],");
+
+          writer.writeLine(`pitElements: [`);
+          pitElements.forEach((pitElement) => {
+            writer.block(() => {
+              writer.writeLine(`name: "${pitElement.name}",`);
+              writer.writeLine(`label: "${pitElement.label}",`);
+              writer.writeLine(
+                `screens: ${JSON.stringify(pitElement.screens)},`
+              );
+              writer.writeLine(`field:`);
+              writer.writeLine(JSON.stringify(pitElement.field) + ",");
+              writer.writeLine(`schema: ${pitElement.schema}`);
             });
 
             writer.writeLine(",");

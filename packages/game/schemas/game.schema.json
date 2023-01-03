@@ -36,6 +36,7 @@
     "year",
     "allianceSize",
     "objectiveElements",
-    "subjectiveElements"
+    "subjectiveElements",
+    "pitElements"
   ]
 }
