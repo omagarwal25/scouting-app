@@ -31,7 +31,8 @@ function getSchema(field: Field) {
   if (field.fieldType === "Boolean") {
     return "z.boolean()";
   } else if (field.fieldType === "Text") {
-    return "z.string()";
+    // make sure that there isn't any $, !, @, or, ? in the string
+    return "z.string().refine((v) => {console.log(v); return !/[$!@?]/.test(v);}, { message: '❌ Cannot contain $, !, @, or ?' })";
   } else if (field.fieldType === "Numeric") {
     let schema = "z.number()";
     if (field.isInteger) {
@@ -45,7 +46,7 @@ function getSchema(field: Field) {
     }
     return schema;
   } else if (field.fieldType === "Dropdown") {
-    return `z.enum([${field.options.map(o => `"${o}"`).join(", ")}])`;
+    return `z.enum([${field.options.map((o) => `"${o}"`).join(", ")}])`;
   } else {
     throw new Error(`❌ Unknown field type ${field.fieldType}`);
   }
@@ -71,41 +72,49 @@ const subjectiveElements = info.subjectiveElements.map((element) => {
   return {
     name: element.name,
     label: element.label,
+    screens: element.screens,
     schema: zSchema,
     field: element.field,
   };
-});
-
-const infoElements = info.infoElements.map((element) => {
-  const zSchema = getSchema(element.field);
-
-  return {
-    name: element.name,
-    label: element.label,
-    schema: zSchema,
-    field: element.field,
-  };
-});
-
-// the following scoring elements must exist. "scoutId" | "scoutName" | "matchType" | "matchNumber" | "teamNumber"
-const infoNames = infoElements.map((objectiveElement) => objectiveElement.name);
-const infoRequired = ["scoutId", "matchType", "matchNumber", "teamNumber"];
-
-infoRequired.forEach((name) => {
-  if (!infoNames.includes(name)) {
-    throw new Error(`❌ Scoring element ${name} is required in infoElements`);
-  }
 });
 
 const objectiveNames = objectiveElements.map(
   (objectiveElement) => objectiveElement.name
 );
-const objectiveRequired = ["scoutName"];
+const objectiveRequired = [
+  "scoutName",
+  "scoutId",
+  "matchType",
+  "matchNumber",
+  "teamNumber",
+];
 
 objectiveRequired.forEach((name) => {
   if (!objectiveNames.includes(name)) {
     throw new Error(
       `❌ Scoring element ${name} is required in objectiveElements`
+    );
+  }
+});
+
+const subjectiveNames = subjectiveElements.map(
+  (objectiveElement) => objectiveElement.name
+);
+const subjectiveRequired = [
+  "scoutName",
+  "scoutId",
+  "matchType",
+  "matchNumber",
+  "teamOneNumber",
+  "teamTwoNumber",
+];
+
+if (info.allianceSize === 3) subjectiveRequired.push("teamThreeNumber");
+
+subjectiveRequired.forEach((name) => {
+  if (!subjectiveNames.includes(name)) {
+    throw new Error(
+      `❌ Scoring element ${name} is required in subjectiveELements`
     );
   }
 });
@@ -129,6 +138,7 @@ main.addVariableStatement({
           writer.writeLine(`name: "${info.name}",`);
           writer.writeLine(`description: "${info.description}",`);
           writer.writeLine(`year: ${info.year},`);
+          writer.writeLine(`allianceSize: ${info.allianceSize},`);
 
           writer.writeLine(`objectiveElements: [`);
           objectiveElements.forEach((objectiveElement) => {
@@ -152,6 +162,9 @@ main.addVariableStatement({
             writer.block(() => {
               writer.writeLine(`name: "${subjectiveElement.name}",`);
               writer.writeLine(`label: "${subjectiveElement.label}",`);
+              writer.writeLine(
+                `screens: ${JSON.stringify(subjectiveElement.screens)},`
+              );
               writer.writeLine(`field:`);
               writer.writeLine(JSON.stringify(subjectiveElement.field) + ",");
               writer.writeLine(`schema: ${subjectiveElement.schema}`);
@@ -160,20 +173,6 @@ main.addVariableStatement({
             writer.writeLine(",");
           });
           writer.writeLine("],");
-
-          writer.writeLine(`infoElements: [`);
-          infoElements.forEach((infoElement) => {
-            writer.block(() => {
-              writer.writeLine(`name: "${infoElement.name}",`);
-              writer.writeLine(`label: "${infoElement.label}",`);
-              writer.writeLine(`field:`);
-              writer.writeLine(JSON.stringify(infoElement.field) + ",");
-              writer.writeLine(`schema: ${infoElement.schema}`);
-            });
-
-            writer.writeLine(",");
-          });
-          writer.writeLine("]");
         });
       },
       type: "YearGame",

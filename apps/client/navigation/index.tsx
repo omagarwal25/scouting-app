@@ -10,39 +10,9 @@ import {
 } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ColorSchemeName } from 'react-native';
-import { scoringCardFactory } from '~/components/input/ScoringCard';
-import {
-  autoKeys,
-  autoSchema,
-  endgameKeys,
-  endgameSchema,
-  infoKeys,
-  infoSchema,
-  postgameKeys,
-  postgameSchema,
-  pregameKeys,
-  pregameSchema,
-  subjectiveKeys,
-  subjectiveSchema,
-  subjInfoKeys,
-  subjInfoSchema,
-  teleopKeys,
-  teleopSchema,
-} from '~/models';
 import { QRCodeCard, RootScreen, ScannerCard } from '~/screens';
+import { scoringCards } from '~/screens/Modals';
 import NotFoundScreen from '~/screens/NotFoundScreen';
-import {
-  autoAtom,
-  endgameAtom,
-  infoAtom,
-  postgameAtom,
-  pregameAtom,
-  subjInfoAtom,
-  subjTeamOneAtom,
-  subjTeamThreeAtom,
-  subjTeamTwoAtom,
-  teleopAtom,
-} from '~/state';
 import { RootStackParamList } from '~/types';
 import LinkingConfiguration from './LinkingConfiguration';
 
@@ -68,112 +38,6 @@ export default function avigation({
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
-  const scoringCards: {
-    factory: ReturnType<typeof scoringCardFactory>;
-    name: keyof RootStackParamList;
-  }[] = [
-    {
-      name: 'Info',
-      factory: scoringCardFactory({
-        atom: infoAtom,
-        keys: infoKeys,
-        type: 'info',
-        nextPage: 'Pregame',
-        zodSchema: infoSchema,
-      }),
-    },
-    {
-      name: 'Pregame',
-      factory: scoringCardFactory({
-        atom: pregameAtom,
-        type: 'objective',
-        keys: pregameKeys,
-        nextPage: 'Auto',
-        zodSchema: pregameSchema,
-      }),
-    },
-    {
-      name: 'Auto',
-      factory: scoringCardFactory({
-        atom: autoAtom,
-        type: 'objective',
-        keys: autoKeys,
-        nextPage: 'Teleop',
-        zodSchema: autoSchema,
-      }),
-    },
-    {
-      name: 'Teleop',
-      factory: scoringCardFactory({
-        atom: teleopAtom,
-        type: 'objective',
-        keys: teleopKeys,
-        nextPage: 'Endgame',
-        zodSchema: teleopSchema,
-      }),
-    },
-    {
-      name: 'Endgame',
-      factory: scoringCardFactory({
-        atom: endgameAtom,
-        type: 'objective',
-        keys: endgameKeys,
-        nextPage: 'Postgame',
-        zodSchema: endgameSchema,
-      }),
-    },
-    {
-      name: 'Postgame',
-      factory: scoringCardFactory({
-        atom: postgameAtom,
-        type: 'objective',
-        keys: postgameKeys,
-        nextPage: 'QR',
-        zodSchema: postgameSchema,
-      }),
-    },
-    {
-      name: 'Subjective Info',
-      factory: scoringCardFactory({
-        atom: subjInfoAtom,
-        type: 'info',
-        keys: subjInfoKeys,
-        nextPage: 'Subjective Team One',
-        zodSchema: subjInfoSchema,
-      }),
-    },
-    {
-      name: 'Subjective Team One',
-      factory: scoringCardFactory({
-        atom: subjTeamOneAtom,
-        type: 'subjective',
-        keys: subjectiveKeys,
-        nextPage: 'Subjective Team Two',
-        zodSchema: subjectiveSchema,
-      }),
-    },
-    {
-      name: 'Subjective Team Two',
-      factory: scoringCardFactory({
-        atom: subjTeamTwoAtom,
-        type: 'subjective',
-        keys: subjectiveKeys,
-        nextPage: 'Subjective Team Three',
-        zodSchema: subjectiveSchema,
-      }),
-    },
-    {
-      name: 'Subjective Team Three',
-      factory: scoringCardFactory({
-        atom: subjTeamThreeAtom,
-        type: 'subjective',
-        keys: subjectiveKeys,
-        nextPage: 'Root',
-        zodSchema: subjectiveSchema,
-      }),
-    },
-  ];
-
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -192,7 +56,6 @@ function RootNavigator() {
         ))}
         <Stack.Screen name="QR" component={QRCodeCard} />
         <Stack.Screen name="Scanner" component={ScannerCard} />
-        {/* <Stack.Screen name="Preview" component={PreviewCard} /> */}
       </Stack.Group>
     </Stack.Navigator>
   );

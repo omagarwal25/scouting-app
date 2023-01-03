@@ -1,10 +1,15 @@
 import { JSONSchema7 } from "json-schema";
 import jsonSchemaToZod from "json-schema-to-zod";
 import { CodeBlockWriter, Project, VariableDeclarationKind } from "ts-morph";
-import { SubjectiveElement } from "../src";
 import { game } from "../src/game";
+import { ObjectiveElement, SubjectiveElement } from "../src/types";
 // get all screens remove dupes
-const screens = game.objectiveElements
+const objectiveScreens = game.objectiveElements
+  .map((i) => i.screens)
+  .flat()
+  .filter((i, index, self) => self.indexOf(i) === index);
+
+const subjectiveScreens = game.subjectiveElements
   .map((i) => i.screens)
   .flat()
   .filter((i, index, self) => self.indexOf(i) === index);
@@ -27,7 +32,10 @@ defaultFile.addImportDeclaration({
   namedImports: ["z"],
 });
 
-function writeSchema(screen: string, elements: SubjectiveElement[]) {
+function writeSchema(
+  screen: string,
+  elements: (SubjectiveElement | ObjectiveElement)[]
+) {
   const objectMap: Record<string, { zod: string; default: string }> = {};
 
   elements.forEach((element) => {
@@ -139,7 +147,7 @@ function writeSchema(screen: string, elements: SubjectiveElement[]) {
 }
 
 // for every screen, get all the elements with that screen and then generate types and more zod schemas
-screens.forEach((screen) => {
+objectiveScreens.forEach((screen) => {
   const elements = game.objectiveElements.filter((i) =>
     i.screens.includes(screen)
   );
@@ -147,51 +155,36 @@ screens.forEach((screen) => {
   writeSchema(screen, elements);
 });
 
-writeSchema("subjective", game.subjectiveElements);
-writeSchema("info", game.infoElements);
-const teamNumber = game.infoElements.find((i) => i.name === "teamNumber")!!;
-// subjective info will always have 3 team numbers, but we need to change the team number and the label
-writeSchema("subjInfo", [
-  ...game.infoElements.filter((i) => i.name !== "teamNumber"),
-  {
-    ...teamNumber,
-    name: "teamOneNumber",
-    label: "Team One Number",
-  },
-  {
-    ...teamNumber,
-    name: "teamTwoNumber",
-    label: "Team Two Number",
-  },
-  {
-    ...teamNumber,
-    name: "teamThreeNumber",
-    label: "Team Three Number",
-  },
-]);
+subjectiveScreens.forEach((screen) => {
+  const elements = game.subjectiveElements.filter((i) =>
+    i.screens.includes(screen)
+  );
+
+  writeSchema(screen, elements);
+});
 
 file.addVariableStatement({
   declarationKind: VariableDeclarationKind.Const,
   isExported: true,
   declarations: [
     {
-      name: "gameSchema",
+      name: "objectiveRecordSchema",
       initializer: `z.object({
-        pregame: pregameSchema,
-        auto: autoSchema,
-        teleop: teleopSchema,
-        endgame: endgameSchema,
-        postgame: postgameSchema,
-        info: infoSchema
+        pregame: objectivePregameSchema,
+        auto: objectiveAutoSchema,
+        teleop: objectiveTeleopSchema,
+        endgame: objectiveEndgameSchema,
+        postgame: objectivePostgameSchema,
+        info: objectiveInfoSchema
       })`,
     },
   ],
 });
 
 file.addTypeAlias({
-  name: "Game",
+  name: "ObjectiveRecord",
   isExported: true,
-  type: `z.infer<typeof gameSchema>`,
+  type: `z.infer<typeof objectiveRecordSchema>`,
 });
 
 file.addVariableStatement({
@@ -199,12 +192,13 @@ file.addVariableStatement({
   isExported: true,
   declarations: [
     {
-      name: "allianceSubjectiveSchema",
+      name: "subjectiveRecordSchema",
       initializer: `z.object({
-        teamOne: subjectiveSchema,
-        teamTwo: subjectiveSchema,
-        teamThree: subjectiveSchema,
-        info: subjInfoSchema
+        teamOne: subjectiveTeamSchema,
+        teamTwo: subjectiveTeamSchema,
+        ${game.allianceSize === 3 ? "teamThree: subjectiveTeamSchema" : ""},
+        info: subjectiveInfoSchema
+        other: subjectiveOtherSchema
       })`,
     },
   ],
@@ -218,90 +212,90 @@ file.addTypeAlias({
 
 file.saveSync();
 
-// Capitalize First Letter
-function capitalizeFirstLetter(str: string) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-}
+// // Capitalize First Letter
+// function capitalizeFirstLetter(str: string) {
+//   return str.charAt(0).toUpperCase() + str.slice(1);
+// }
 
-defaultFile.addVariableStatement({
-  declarationKind: VariableDeclarationKind.Const,
-  declarations: [
-    {
-      name: "gameZod",
-      initializer: (w: CodeBlockWriter) => {
-        w.write("z.object(");
-        w.block(() => {
-          // grab all the screens
-          screens.forEach((screen) => {
-            w.write(
-              `${screen.toLowerCase()}: ${
-                screen.toLowerCase() + "Schema"
-              }.default(${screen.toLocaleLowerCase() + "Schema"}.parse({})),`
-            );
-          });
+// defaultFile.addVariableStatement({
+//   declarationKind: VariableDeclarationKind.Const,
+//   declarations: [
+//     {
+//       name: "gameZod",
+//       initializer: (w: CodeBlockWriter) => {
+//         w.write("z.object(");
+//         w.block(() => {
+//           // grab all the screens
+//           screens.forEach((screen) => {
+//             w.write(
+//               `${screen.toLowerCase()}: ${
+//                 screen.toLowerCase() + "Schema"
+//               }.default(${screen.toLocaleLowerCase() + "Schema"}.parse({})),`
+//             );
+//           });
 
-          w.write("info: infoSchema.default(infoSchema.parse({}))");
-        });
+//           w.write("info: infoSchema.default(infoSchema.parse({}))");
+//         });
 
-        w.write(")");
-      },
-    },
-  ],
-});
+//         w.write(")");
+//       },
+//     },
+//   ],
+// });
 
-defaultFile.addVariableStatement({
-  declarationKind: VariableDeclarationKind.Const,
-  declarations: [
-    {
-      name: "allianceSubjectiveZod",
-      initializer: (w: CodeBlockWriter) => {
-        w.write("z.object(");
-        w.block(() => {
-          // grab all the screens
-          w.write(
-            "teamOne: subjectiveSchema.default(subjectiveSchema.parse({})),"
-          );
+// defaultFile.addVariableStatement({
+//   declarationKind: VariableDeclarationKind.Const,
+//   declarations: [
+//     {
+//       name: "allianceSubjectiveZod",
+//       initializer: (w: CodeBlockWriter) => {
+//         w.write("z.object(");
+//         w.block(() => {
+//           // grab all the screens
+//           w.write(
+//             "teamOne: subjectiveSchema.default(subjectiveSchema.parse({})),"
+//           );
 
-          w.write(
-            "teamTwo: subjectiveSchema.default(subjectiveSchema.parse({})),"
-          );
+//           w.write(
+//             "teamTwo: subjectiveSchema.default(subjectiveSchema.parse({})),"
+//           );
 
-          w.write(
-            "teamThree: subjectiveSchema.default(subjectiveSchema.parse({})),"
-          );
+//           w.write(
+//             "teamThree: subjectiveSchema.default(subjectiveSchema.parse({})),"
+//           );
 
-          w.write("info: subjInfoSchema.default(subjInfoSchema.parse({}))");
-        });
+//           w.write("info: subjInfoSchema.default(subjInfoSchema.parse({}))");
+//         });
 
-        w.write(")");
-      },
-    },
-  ],
-});
+//         w.write(")");
+//       },
+//     },
+//   ],
+// });
 
-defaultFile.addVariableStatement({
-  declarationKind: VariableDeclarationKind.Const,
-  isExported: true,
-  declarations: [
-    {
-      name: "gameDefault",
-      initializer: "gameZod.parse({})",
-    },
-  ],
-});
+// defaultFile.addVariableStatement({
+//   declarationKind: VariableDeclarationKind.Const,
+//   isExported: true,
+//   declarations: [
+//     {
+//       name: "gameDefault",
+//       initializer: "gameZod.parse({})",
+//     },
+//   ],
+// });
 
-defaultFile.addVariableStatement({
-  declarationKind: VariableDeclarationKind.Const,
-  isExported: true,
-  declarations: [
-    {
-      name: "allianceSubjectiveDefault",
-      initializer: "allianceSubjectiveZod.parse({})",
-    },
-  ],
-});
+// defaultFile.addVariableStatement({
+//   declarationKind: VariableDeclarationKind.Const,
+//   isExported: true,
+//   declarations: [
+//     {
+//       name: "allianceSubjectiveDefault",
+//       initializer: "allianceSubjectiveZod.parse({})",
+//     },
+//   ],
+// });
 
-defaultFile.save();
+// defaultFile.save();
 
-console.log("🥳 Generated screens.ts at ", file.getFilePath());
-console.log("🥳 Generated defaults.ts at ", defaultFile.getFilePath());
+// console.log("🥳 Generated screens.ts at ", file.getFilePath());
+// console.log("🥳 Generated defaults.ts at ", defaultFile.getFilePath());

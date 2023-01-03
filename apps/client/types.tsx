@@ -22,7 +22,6 @@ export type RootStackParamList = {
   Postgame: undefined;
   QR: undefined;
   Scanner: undefined;
-  Preview: undefined;
   'Subjective Info': undefined;
   'Subjective Team One': undefined;
   'Subjective Team Two': undefined;

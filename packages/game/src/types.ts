@@ -1,15 +1,24 @@
 import { ZodSchema } from "zod";
-export interface ObjectiveElement {
+export interface BaseElement {
   name: string;
   label: string;
-  screens: Screen[];
   field: Field;
   schema: ZodSchema;
 }
 
-export type SubjectiveElement = Omit<ObjectiveElement, "screens">;
+export type ObjectiveElement = BaseElement & { screens: ObjectiveScreen[] };
+export type SubjectiveElement = BaseElement & {
+  screens: SubjectiveScreen[];
+};
 
-type Screen = "Auto" | "Teleop" | "Endgame" | "Pregame" | "Postgame";
+type ObjectiveScreen = `Objective${
+  | "Auto"
+  | "Teleop"
+  | "Endgame"
+  | "Pregame"
+  | "Postgame"
+  | "Info"}`;
+type SubjectiveScreen = `Subjective${"Team" | "Other" | "Info"}`;
 
 export type Field =
   | { fieldType: "Boolean" | "Text" }
@@ -24,9 +33,9 @@ export type Field =
 export interface YearGame {
   name: string;
   year: number;
+  allianceSize: number;
   description: string;
 
   objectiveElements: ObjectiveElement[];
   subjectiveElements: SubjectiveElement[];
-  infoElements: SubjectiveElement[];
 }

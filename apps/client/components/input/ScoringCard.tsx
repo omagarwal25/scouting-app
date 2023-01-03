@@ -4,8 +4,8 @@ import { DeepPartial, FieldError, Path, useForm } from 'react-hook-form';
 import { ZodSchema } from 'zod';
 import { Button } from '~/components/Button';
 import { Container } from '~/components/Container';
-import { Topbar } from '~/components/Topbar';
-import { game, ObjectiveElement, SubjectiveElement } from '~/models';
+import { ObjectiveTopbar, SubjectiveTopbar } from '~/components/Topbar';
+import { game, InfoElement, ObjectiveElement, SubjectiveElement } from '~/models';
 import { RootStackParamList, RootTabScreenProps } from '~/types';
 import { FieldInput } from './FieldInput';
 
@@ -18,7 +18,14 @@ type Props<
   nextPage: B;
   readonly keys: readonly Path<T>[];
   zodSchema: ZodSchema;
-  type: 'objective' | 'subjective' | 'info';
+  type:
+    | {
+        name: 'objective' | 'info';
+      }
+    | {
+        name: 'subjective';
+        team: 'one' | 'two' | 'three';
+      };
 };
 
 export const InputModal = <
@@ -44,23 +51,25 @@ export const InputModal = <
   });
 
   const onSubmit = handleSubmit((f) => {
+    console.log(f);
+    console.log(zodSchema.safeParse(f));
     setState(f as T);
     navigation.navigation.navigate(
       ...([nextPage] as [screen: keyof RootStackParamList])
     );
   });
 
-  const elements = new Map<string, ObjectiveElement | SubjectiveElement>();
+  const elements = new Map<string, ObjectiveElement | SubjectiveElement | InfoElement>();
 
   // game.objectiveElements.forEach((element) => {
   //   objectiveElements.set(element.name, element);
   // });
 
-  if (type === 'objective') {
+  if (type.name === 'objective') {
     game.objectiveElements.forEach((element) => {
       elements.set(element.name, element);
     });
-  } else if (type === 'subjective') {
+  } else if (type.name === 'subjective') {
     game.subjectiveElements.forEach((element) => {
       elements.set(element.name, element);
     });
@@ -90,7 +99,13 @@ export const InputModal = <
 
   return (
     <>
-      <Topbar />
+      {type.name === 'subjective' ? (
+        <SubjectiveTopbar team={type.team} />
+      ) : type.name === 'objective' ? (
+        <ObjectiveTopbar />
+      ) : (
+        <></>
+      )}
       <Container>
         {keys.map((e) => (
           <FieldInput

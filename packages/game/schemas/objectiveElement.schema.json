@@ -18,7 +18,14 @@
       "minItems": 1,
       "items": {
         "type": "string",
-        "enum": ["Auto", "Teleop", "Endgame", "Postgame", "Pregame"],
+        "enum": [
+          "ObjectiveAuto",
+          "ObjectiveTeleop",
+          "ObjectiveEndgame",
+          "ObjectivePostgame",
+          "ObjectivePregame",
+          "ObjectiveInfo"
+        ],
         "description": "The name of the screen"
       }
     },

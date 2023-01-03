@@ -4,12 +4,15 @@
 
 import { game } from "./game";
 import {
+  AllianceSubjective,
   autoKeys,
   endgameKeys,
   Game,
   infoKeys,
   postgameKeys,
   pregameKeys,
+  subjectiveKeys,
+  subjInfoKeys,
   teleopKeys,
 } from "./screens";
 
@@ -24,25 +27,24 @@ export const encode = <T extends string>(
   keys: readonly T[]
 ) => {
   return keys.reduce((acc, key) => {
-    const objectiveElement = game.objectiveElements.find(
-      (se) => se.name === key
-    );
-    if (!objectiveElement) return acc;
+    const element =
+      game.objectiveElements.find((se) => se.name === key) ??
+      game.subjectiveElements.find((se) => se.name === key);
 
-    if (objectiveElement.field.fieldType === "Numeric")
+    if (!element) return acc;
+
+    if (element.field.fieldType === "Numeric")
       return acc + state[key].toString(16) + "$";
     // return acc + state[key].toString() + "$";
-    else if (objectiveElement.field.fieldType === "Dropdown")
+    else if (element.field.fieldType === "Dropdown")
       return (
         acc +
-        objectiveElement.field.options
-          .indexOf(state[key] as string)
-          .toString() +
+        element.field.options.indexOf(state[key] as string).toString() +
         "$"
       );
-    else if (objectiveElement.field.fieldType === "Boolean")
+    else if (element.field.fieldType === "Boolean")
       return acc + (state[key] ? "1" : "0") + "$";
-    else if (objectiveElement.field.fieldType === "Text")
+    else if (element.field.fieldType === "Text")
       return ((acc + state[key]) as string) + "$";
     else return acc + state[key] + "$";
   }, "");
@@ -91,7 +93,7 @@ export const decode = <B extends { [key: string]: string | number | boolean }>(
 /**
  * Encodes a game state into a string
  * @param game the game to encode
- * @returns encoded game using @ and $ as separators
+ * @returns encoded game using @ and $ as separators, ! as a prefix for objective
  */
 export const encodeGame = (game: Game) => {
   const auto = encode(game.auto, autoKeys);
@@ -100,7 +102,19 @@ export const encodeGame = (game: Game) => {
   const teleop = encode(game.teleop, teleopKeys);
   const pregame = encode(game.pregame, pregameKeys);
   const info = encode(game.info, infoKeys);
-  return `${auto}@${endgame}@${postgame}@${teleop}@${pregame}@${info}`;
+  return `!${auto}@${endgame}@${postgame}@${teleop}@${pregame}@${info}`;
+};
+
+/**
+ * Encodes a subjective state into a string
+ */
+export const encodeSubjective = (subjective: AllianceSubjective) => {
+  const teamOne = encode(subjective.teamOne, subjectiveKeys);
+  const teamTwo = encode(subjective.teamTwo, subjectiveKeys);
+  const teamThree = encode(subjective.teamThree, subjectiveKeys);
+  const info = encode(subjective.info, subjInfoKeys);
+
+  return `?${teamOne}@${teamTwo}@${teamThree}@${info}`;
 };
 
 /**
@@ -109,7 +123,8 @@ export const encodeGame = (game: Game) => {
  * @returns a fully decoded game
  */
 export const decodeGame = (str: string): Game => {
-  const split = str.split("@");
+  // remove the ! prefix
+  const split = str.slice(1).split("@");
   const game: Game = {
     auto: decode(split[0], autoKeys),
     endgame: decode(split[1], endgameKeys),
@@ -120,4 +135,30 @@ export const decodeGame = (str: string): Game => {
   };
 
   return game;
+};
+
+/**
+ * Decodes a string @ and $ separated string into a subjective object.
+ * @param str - string to decode
+ * @returns a fully decoded subjective
+ * @see decode
+ * @see encodeSubjective
+ */
+export const decodeSubjective = (str: string): AllianceSubjective => {
+  // remove the ? prefix
+  const split = str.slice(1).split("@");
+  const subjective: AllianceSubjective = {
+    teamOne: decode(split[0], subjectiveKeys),
+    teamTwo: decode(split[1], subjectiveKeys),
+    teamThree: decode(split[2], subjectiveKeys),
+    info: decode(split[3], subjInfoKeys),
+  };
+
+  return subjective;
+};
+
+export const getEncodedType = (str: string): "objective" | "subjective" => {
+  if (str.startsWith("!")) return "objective";
+  if (str.startsWith("?")) return "subjective";
+  return "objective";
 };

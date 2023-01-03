@@ -2,13 +2,14 @@
 name = "FreightFrenzy"
 description = "Ducks Balls Cubes FTC"
 year = 2021
+allianceSize = 3
 
-[[infoElements]]
+[[objectiveElements]]
 name = "scoutId"
 label = "Scout ID"
-screens = ["Info"]
+screens = [""]
 
-[infoElements.field]
+[objectiveElements.field]
 fieldType = "Dropdown"
 options = [
   "Red 1",
@@ -21,29 +22,29 @@ options = [
   "Blue S",
 ]
 
-[[infoElements]]
+[[objectiveElements]]
 name = "matchType"
 label = "Match Type"
 
-[infoElements.field]
+[objectiveElements.field]
 fieldType = "Dropdown"
 options = ["Practice", "Qualification", "Quarterfinal", "Semifinal", "Final"]
 
-[[infoElements]]
+[[objectiveElements]]
 name = "matchNumber"
 label = "Match Number"
 
-[infoElements.field]
+[objectiveElements.field]
 fieldType = "Numeric"
 isInteger = true
 incrementable = false
 min = 0
 
-[[infoElements]]
+[[objectiveElements]]
 name = "teamNumber"
 label = "Team Number"
 
-[infoElements.field]
+[objectiveElements.field]
 fieldType = "Numeric"
 isInteger = true
 incrementable = false
