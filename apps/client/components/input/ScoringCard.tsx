@@ -4,8 +4,12 @@ import { DeepPartial, FieldError, Path, useForm } from 'react-hook-form';
 import { ZodSchema } from 'zod';
 import { Button } from '~/components/Button';
 import { Container } from '~/components/Container';
-import { ObjectiveTopbar, SubjectiveTopbar } from '~/components/Topbar';
-import { game, InfoElement, ObjectiveElement, SubjectiveElement } from '~/models';
+import {
+  ObjectiveTopbar,
+  PitTobar,
+  SubjectiveTopbar,
+} from '~/components/Topbar';
+import { game, ScoutingElement } from '~/models';
 import { RootStackParamList, RootTabScreenProps } from '~/types';
 import { FieldInput } from './FieldInput';
 
@@ -20,11 +24,11 @@ type Props<
   zodSchema: ZodSchema;
   type:
     | {
-        name: 'objective' | 'info';
+        name: 'objective' | 'pit';
       }
     | {
         name: 'subjective';
-        team: 'one' | 'two' | 'three';
+        team: 'one' | 'two' | 'three' | 'none';
       };
 };
 
@@ -59,7 +63,7 @@ export const InputModal = <
     );
   });
 
-  const elements = new Map<string, ObjectiveElement | SubjectiveElement | InfoElement>();
+  const elements = new Map<string, ScoutingElement>();
 
   // game.objectiveElements.forEach((element) => {
   //   objectiveElements.set(element.name, element);
@@ -74,26 +78,8 @@ export const InputModal = <
       elements.set(element.name, element);
     });
   } else {
-    game.infoElements.forEach((element) => {
+    game.pitElements.forEach((element) => {
       elements.set(element.name, element);
-
-      if (element.name === 'teamNumber') {
-        elements.set('teamOneNumber', {
-          ...element,
-          name: 'teamOneNumber',
-          label: 'Team One Number',
-        });
-        elements.set('teamTwoNumber', {
-          ...element,
-          name: 'teamTwoNumber',
-          label: 'Team Two Number',
-        });
-        elements.set('teamThreeNumber', {
-          ...element,
-          name: 'teamThreeNumber',
-          label: 'Team Three Number',
-        });
-      }
     });
   }
 
@@ -104,7 +90,7 @@ export const InputModal = <
       ) : type.name === 'objective' ? (
         <ObjectiveTopbar />
       ) : (
-        <></>
+        <PitTobar />
       )}
       <Container>
         {keys.map((e) => (

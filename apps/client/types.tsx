@@ -13,19 +13,29 @@ declare global {
 
 export type RootStackParamList = {
   Root: undefined;
-  Info: undefined;
   NotFound: undefined;
-  Pregame: undefined;
-  Auto: undefined;
-  Teleop: undefined;
-  Endgame: undefined;
-  Postgame: undefined;
   QR: undefined;
   Scanner: undefined;
-  'Subjective Info': undefined;
-  'Subjective Team One': undefined;
-  'Subjective Team Two': undefined;
-  'Subjective Team Three': undefined;
+
+  ObjectivePregame: undefined;
+  ObjectiveAuto: undefined;
+  ObjectiveTeleop: undefined;
+  ObjectiveEndgame: undefined;
+  ObjectivePostgame: undefined;
+  ObjectiveInfo: undefined;
+  ObjectiveOther: undefined;
+
+  SubjectiveInfo: undefined;
+  SubjectiveOther: undefined;
+  SubjectiveTeam: undefined;
+
+  PitInfo: undefined;
+  PitOther: undefined;
+  PitSpecifications: undefined;
+  PitDrive: undefined;
+  PitAuto: undefined;
+  PitTeleop: undefined;
+  PitEndgame: undefined;
 };
 
 export type RootTabScreenProps = NativeStackScreenProps<RootStackParamList>;

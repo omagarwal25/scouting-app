@@ -1,4 +1,4 @@
-#:schema ./schemas/game.schema.json
+#:schema https://raw.githubusercontent.com/omagarwal25/scouting-app/main/packages/game/schemas/game.schema.json
 name = "FreightFrenzy"
 description = "Ducks Balls Cubes FTC"
 year = 2021
@@ -117,7 +117,7 @@ min = 0
 [[objectiveElements]]
 name = "scoutName"
 label = "Scout Name"
-screens = ["ObjectivePostgame"]
+screens = ["ObjectiveOther"]
 
 [objectiveElements.field]
 fieldType = "Text"
@@ -284,4 +284,62 @@ screens = ["SubjectiveTeam"]
 [subjectiveElements.field]
 fieldType = "Text"
 
-[[infoElements]]
+[[pitElements]]
+name = "teamNumber"
+label = "Team Number"
+screens = ["PitInfo"]
+
+[pitElements.field]
+fieldType = "Numeric"
+isInteger = true
+incrementable = false
+
+[[pitElements]]
+name = "scoutName"
+label = "Scout Name"
+screens = ["PitOther"]
+
+[pitElements.field]
+fieldType = "Text"
+
+[[pitElements]]
+name = "underBridge"
+label = "Under Bridge"
+screens = ["PitSpecifications"]
+
+[pitElements.field]
+fieldType = "Boolean"
+
+[[pitElements]]
+name = "can5Ball"
+label = "Can 5 Ball"
+screens = ["PitAuto"]
+
+[pitElements.field]
+fieldType = "Boolean"
+
+[[pitElements]]
+name = "preferedCycle"
+label = "Prefered Cycle"
+screens = ["PitTeleop"]
+
+[pitElements.field]
+fieldType = "Dropdown"
+options = ["Freight", "Duck"]
+
+[[pitElements]]
+name = "canPark"
+label = "Can Park"
+screens = ["PitEndgame"]
+
+[pitElements.field]
+fieldType = "Boolean"
+
+[[pitElements]]
+name = "driveTrainType"
+label = "Drive Train Type"
+screens = ["PitDrive"]
+
+[pitElements.field]
+fieldType = "Dropdown"
+options = ["Mecanum", "Omni", "Tank", "Swerve"]

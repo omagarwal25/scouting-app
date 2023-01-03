@@ -1,20 +1,29 @@
+import { game } from "./game";
+import {
+  objectiveAutoKeys,
+  objectiveEndgameKeys,
+  objectiveInfoKeys,
+  objectivePostgameKeys,
+  objectivePregameKeys,
+  ObjectiveRecord,
+  objectiveTeleopKeys,
+  pitAutoKeys,
+  pitDriveKeys,
+  pitEndgameKeys,
+  pitInfoKeys,
+  pitOtherKeys,
+  PitRecord,
+  pitSpecificationsKeys,
+  pitTeleopKeys,
+  subjectiveInfoKeys,
+  subjectiveOtherKeys,
+  SubjectiveRecord,
+  subjectiveTeamKeys,
+} from "./screens";
+
 // encodes and decodes game state, using auto and other screens
 // fun compression algorithm
 // TODO when we add subjective scouting in the future we should use a prefix to indicate that, maybe s and r
-
-import { game } from "./game";
-import {
-  AllianceSubjective,
-  autoKeys,
-  endgameKeys,
-  Game,
-  infoKeys,
-  postgameKeys,
-  pregameKeys,
-  subjectiveKeys,
-  subjInfoKeys,
-  teleopKeys,
-} from "./screens";
 
 /**
  * Encodes a game state into a string.
@@ -90,75 +99,105 @@ export const decode = <B extends { [key: string]: string | number | boolean }>(
   return state;
 };
 
-/**
- * Encodes a game state into a string
- * @param game the game to encode
- * @returns encoded game using @ and $ as separators, ! as a prefix for objective
- */
-export const encodeGame = (game: Game) => {
-  const auto = encode(game.auto, autoKeys);
-  const endgame = encode(game.endgame, endgameKeys);
-  const postgame = encode(game.postgame, postgameKeys);
-  const teleop = encode(game.teleop, teleopKeys);
-  const pregame = encode(game.pregame, pregameKeys);
-  const info = encode(game.info, infoKeys);
-  return `!${auto}@${endgame}@${postgame}@${teleop}@${pregame}@${info}`;
+export const encodeObjectiveRecord = (record: ObjectiveRecord) => {
+  const auto = encode(record.auto, objectiveAutoKeys);
+  const endgame = encode(record.endgame, objectiveEndgameKeys);
+  const postgame = encode(record.postgame, objectivePostgameKeys);
+  const teleop = encode(record.teleop, objectiveTeleopKeys);
+  const pregame = encode(record.pregame, objectivePregameKeys);
+  const info = encode(record.info, objectiveInfoKeys);
+  return `o!${auto}@${endgame}@${postgame}@${teleop}@${pregame}@${info}`;
 };
 
-/**
- * Encodes a subjective state into a string
- */
-export const encodeSubjective = (subjective: AllianceSubjective) => {
-  const teamOne = encode(subjective.teamOne, subjectiveKeys);
-  const teamTwo = encode(subjective.teamTwo, subjectiveKeys);
-  const teamThree = encode(subjective.teamThree, subjectiveKeys);
-  const info = encode(subjective.info, subjInfoKeys);
+export const encodeSubjectiveRecord = (record: SubjectiveRecord) => {
+  const teamOne = encode(record.teamOne, subjectiveTeamKeys);
+  const teamTwo = encode(record.teamTwo, subjectiveTeamKeys);
+  const teamThree = encode(record.teamThree, subjectiveTeamKeys);
+  const info = encode(record.info, subjectiveInfoKeys);
+  const other = encode(record.other, subjectiveOtherKeys);
 
-  return `?${teamOne}@${teamTwo}@${teamThree}@${info}`;
+  return `s!${teamOne}@${teamTwo}@${teamThree}@${other}@${info}`;
 };
 
-/**
- * Decodes a string @ and $ separated string into a game object.
- * @param str - string to decode
- * @returns a fully decoded game
- */
-export const decodeGame = (str: string): Game => {
-  // remove the ! prefix
-  const split = str.slice(1).split("@");
-  const game: Game = {
-    auto: decode(split[0], autoKeys),
-    endgame: decode(split[1], endgameKeys),
-    postgame: decode(split[2], postgameKeys),
-    teleop: decode(split[3], teleopKeys),
-    pregame: decode(split[4], pregameKeys),
-    info: decode(split[5], infoKeys),
+export const encodePitRecord = (record: PitRecord) => {
+  const auto = encode(record.auto, pitAutoKeys);
+  const teleop = encode(record.teleop, pitTeleopKeys);
+  const endgame = encode(record.endgame, pitEndgameKeys);
+  const info = encode(record.info, pitInfoKeys);
+  const other = encode(record.other, pitOtherKeys);
+  const specifications = encode(record.specifications, pitSpecificationsKeys);
+  const drive = encode(record.drive, pitDriveKeys);
+
+  return `p!${auto}@${teleop}@${endgame}@${other}@${specifications}@${drive}@${info}`;
+};
+
+export const decodeObjectiveRecord = (str: string): ObjectiveRecord => {
+  // remove the o! prefix
+  const split = str.slice(2).split("@");
+
+  const record: ObjectiveRecord = {
+    auto: decode(split[0], objectiveAutoKeys),
+    endgame: decode(split[1], objectiveEndgameKeys),
+    postgame: decode(split[2], objectivePostgameKeys),
+    teleop: decode(split[3], objectiveTeleopKeys),
+    pregame: decode(split[4], objectivePregameKeys),
+    info: decode(split[5], objectiveInfoKeys),
   };
 
-  return game;
+  return record;
 };
 
-/**
- * Decodes a string @ and $ separated string into a subjective object.
- * @param str - string to decode
- * @returns a fully decoded subjective
- * @see decode
- * @see encodeSubjective
- */
-export const decodeSubjective = (str: string): AllianceSubjective => {
-  // remove the ? prefix
-  const split = str.slice(1).split("@");
-  const subjective: AllianceSubjective = {
-    teamOne: decode(split[0], subjectiveKeys),
-    teamTwo: decode(split[1], subjectiveKeys),
-    teamThree: decode(split[2], subjectiveKeys),
-    info: decode(split[3], subjInfoKeys),
+export const decodeSubjectiveRecord = (str: string): SubjectiveRecord => {
+  // remove the s! prefix
+  const split = str.slice(2).split("@");
+
+  const record: SubjectiveRecord = {
+    teamOne: decode(split[0], subjectiveTeamKeys),
+    teamTwo: decode(split[1], subjectiveTeamKeys),
+    teamThree: decode(split[2], subjectiveTeamKeys),
+    other: decode(split[3], subjectiveOtherKeys),
+    info: decode(split[4], subjectiveInfoKeys),
   };
 
-  return subjective;
+  return record;
 };
 
-export const getEncodedType = (str: string): "objective" | "subjective" => {
-  if (str.startsWith("!")) return "objective";
-  if (str.startsWith("?")) return "subjective";
-  return "objective";
+export const decodePitRecord = (str: string): PitRecord => {
+  // remove the p! prefix
+
+  const split = str.slice(2).split("@");
+
+  const record: PitRecord = {
+    auto: decode(split[0], pitAutoKeys),
+    teleop: decode(split[1], pitTeleopKeys),
+    endgame: decode(split[2], pitEndgameKeys),
+    other: decode(split[3], pitOtherKeys),
+    specifications: decode(split[4], pitSpecificationsKeys),
+    drive: decode(split[5], pitDriveKeys),
+    info: decode(split[6], pitInfoKeys),
+  };
+
+  return record;
+};
+
+export const getEncodedType = (
+  str: string
+): "objective" | "subjective" | "pit" => {
+  if (str.startsWith("o!")) return "objective";
+  else if (str.startsWith("s!")) return "subjective";
+  else if (str.startsWith("p!")) return "pit";
+  else throw new Error("Invalid encoded string");
+};
+
+export const decodeRecord = (
+  str: string
+):
+  | { type: "subjective"; record: SubjectiveRecord }
+  | { type: "objective"; record: ObjectiveRecord }
+  | { type: "pit"; record: PitRecord } => {
+  const type = getEncodedType(str);
+  if (type === "objective") return { type, record: decodeObjectiveRecord(str) };
+  if (type === "subjective")
+    return { type, record: decodeSubjectiveRecord(str) };
+  return { type, record: decodePitRecord(str) };
 };

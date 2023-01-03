@@ -24,7 +24,8 @@
           "ObjectiveEndgame",
           "ObjectivePostgame",
           "ObjectivePregame",
-          "ObjectiveInfo"
+          "ObjectiveInfo",
+          "ObjectiveOther"
         ],
         "description": "The name of the screen"
       }

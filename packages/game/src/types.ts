@@ -15,11 +15,12 @@ export type PitElement = BaseElement & { screens: PitScreen[] };
 export type ScoutingElement = ObjectiveElement | SubjectiveElement | PitElement;
 
 type ObjectiveScreen = `Objective${
+  | "Pregame"
   | "Auto"
   | "Teleop"
   | "Endgame"
-  | "Pregame"
   | "Postgame"
+  | "Other"
   | "Info"}`;
 type SubjectiveScreen = `Subjective${"Team" | "Other" | "Info"}`;
 type PitScreen = `Pit${

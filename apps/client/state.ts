@@ -3,64 +3,118 @@ import { atom } from 'jotai';
 import { focusAtom } from 'jotai/optics';
 import { atomWithStorage, createJSONStorage } from 'jotai/utils';
 import {
-  AllianceSubjective,
-  allianceSubjectiveDefault,
-  Game,
-  gameDefault,
-} from '~/models/index';
+  game,
+  ObjectiveRecord,
+  objectiveRecordDefault,
+  PitRecord,
+  pitRecordDefault,
+  SubjectiveRecord,
+  subjectiveRecordDefault,
+} from './models';
 
-export const allianceSubjectiveAtom = atomWithStorage<AllianceSubjective>(
-  'allianceSubjective',
-  allianceSubjectiveDefault,
+export const recordTypeAtom = atomWithStorage<
+  'subjective' | 'objective' | 'pit'
+>(
+  'recordType',
+  'objective',
   createJSONStorage(() => AsyncStorage)
 );
 
-export const subjTeamOneAtom = focusAtom(allianceSubjectiveAtom, (optic) =>
-  optic.prop('teamOne')
-);
-export const subjTeamTwoAtom = focusAtom(allianceSubjectiveAtom, (optic) =>
-  optic.prop('teamTwo')
-);
-export const subjTeamThreeAtom = focusAtom(allianceSubjectiveAtom, (optic) =>
-  optic.prop('teamThree')
+export const subjectiveRecordAtom = atomWithStorage<SubjectiveRecord>(
+  'subjectiveRecord',
+  { ...subjectiveRecordDefault },
+  createJSONStorage(() => AsyncStorage)
 );
 
-export const subjInfoAtom = focusAtom(allianceSubjectiveAtom, (optic) =>
+export const subjectiveTeamOneAtom = focusAtom(subjectiveRecordAtom, (optic) =>
+  optic.prop('teamOne')
+);
+
+export const subjectiveTeamTwoAtom = focusAtom(subjectiveRecordAtom, (optic) =>
+  optic.prop('teamTwo')
+);
+
+export const subjectiveTeamThreeAtom =
+  game.allianceSize === 3
+    ? focusAtom(subjectiveRecordAtom, (optic) => optic.prop('teamThree'))
+    : null;
+
+export const subjectiveInfoAtom = focusAtom(subjectiveRecordAtom, (optic) =>
   optic.prop('info')
 );
 
-export const gameAtom = atomWithStorage<Game>(
-  'game',
-  gameDefault,
+export const subjectiveOtherAtom = focusAtom(subjectiveRecordAtom, (optic) =>
+  optic.prop('other')
+);
+
+const e: ObjectiveRecord = objectiveRecordDefault;
+
+export const objectiveRecordAtom = atomWithStorage<ObjectiveRecord>(
+  'objectiveRecord',
+  { ...objectiveRecordDefault },
   createJSONStorage(() => AsyncStorage)
 );
 
-export const previousGamesAtom = atomWithStorage<Array<Game>>(
-  'games',
-  [],
-  createJSONStorage(() => AsyncStorage)
+export const objectiveInfoAtom = focusAtom(objectiveRecordAtom, (optic) =>
+  optic.prop('info')
 );
-export const infoAtom = focusAtom(gameAtom, (optic) => optic.prop('info'));
-export const postgameAtom = focusAtom(gameAtom, (optic) =>
-  optic.prop('postgame')
+
+export const objectiveAutoAtom = focusAtom(objectiveRecordAtom, (optic) =>
+  optic.prop('auto')
 );
-export const pregameAtom = focusAtom(gameAtom, (optic) =>
-  optic.prop('pregame')
+
+export const objectiveTeleopAtom = focusAtom(objectiveRecordAtom, (optic) =>
+  optic.prop('teleop')
 );
-export const endgameAtom = focusAtom(gameAtom, (optic) =>
+
+export const objectiveEndgameAtom = focusAtom(objectiveRecordAtom, (optic) =>
   optic.prop('endgame')
 );
-export const teleopAtom = focusAtom(gameAtom, (optic) => optic.prop('teleop'));
-export const autoAtom = focusAtom(gameAtom, (optic) => optic.prop('auto'));
+
+export const objectivePostgameAtom = focusAtom(objectiveRecordAtom, (optic) =>
+  optic.prop('postgame')
+);
+
+export const objectivePregameAtom = focusAtom(objectiveRecordAtom, (optic) =>
+  optic.prop('pregame')
+);
+
+export const pitRecordAtom = atomWithStorage<PitRecord>(
+  'pitRecord',
+  { ...pitRecordDefault },
+  createJSONStorage(() => AsyncStorage)
+);
+
+export const pitInfoAtom = focusAtom(pitRecordAtom, (optic) =>
+  optic.prop('info')
+);
+
+export const pitDriveTrainAtom = focusAtom(pitRecordAtom, (optic) =>
+  optic.prop('drive')
+);
+
+export const pitSpecificationsAtom = focusAtom(pitRecordAtom, (optic) =>
+  optic.prop('specifications')
+);
+
+export const pitOtherAtom = focusAtom(pitRecordAtom, (optic) =>
+  optic.prop('other')
+);
+
+export const pitAutoAtom = focusAtom(pitRecordAtom, (optic) =>
+  optic.prop('auto')
+);
+
+export const pitTeleopAtom = focusAtom(pitRecordAtom, (optic) =>
+  optic.prop('teleop')
+);
+
+export const pitEndgameAtom = focusAtom(pitRecordAtom, (optic) =>
+  optic.prop('endgame')
+);
 
 export const resetAtoms = atom(null, async (get, set, _update) => {
-  await set(gameAtom, { ...gameDefault });
-  await set(allianceSubjectiveAtom, { ...allianceSubjectiveDefault });
+  await set(objectiveRecordAtom, { ...objectiveRecordDefault });
+  await set(subjectiveRecordAtom, { ...subjectiveRecordDefault });
+  await set(pitRecordAtom, { ...pitRecordDefault });
 });
-
-// export const saveGameAtom = atom(null, async (get, set) => {
-//   const previousGames = await get(previousGamesAtom);
-//   const newPreviousGames = [...previousGames, { ...(await get(gameAtom)) }];
-
-//   set(previousGamesAtom, { ...newPreviousGames });
-// });

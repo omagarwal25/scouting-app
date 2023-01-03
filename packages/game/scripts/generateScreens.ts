@@ -2,7 +2,8 @@ import { JSONSchema7 } from "json-schema";
 import jsonSchemaToZod from "json-schema-to-zod";
 import { CodeBlockWriter, Project, VariableDeclarationKind } from "ts-morph";
 import { game } from "../src/game";
-import { ObjectiveElement, SubjectiveElement } from "../src/types";
+import { ScoutingElement } from "../src/types";
+
 // get all screens remove dupes
 const objectiveScreens = game.objectiveElements
   .map((i) => i.screens)
@@ -10,6 +11,11 @@ const objectiveScreens = game.objectiveElements
   .filter((i, index, self) => self.indexOf(i) === index);
 
 const subjectiveScreens = game.subjectiveElements
+  .map((i) => i.screens)
+  .flat()
+  .filter((i, index, self) => self.indexOf(i) === index);
+
+const pitScreens = game.pitElements
   .map((i) => i.screens)
   .flat()
   .filter((i, index, self) => self.indexOf(i) === index);
@@ -32,10 +38,7 @@ defaultFile.addImportDeclaration({
   namedImports: ["z"],
 });
 
-function writeSchema(
-  screen: string,
-  elements: (SubjectiveElement | ObjectiveElement)[]
-) {
+function writeSchema(screen: string, elements: ScoutingElement[]) {
   const objectMap: Record<string, { zod: string; default: string }> = {};
 
   elements.forEach((element) => {
@@ -163,6 +166,12 @@ subjectiveScreens.forEach((screen) => {
   writeSchema(screen, elements);
 });
 
+pitScreens.forEach((screen) => {
+  const elements = game.pitElements.filter((i) => i.screens.includes(screen));
+
+  writeSchema(screen, elements);
+});
+
 file.addVariableStatement({
   declarationKind: VariableDeclarationKind.Const,
   isExported: true,
@@ -176,6 +185,7 @@ file.addVariableStatement({
         endgame: objectiveEndgameSchema,
         postgame: objectivePostgameSchema,
         info: objectiveInfoSchema
+        other: objectiveOtherSchema
       })`,
     },
   ],
@@ -210,6 +220,31 @@ file.addTypeAlias({
   type: `z.infer<typeof subjectiveRecordSchema>`,
 });
 
+file.addVariableStatement({
+  declarationKind: VariableDeclarationKind.Const,
+  isExported: true,
+  declarations: [
+    {
+      name: "pitRecordSchema",
+      initializer: `z.object({
+        auto: pitAutoSchema,
+        teleop: pitTeleopSchema,
+        endgame: pitEndgameSchema,
+        other: pitOtherSchema,
+        info: pitInfoSchema,
+        specifications: pitSpecificationsSchema,
+        drive: pitDriveSchema
+      })`,
+    },
+  ],
+});
+
+file.addTypeAlias({
+  name: "PitRecord",
+  isExported: true,
+  type: `z.infer<typeof pitRecordSchema>`,
+});
+
 file.saveSync();
 
 // // Capitalize First Letter
@@ -217,85 +252,125 @@ function capitalizeFirstLetter(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-// defaultFile.addVariableStatement({
-//   declarationKind: VariableDeclarationKind.Const,
-//   declarations: [
-//     {
-//       name: "gameZod",
-//       initializer: (w: CodeBlockWriter) => {
-//         w.write("z.object(");
-//         w.block(() => {
-//           // grab all the screens
-//           screens.forEach((screen) => {
-//             w.write(
-//               `${screen.toLowerCase()}: ${
-//                 screen.toLowerCase() + "Schema"
-//               }.default(${screen.toLocaleLowerCase() + "Schema"}.parse({})),`
-//             );
-//           });
+defaultFile.addVariableStatement({
+  declarationKind: VariableDeclarationKind.Const,
+  declarations: [
+    {
+      name: "objectiveRecordSchema",
+      initializer: (w: CodeBlockWriter) => {
+        w.write("z.object(");
+        w.block(() => {
+          // grab all the screens
+          objectiveScreens.forEach((screen) => {
+            w.write(
+              `${lowerCaseFirstLetter(screen.slice("objective".length))}: ${
+                lowerCaseFirstLetter(screen) + "Schema"
+              }.default(${lowerCaseFirstLetter(screen) + "Schema"}.parse({})),`
+            );
+          });
+        });
 
-//           w.write("info: infoSchema.default(infoSchema.parse({}))");
-//         });
+        w.write(")");
+      },
+    },
+  ],
+});
 
-//         w.write(")");
-//       },
-//     },
-//   ],
-// });
+defaultFile.addVariableStatement({
+  declarationKind: VariableDeclarationKind.Const,
+  declarations: [
+    {
+      name: "pitRecordSchema",
+      initializer: (w: CodeBlockWriter) => {
+        w.write("z.object(");
+        w.block(() => {
+          // grab all the screens
+          pitScreens.forEach((screen) => {
+            w.write(
+              // remove the pit from the screen name
+              `${lowerCaseFirstLetter(screen.slice("pit".length))}: ${
+                lowerCaseFirstLetter(screen) + "Schema"
+              }.default(${lowerCaseFirstLetter(screen) + "Schema"}.parse({})),`
+            );
+          });
+        });
 
-// defaultFile.addVariableStatement({
-//   declarationKind: VariableDeclarationKind.Const,
-//   declarations: [
-//     {
-//       name: "allianceSubjectiveZod",
-//       initializer: (w: CodeBlockWriter) => {
-//         w.write("z.object(");
-//         w.block(() => {
-//           // grab all the screens
-//           w.write(
-//             "teamOne: subjectiveSchema.default(subjectiveSchema.parse({})),"
-//           );
+        w.write(")");
+      },
+    },
+  ],
+});
 
-//           w.write(
-//             "teamTwo: subjectiveSchema.default(subjectiveSchema.parse({})),"
-//           );
+defaultFile.addVariableStatement({
+  declarationKind: VariableDeclarationKind.Const,
+  declarations: [
+    {
+      name: "subjectiveRecordSchema",
+      initializer: (w: CodeBlockWriter) => {
+        w.write("z.object(");
+        w.block(() => {
+          // grab all the screens
+          w.write(
+            "teamOne: subjectiveTeamSchema.default(subjectiveTeamSchema.parse({})),"
+          );
 
-//           w.write(
-//             "teamThree: subjectiveSchema.default(subjectiveSchema.parse({})),"
-//           );
+          w.write(
+            "teamTwo: subjectiveTeamSchema.default(subjectiveTeamSchema.parse({})),"
+          );
 
-//           w.write("info: subjInfoSchema.default(subjInfoSchema.parse({}))");
-//         });
+          w.write(
+            "teamThree: subjectiveTeamSchema.default(subjectiveTeamSchema.parse({})),"
+          );
 
-//         w.write(")");
-//       },
-//     },
-//   ],
-// });
+          w.write(
+            "info: subjectiveInfoSchema.default(subjectiveInfoSchema.parse({})),"
+          );
 
-// defaultFile.addVariableStatement({
-//   declarationKind: VariableDeclarationKind.Const,
-//   isExported: true,
-//   declarations: [
-//     {
-//       name: "gameDefault",
-//       initializer: "gameZod.parse({})",
-//     },
-//   ],
-// });
+          w.write(
+            "other: subjectiveOtherSchema.default(subjectiveOtherSchema.parse({}))"
+          );
+        });
 
-// defaultFile.addVariableStatement({
-//   declarationKind: VariableDeclarationKind.Const,
-//   isExported: true,
-//   declarations: [
-//     {
-//       name: "allianceSubjectiveDefault",
-//       initializer: "allianceSubjectiveZod.parse({})",
-//     },
-//   ],
-// });
+        w.write(")");
+      },
+    },
+  ],
+});
 
-// defaultFile.save();
+defaultFile.addVariableStatement({
+  declarationKind: VariableDeclarationKind.Const,
+  isExported: true,
+  declarations: [
+    {
+      name: "objectiveRecordDefault",
+      initializer: "objectiveRecordSchema.parse({})",
+    },
+  ],
+});
 
-// console.log("🥳 Generated screens.ts at ", file.getFilePath());
-// console.log("🥳 Generated defaults.ts at ", defaultFile.getFilePath());
+defaultFile.addVariableStatement({
+  declarationKind: VariableDeclarationKind.Const,
+  isExported: true,
+  declarations: [
+    {
+      name: "subjectiveRecordDefault",
+      initializer: "subjectiveRecordSchema.parse({})",
+    },
+  ],
+});
+
+defaultFile.addVariableStatement({
+  declarationKind: VariableDeclarationKind.Const,
+  isExported: true,
+  declarations: [
+    {
+      name: "pitRecordDefault",
+      initializer: "pitRecordSchema.parse({})",
+    },
+  ],
+});
+
+defaultFile.save();
+
+console.log("🥳 Generated screens.ts at ", file.getFilePath());
+console.log("🥳 Generated defaults.ts at ", defaultFile.getFilePath());
