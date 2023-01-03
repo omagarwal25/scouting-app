@@ -267,7 +267,7 @@ fieldType = "Boolean"
 [[objectiveElements]]
 name = "rating"
 label = "Rating"
-screens = ["ObjectivePostgame"]
+screens = ["ObjectiveOther"]
 
 [objectiveElements.field]
 fieldType = "Numeric"

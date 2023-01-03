@@ -55,8 +55,6 @@ export const InputModal = <
   });
 
   const onSubmit = handleSubmit((f) => {
-    console.log(f);
-    console.log(zodSchema.safeParse(f));
     setState(f as T);
     navigation.navigation.navigate(
       ...([nextPage] as [screen: keyof RootStackParamList])
@@ -82,6 +80,9 @@ export const InputModal = <
       elements.set(element.name, element);
     });
   }
+
+  // console.log(elements.get('scoutName'));
+  console.log(keys);
 
   return (
     <>

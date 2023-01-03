@@ -79,6 +79,10 @@ export const objectivePregameAtom = focusAtom(objectiveRecordAtom, (optic) =>
   optic.prop('pregame')
 );
 
+export const objectiveOtherAtom = focusAtom(objectiveRecordAtom, (optic) =>
+  optic.prop('other')
+);
+
 export const pitRecordAtom = atomWithStorage<PitRecord>(
   'pitRecord',
   { ...pitRecordDefault },
@@ -89,7 +93,7 @@ export const pitInfoAtom = focusAtom(pitRecordAtom, (optic) =>
   optic.prop('info')
 );
 
-export const pitDriveTrainAtom = focusAtom(pitRecordAtom, (optic) =>
+export const pitDriveAtom = focusAtom(pitRecordAtom, (optic) =>
   optic.prop('drive')
 );
 
@@ -113,8 +117,10 @@ export const pitEndgameAtom = focusAtom(pitRecordAtom, (optic) =>
   optic.prop('endgame')
 );
 
-export const resetAtoms = atom(null, async (get, set, _update) => {
+export const resetAtom = atom(null, async (get, set, _update) => {
   await set(objectiveRecordAtom, { ...objectiveRecordDefault });
   await set(subjectiveRecordAtom, { ...subjectiveRecordDefault });
   await set(pitRecordAtom, { ...pitRecordDefault });
+
+  await set(recordTypeAtom, 'objective');
 });

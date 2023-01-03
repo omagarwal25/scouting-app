@@ -1,21 +1,19 @@
 import type { BarCodeScannedCallback } from 'expo-barcode-scanner';
 import { BarCodeScanner } from 'expo-barcode-scanner';
-import { useEffect, useState } from 'react';
-import { Pressable } from 'react-native';
-import { Text } from 'react-native';
-import type { RootTabScreenProps } from '~/types';
-import { infoAtom } from '~/state';
 import { useAtom } from 'jotai';
-import type { Info } from '@griffins-scout/game';
-import { decode, infoKeys } from '@griffins-scout/game';
-import { Container } from '~/components/Container';
+import { useEffect, useState } from 'react';
+import { Pressable, StyleSheet, Text } from 'react-native';
+import { decodeInfo } from '~/models';
+import { objectiveInfoAtom, pitInfoAtom, subjectiveInfoAtom } from '~/state';
+import type { RootTabScreenProps } from '~/types';
 import tw from '~/utils/tailwind';
-import { StyleSheet } from 'react-native';
 
 export const ScannerCard = ({ navigation }: RootTabScreenProps) => {
   const [hasPermission, setHasPermission] = useState<null | boolean>(null);
   const [scanned, setScanned] = useState(false);
-  const [_, setGameInfo] = useAtom(infoAtom);
+  const [_objectiveInfo, setObjectiveInfo] = useAtom(objectiveInfoAtom);
+  const [_subjectiveInfo, setSubjectiveInfo] = useAtom(subjectiveInfoAtom);
+  const [_pitInfo, setPitInfo] = useAtom(pitInfoAtom);
 
   useEffect(() => {
     (async () => {
@@ -26,9 +24,18 @@ export const ScannerCard = ({ navigation }: RootTabScreenProps) => {
 
   const handleBarCodeScanned: BarCodeScannedCallback = async ({ data }) => {
     setScanned(true);
-    await setGameInfo(decode<Info>(data, infoKeys));
+    const { type, info } = decodeInfo(data);
 
-    navigation.navigate('Pregame');
+    if (type === 'objective') {
+      await setObjectiveInfo(info);
+      navigation.navigate('ObjectiveInfo');
+    } else if (type === 'subjective') {
+      await setSubjectiveInfo(info);
+      navigation.navigate('SubjectiveInfo');
+    } else if (type === 'pit') {
+      await setPitInfo(info);
+      navigation.navigate('PitInfo');
+    }
   };
 
   if (hasPermission === null || hasPermission === undefined) {

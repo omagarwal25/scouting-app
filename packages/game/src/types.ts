@@ -24,13 +24,13 @@ type ObjectiveScreen = `Objective${
   | "Info"}`;
 type SubjectiveScreen = `Subjective${"Team" | "Other" | "Info"}`;
 type PitScreen = `Pit${
-  | "Info"
   | "Specifications"
   | "Drive"
   | "Auto"
   | "Teleop"
   | "Endgame"
-  | "Other"}`;
+  | "Other"
+  | "Info"}`;
 
 export type Field =
   | { fieldType: "Boolean" | "Text" }

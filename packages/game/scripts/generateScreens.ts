@@ -184,7 +184,7 @@ file.addVariableStatement({
         teleop: objectiveTeleopSchema,
         endgame: objectiveEndgameSchema,
         postgame: objectivePostgameSchema,
-        info: objectiveInfoSchema
+        info: objectiveInfoSchema,
         other: objectiveOtherSchema
       })`,
     },

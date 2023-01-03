@@ -2,7 +2,9 @@ import { game } from "./game";
 import {
   objectiveAutoKeys,
   objectiveEndgameKeys,
+  ObjectiveInfo,
   objectiveInfoKeys,
+  objectiveOtherKeys,
   objectivePostgameKeys,
   objectivePregameKeys,
   ObjectiveRecord,
@@ -10,16 +12,19 @@ import {
   pitAutoKeys,
   pitDriveKeys,
   pitEndgameKeys,
+  PitInfo,
   pitInfoKeys,
   pitOtherKeys,
   PitRecord,
   pitSpecificationsKeys,
   pitTeleopKeys,
+  SubjectiveInfo,
   subjectiveInfoKeys,
   subjectiveOtherKeys,
   SubjectiveRecord,
   subjectiveTeamKeys,
 } from "./screens";
+import { ScoutingElement } from "./types";
 
 // encodes and decodes game state, using auto and other screens
 // fun compression algorithm
@@ -33,12 +38,12 @@ import {
  */
 export const encode = <T extends string>(
   state: Record<T, number | string | boolean>,
-  keys: readonly T[]
+  keys: readonly T[],
+  type: "subjective" | "objective" | "pit"
 ) => {
   return keys.reduce((acc, key) => {
-    const element =
-      game.objectiveElements.find((se) => se.name === key) ??
-      game.subjectiveElements.find((se) => se.name === key);
+    const elements: ScoutingElement[] = game[`${type}Elements`];
+    const element = elements.find((se) => se.name === key);
 
     if (!element) return acc;
 
@@ -100,35 +105,41 @@ export const decode = <B extends { [key: string]: string | number | boolean }>(
 };
 
 export const encodeObjectiveRecord = (record: ObjectiveRecord) => {
-  const auto = encode(record.auto, objectiveAutoKeys);
-  const endgame = encode(record.endgame, objectiveEndgameKeys);
-  const postgame = encode(record.postgame, objectivePostgameKeys);
-  const teleop = encode(record.teleop, objectiveTeleopKeys);
-  const pregame = encode(record.pregame, objectivePregameKeys);
-  const info = encode(record.info, objectiveInfoKeys);
-  return `o!${auto}@${endgame}@${postgame}@${teleop}@${pregame}@${info}`;
+  const auto = encode(record.auto, objectiveAutoKeys, "objective");
+  const endgame = encode(record.endgame, objectiveEndgameKeys, "objective");
+  const postgame = encode(record.postgame, objectivePostgameKeys, "objective");
+  const teleop = encode(record.teleop, objectiveTeleopKeys, "objective");
+  const pregame = encode(record.pregame, objectivePregameKeys, "objective");
+  const info = encode(record.info, objectiveInfoKeys, "objective");
+  const other = encode(record.other, objectiveOtherKeys, "objective");
+
+  return `o!${auto}@${endgame}@${postgame}@${teleop}@${pregame}@${other}@${info}`;
 };
 
 export const encodeSubjectiveRecord = (record: SubjectiveRecord) => {
-  const teamOne = encode(record.teamOne, subjectiveTeamKeys);
-  const teamTwo = encode(record.teamTwo, subjectiveTeamKeys);
-  const teamThree = encode(record.teamThree, subjectiveTeamKeys);
-  const info = encode(record.info, subjectiveInfoKeys);
-  const other = encode(record.other, subjectiveOtherKeys);
+  const teamOne = encode(record.teamOne, subjectiveTeamKeys, "subjective");
+  const teamTwo = encode(record.teamTwo, subjectiveTeamKeys, "subjective");
+  const teamThree = encode(record.teamThree, subjectiveTeamKeys, "subjective");
+  const info = encode(record.info, subjectiveInfoKeys, "subjective");
+  const other = encode(record.other, subjectiveOtherKeys, "subjective");
 
   return `s!${teamOne}@${teamTwo}@${teamThree}@${other}@${info}`;
 };
 
 export const encodePitRecord = (record: PitRecord) => {
-  const auto = encode(record.auto, pitAutoKeys);
-  const teleop = encode(record.teleop, pitTeleopKeys);
-  const endgame = encode(record.endgame, pitEndgameKeys);
-  const info = encode(record.info, pitInfoKeys);
-  const other = encode(record.other, pitOtherKeys);
-  const specifications = encode(record.specifications, pitSpecificationsKeys);
-  const drive = encode(record.drive, pitDriveKeys);
+  const auto = encode(record.auto, pitAutoKeys, "pit");
+  const teleop = encode(record.teleop, pitTeleopKeys, "pit");
+  const endgame = encode(record.endgame, pitEndgameKeys, "pit");
+  const info = encode(record.info, pitInfoKeys, "pit");
+  const other = encode(record.other, pitOtherKeys, "pit");
+  const specifications = encode(
+    record.specifications,
+    pitSpecificationsKeys,
+    "pit"
+  );
+  const drive = encode(record.drive, pitDriveKeys, "pit");
 
-  return `p!${auto}@${teleop}@${endgame}@${other}@${specifications}@${drive}@${info}`;
+  return `p!${specifications}@${drive}@${auto}@${teleop}@${endgame}@${other}@${info}`;
 };
 
 export const decodeObjectiveRecord = (str: string): ObjectiveRecord => {
@@ -141,7 +152,8 @@ export const decodeObjectiveRecord = (str: string): ObjectiveRecord => {
     postgame: decode(split[2], objectivePostgameKeys),
     teleop: decode(split[3], objectiveTeleopKeys),
     pregame: decode(split[4], objectivePregameKeys),
-    info: decode(split[5], objectiveInfoKeys),
+    other: decode(split[5], objectiveOtherKeys),
+    info: decode(split[6], objectiveInfoKeys),
   };
 
   return record;
@@ -168,12 +180,12 @@ export const decodePitRecord = (str: string): PitRecord => {
   const split = str.slice(2).split("@");
 
   const record: PitRecord = {
-    auto: decode(split[0], pitAutoKeys),
-    teleop: decode(split[1], pitTeleopKeys),
-    endgame: decode(split[2], pitEndgameKeys),
-    other: decode(split[3], pitOtherKeys),
-    specifications: decode(split[4], pitSpecificationsKeys),
-    drive: decode(split[5], pitDriveKeys),
+    specifications: decode(split[0], pitSpecificationsKeys),
+    drive: decode(split[1], pitDriveKeys),
+    auto: decode(split[2], pitAutoKeys),
+    teleop: decode(split[3], pitTeleopKeys),
+    endgame: decode(split[4], pitEndgameKeys),
+    other: decode(split[5], pitOtherKeys),
     info: decode(split[6], pitInfoKeys),
   };
 
@@ -200,4 +212,46 @@ export const decodeRecord = (
   if (type === "subjective")
     return { type, record: decodeSubjectiveRecord(str) };
   return { type, record: decodePitRecord(str) };
+};
+
+export const encodeObjectiveInfo = (info: ObjectiveInfo) => {
+  const coded = encode(info, objectiveInfoKeys, "objective");
+  return `o!${coded}`;
+};
+
+export const encodeSubjectiveInfo = (info: SubjectiveInfo) => {
+  const coded = encode(info, subjectiveInfoKeys, "subjective");
+  return `s!${coded}`;
+};
+
+export const encodePitInfo = (info: PitInfo) => {
+  const coded = encode(info, pitInfoKeys, "pit");
+  return `p!${coded}`;
+};
+
+export const decodeObjectiveInfo = (str: string): ObjectiveInfo => {
+  const split = str.slice(2).split("@");
+  return decode(split[0], objectiveInfoKeys);
+};
+
+export const decodeSubjectiveInfo = (str: string): SubjectiveInfo => {
+  const split = str.slice(2).split("@");
+  return decode(split[0], subjectiveInfoKeys);
+};
+
+export const decodePitInfo = (str: string): PitInfo => {
+  const split = str.slice(2).split("@");
+  return decode(split[0], pitInfoKeys);
+};
+
+export const decodeInfo = (
+  str: string
+):
+  | { type: "subjective"; info: SubjectiveInfo }
+  | { type: "objective"; info: ObjectiveInfo }
+  | { type: "pit"; info: PitInfo } => {
+  const type = getEncodedType(str);
+  if (type === "objective") return { type, info: decodeObjectiveInfo(str) };
+  if (type === "subjective") return { type, info: decodeSubjectiveInfo(str) };
+  return { type, info: decodePitInfo(str) };
 };
