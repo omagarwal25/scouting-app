@@ -86,17 +86,11 @@ export type Filter<T extends GenericObject> = {
   fn: (value: T) => boolean;
 };
 
-type Lest = {
-  a: {
-    b: number;
-    // c: number;
-  };
-  b: {
-    c: number;
-  };
+export type Sort<T extends GenericObject> = {
+  id: NestedPaths<T>;
+  fn: (a: T, b: T) => number;
+  dir: "asc" | "desc";
 };
-
-type Paths = NestedPaths<Lest>;
 
 /**
  *
@@ -112,11 +106,7 @@ export const useDataHandler = <T extends GenericObject>(data: T[]) => {
   // TODO should figure out some way to split and query
   const [filters, setFilters] = useState<Filter<T>[]>([]);
   const [search, setSearch] = useState<string | null>(null);
-  const [sort, setSort] = useState<{
-    id: NestedPaths<T>;
-    fn: (a: T, b: T) => number;
-    dir: "asc" | "desc";
-  }>();
+  const [sort, setSort] = useState<Sort<T>>();
 
   const filteredData = useMemo(() => {
     const filtered = filters.reduce((acc, curr) => acc.filter(curr.fn), data);
@@ -196,15 +186,6 @@ export const createNumericalFilter = <T extends GenericObject>(
     nestedPathToValue(id, value) >= min && nestedPathToValue(id, value) <= max,
 });
 
-type Test = {
-  a: {
-    b: boolean;
-    e: string;
-  };
-};
-
-type E = TypeFromPath<Test, NestedPathsByType<Test, boolean>>;
-
 export const createBooleanFilter = <T extends GenericObject>(
   id: NestedPathsByType<T, boolean>,
   value: boolean
@@ -213,7 +194,7 @@ export const createBooleanFilter = <T extends GenericObject>(
   fn: (val: T) => nestedPathToValue(id, val) === value,
 });
 
-export const createDropDownFilter = <
+export const createDropdownFilter = <
   T extends GenericObject,
   K extends NestedPathsByType<T, string>
 >(
@@ -232,6 +213,96 @@ export const createTextFilter = <
   text: string
 ): Filter<T> => ({
   id,
-  fn: (value: T) => nestedPathToValue<T, K, string>(id, value).includes(text),
+  fn: (value: T) =>
+    (nestedPathToValue<T, K, TypeFromPath<T, K>>(id, value) as string).includes(
+      text
+    ),
 });
-1;
+
+export const createNumericalSort = <T extends GenericObject>(
+  id: NestedPathsByType<T, number>,
+  dir: "asc" | "desc"
+): Sort<T> => ({
+  id,
+  fn: (a, b) => nestedPathToValue(id, a) - nestedPathToValue(id, b),
+  dir,
+});
+
+export const createTextSort = <T extends GenericObject>(
+  id: NestedPathsByType<T, string>,
+  dir: "asc" | "desc"
+): Sort<T> => ({
+  id,
+  fn: (a, b) => {
+    const aVal = nestedPathToValue(id, a);
+    const bVal = nestedPathToValue(id, b);
+    return aVal < bVal ? -1 : aVal > bVal ? 1 : 0;
+  },
+  dir,
+});
+
+export const createBooleanSort = <T extends GenericObject>(
+  id: NestedPathsByType<T, boolean>,
+  dir: "asc" | "desc"
+): Sort<T> => ({
+  id,
+  fn: (a, b) => {
+    const aVal = nestedPathToValue(id, a);
+    const bVal = nestedPathToValue(id, b);
+    return aVal === bVal ? 0 : aVal ? 1 : -1;
+  },
+  dir,
+});
+
+export const createDropdownSort = <T extends GenericObject>(
+  id: NestedPathsByType<T, string>,
+  dir: "asc" | "desc"
+): Sort<T> => ({
+  id,
+  fn: (a, b) => {
+    const aVal = nestedPathToValue(id, a);
+    const bVal = nestedPathToValue(id, b);
+    return aVal === bVal ? 0 : aVal ? 1 : -1;
+  },
+  dir,
+});
+
+// so in addition to just deal with primitive we also need to deal with this aggregate type
+type AggregateDropdown<K extends Primitive> = {
+  value: K;
+  count: number;
+};
+
+export const createAggregateDropdownFilter = <
+  T extends GenericObject,
+  U extends Primitive,
+  K extends NestedPathsByType<T, AggregateDropdown<U>[]>
+>(
+  id: K,
+  is: U[]
+): Filter<T> => ({
+  id,
+  fn: (value) => {
+    // return true for when the count of any of the is is greater than 0
+    return (nestedPathToValue(id, value) as AggregateDropdown<U>[]).some(
+      (agg: AggregateDropdown<U>) => is.includes(agg.value) && agg.count > 0
+    );
+  },
+});
+
+export const createAggregateDropdownSort = <
+  T extends GenericObject,
+  U extends Primitive,
+  K extends NestedPathsByType<T, AggregateDropdown<U>[]>
+  >(
+    id: K,
+    dir: "asc" | "desc"
+    on: 
+): Sort<T> => ({
+  id,
+  fn: (a, b) => {
+    const aVal = nestedPathToValue(id, a);
+    const bVal = nestedPathToValue(id, b);
+    return aVal === bVal ? 0 : aVal ? 1 : -1;
+  }
+  dir,

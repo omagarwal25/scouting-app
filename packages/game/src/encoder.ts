@@ -72,29 +72,29 @@ export const encode = <T extends string>(
  */
 export const decode = <B extends { [key: string]: string | number | boolean }>(
   str: string,
-  keys: readonly (keyof B)[]
+  keys: readonly (keyof B)[],
+  type: "subjective" | "objective" | "pit"
 ) => {
   const state: B = {} as B;
   const split = str.split("$");
 
   for (let i = 0; i < keys.length; i++) {
     const key = keys[i];
-    const objectiveElement = game.objectiveElements.find(
-      (se) => se.name === key
-    );
+    const elements: ScoutingElement[] = game[`${type}Elements`];
+    const element = elements.find((se) => se.name === key);
 
-    if (!objectiveElement) continue;
+    if (!element) continue;
 
-    if (objectiveElement.field.fieldType === "Numeric") {
+    if (element.field.fieldType === "Numeric") {
       state[key] = parseInt(split[i], 16) as B[typeof key];
       // state[key] = split[i] as B[typeof key];
-    } else if (objectiveElement.field.fieldType === "Dropdown") {
-      state[key] = objectiveElement.field.options[
+    } else if (element.field.fieldType === "Dropdown") {
+      state[key] = element.field.options[
         parseInt(split[i], 10)
       ] as B[typeof key];
-    } else if (objectiveElement.field.fieldType === "Boolean") {
+    } else if (element.field.fieldType === "Boolean") {
       state[key] = (split[i] === "1") as B[typeof key];
-    } else if (objectiveElement.field.fieldType === "Text") {
+    } else if (element.field.fieldType === "Text") {
       state[key] = split[i] as B[typeof key];
     } else {
       state[key] = split[i] as B[typeof key];
@@ -147,13 +147,13 @@ export const decodeObjectiveRecord = (str: string): ObjectiveRecord => {
   const split = str.slice(2).split("@");
 
   const record: ObjectiveRecord = {
-    auto: decode(split[0], objectiveAutoKeys),
-    endgame: decode(split[1], objectiveEndgameKeys),
-    postgame: decode(split[2], objectivePostgameKeys),
-    teleop: decode(split[3], objectiveTeleopKeys),
-    pregame: decode(split[4], objectivePregameKeys),
-    other: decode(split[5], objectiveOtherKeys),
-    info: decode(split[6], objectiveInfoKeys),
+    auto: decode(split[0], objectiveAutoKeys, "objective"),
+    endgame: decode(split[1], objectiveEndgameKeys, "objective"),
+    postgame: decode(split[2], objectivePostgameKeys, "objective"),
+    teleop: decode(split[3], objectiveTeleopKeys, "objective"),
+    pregame: decode(split[4], objectivePregameKeys, "objective"),
+    other: decode(split[5], objectiveOtherKeys, "objective"),
+    info: decode(split[6], objectiveInfoKeys, "objective"),
   };
 
   return record;
@@ -164,11 +164,11 @@ export const decodeSubjectiveRecord = (str: string): SubjectiveRecord => {
   const split = str.slice(2).split("@");
 
   const record: SubjectiveRecord = {
-    teamOne: decode(split[0], subjectiveTeamKeys),
-    teamTwo: decode(split[1], subjectiveTeamKeys),
-    teamThree: decode(split[2], subjectiveTeamKeys),
-    other: decode(split[3], subjectiveOtherKeys),
-    info: decode(split[4], subjectiveInfoKeys),
+    teamOne: decode(split[0], subjectiveTeamKeys, "subjective"),
+    teamTwo: decode(split[1], subjectiveTeamKeys, "subjective"),
+    teamThree: decode(split[2], subjectiveTeamKeys, "subjective"),
+    other: decode(split[3], subjectiveOtherKeys, "subjective"),
+    info: decode(split[4], subjectiveInfoKeys, "subjective"),
   };
 
   return record;
@@ -180,13 +180,13 @@ export const decodePitRecord = (str: string): PitRecord => {
   const split = str.slice(2).split("@");
 
   const record: PitRecord = {
-    specifications: decode(split[0], pitSpecificationsKeys),
-    drive: decode(split[1], pitDriveKeys),
-    auto: decode(split[2], pitAutoKeys),
-    teleop: decode(split[3], pitTeleopKeys),
-    endgame: decode(split[4], pitEndgameKeys),
-    other: decode(split[5], pitOtherKeys),
-    info: decode(split[6], pitInfoKeys),
+    specifications: decode(split[0], pitSpecificationsKeys, "pit"),
+    drive: decode(split[1], pitDriveKeys, "pit"),
+    auto: decode(split[2], pitAutoKeys, "pit"),
+    teleop: decode(split[3], pitTeleopKeys, "pit"),
+    endgame: decode(split[4], pitEndgameKeys, "pit"),
+    other: decode(split[5], pitOtherKeys, "pit"),
+    info: decode(split[6], pitInfoKeys, "pit"),
   };
 
   return record;
@@ -230,18 +230,18 @@ export const encodePitInfo = (info: PitInfo) => {
 };
 
 export const decodeObjectiveInfo = (str: string): ObjectiveInfo => {
-  const split = str.slice(2).split("@");
-  return decode(split[0], objectiveInfoKeys);
+  const split = str.slice(2);
+  return decode(split, objectiveInfoKeys, "objective");
 };
 
 export const decodeSubjectiveInfo = (str: string): SubjectiveInfo => {
-  const split = str.slice(2).split("@");
-  return decode(split[0], subjectiveInfoKeys);
+  const split = str.slice(2);
+  return decode(split, subjectiveInfoKeys, "subjective");
 };
 
 export const decodePitInfo = (str: string): PitInfo => {
-  const split = str.slice(2).split("@");
-  return decode(split[0], pitInfoKeys);
+  const split = str.slice(2);
+  return decode(split, pitInfoKeys, "pit");
 };
 
 export const decodeInfo = (

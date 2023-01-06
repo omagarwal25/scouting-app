@@ -1,13 +1,13 @@
 import { z } from "zod";
 
+import { createRouter } from "../context.js";
 import {
   compLevelToMatchType,
-  getTeam,
-  teamKeyToNumber,
   getMatches,
+  getTeam,
   matchToMatchLevel,
+  teamKeyToNumber,
 } from "../utils/blueAlliance.js";
-import { createRouter } from "../context.js";
 
 export const matchRouter = createRouter()
   .query("findAll", {
@@ -47,12 +47,16 @@ export const matchRouter = createRouter()
       await prisma.match.deleteMany();
       await prisma.team.deleteMany();
 
+      console.log("ello");
+
       const matches = (await getMatches()).map((match) => ({
         number: matchToMatchLevel(match),
         type: compLevelToMatchType(match.comp_level),
         blueAlliance: match.alliances.blue.team_keys.map(teamKeyToNumber),
         redAlliance: match.alliances.red.team_keys.map(teamKeyToNumber),
       }));
+
+      console.log(await getMatches());
 
       // flat map then dedupe
       const teams = matches
@@ -67,7 +71,6 @@ export const matchRouter = createRouter()
           data: {
             name: team.nickname,
             number: teamNumber,
-            weight: 0,
           },
         });
       });
@@ -92,12 +95,3 @@ export const matchRouter = createRouter()
       await Promise.all(rows);
     },
   });
-
-// .query("findByTypeAndNumber", {
-//   input: {},
-//   async resolve({ input, ctx: { prisma } }) {
-//     return prisma.match.findMany({
-//       // where: { type: input.type, number: input.number },
-//     });
-//   },
-// });

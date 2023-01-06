@@ -1,7 +1,24 @@
-import { Game } from '@griffins-scout/game';
+import {
+  ObjectiveRecord,
+  PitRecord,
+  SubjectiveRecord,
+} from '@griffins-scout/game';
 import { defineStore } from 'pinia';
 import { client, inferQueryOutput } from '~/api';
-import { Match } from '@griffins-scout/api';
+
+type Record =
+  | {
+      type: 'subjective';
+      record: SubjectiveRecord;
+    }
+  | {
+      type: 'objective';
+      record: ObjectiveRecord;
+    }
+  | {
+      type: 'pit';
+      record: PitRecord;
+    };
 
 export const useCurrentGameStore = defineStore('currentGameStore', {
   state: () => {
@@ -9,12 +26,12 @@ export const useCurrentGameStore = defineStore('currentGameStore', {
       currentMatch: undefined as
         | inferQueryOutput<'match.findAll'>[0]
         | undefined,
-      records: [] as Game[],
+      records: [] as Record[],
     };
   },
 
   getters: {
-    currentRecord(): Game | undefined {
+    currentRecord(): Record | undefined {
       return this.records.at(-1);
     },
 
@@ -53,7 +70,7 @@ export const useCurrentGameStore = defineStore('currentGameStore', {
       this.records.pop();
     },
 
-    async addRecord(record: Game) {
+    async addRecord(record: Record) {
       this.records.push(record);
     },
 

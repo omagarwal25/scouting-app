@@ -41,9 +41,6 @@ export function QRCodeCard({ navigation }: RootTabScreenProps) {
       ? encodeObjectiveRecord(objectiveRecord)
       : encodePitRecord(pitRecord);
 
-  console.log(encoded);
-  console.log(pitRecord);
-
   const colorScheme = useColorScheme();
   // const [_, saveGame] = useAtom(saveGameAtom);
 

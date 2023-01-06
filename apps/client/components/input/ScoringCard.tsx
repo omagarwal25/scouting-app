@@ -81,9 +81,6 @@ export const InputModal = <
     });
   }
 
-  // console.log(elements.get('scoutName'));
-  console.log(keys);
-
   return (
     <>
       {type.name === 'subjective' ? (

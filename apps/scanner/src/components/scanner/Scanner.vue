@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts" setup>
-import { decodeGame } from '@griffins-scout/game';
+import { decodeRecord } from '@griffins-scout/game';
 import { ref } from 'vue';
 // @ts-ignore
 import { QrStream } from 'vue3-qr-reader';
@@ -24,6 +24,6 @@ const error = ref<string>();
 const store = useCurrentGameStore();
 
 const onDecode = (decoded: string) => {
-  store.addRecord(decodeGame(decoded));
+  store.addRecord(decodeRecord(decoded));
 };
 </script>
