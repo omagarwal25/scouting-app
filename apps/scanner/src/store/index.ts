@@ -1,30 +1,14 @@
-import {
-  ObjectiveRecord,
-  PitRecord,
-  SubjectiveRecord,
-} from '@griffins-scout/game';
 import { defineStore } from 'pinia';
-import { client, inferQueryOutput } from '~/api';
+import { client } from '~/api';
+import { RouterInput, RouterOutput } from './../api/index';
 
-type Record =
-  | {
-      type: 'subjective';
-      record: SubjectiveRecord;
-    }
-  | {
-      type: 'objective';
-      record: ObjectiveRecord;
-    }
-  | {
-      type: 'pit';
-      record: PitRecord;
-    };
+type Record = RouterInput['record']['createRecord'];
 
 export const useCurrentGameStore = defineStore('currentGameStore', {
   state: () => {
     return {
       currentMatch: undefined as
-        | inferQueryOutput<'match.findAll'>[0]
+        | RouterOutput['match']['findAll'][number]
         | undefined,
       records: [] as Record[],
     };
@@ -36,7 +20,7 @@ export const useCurrentGameStore = defineStore('currentGameStore', {
     },
 
     async matches() {
-      return client.query('match.findAll');
+      return client.match.findAll.query();
     },
   },
 
@@ -60,9 +44,7 @@ export const useCurrentGameStore = defineStore('currentGameStore', {
       // tbh, i dont think it matters what game its associated
 
       await Promise.all(
-        this.records.map((record) =>
-          client.mutation('record.createRecord', record)
-        )
+        this.records.map((record) => client.record.createRecord.mutate(record))
       );
     },
 

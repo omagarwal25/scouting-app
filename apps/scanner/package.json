@@ -21,8 +21,8 @@
   },
   "dependencies": {
     "@griffins-scout/game": "*",
-    "@trpc/client": "^9.27.2",
-    "@trpc/server": "^9.27.2",
+    "@trpc/client": "^10.8.1",
+    "@trpc/server": "^10.8.1",
     "@vueuse/core": "^9.1.1",
     "node-fetch": "^3.2.10",
     "pinia": "^2.0.21",

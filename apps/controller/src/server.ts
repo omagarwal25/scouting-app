@@ -1,17 +1,14 @@
-import "dotenv/config";
-
-import trpcExpress from "@trpc/server/adapters/express/dist/trpc-server-adapters-express.cjs.js";
+import * as trpcExpress from "@trpc/server/adapters/express";
+import cors from "cors";
 import express from "express";
 import { expressHandler } from "trpc-playground/handlers/express";
-
-import cors from "cors";
-
-import { createContext, createRouter } from "./context.js";
+import { createContext } from "./context.js";
 import { matchRouter } from "./router/match.js";
 import { objectiveRecordRouter } from "./router/objectiveRecord.js";
 import { pitRecordRouter } from "./router/pitRecord.js";
 import { recordRouter } from "./router/record.js";
 import { subjectiveRecordRouter } from "./router/subjectiveRecord.js";
+import { router } from "./trpc";
 import { env } from "./utils/env.js";
 
 export type {
@@ -23,13 +20,13 @@ export type {
   Team,
 } from "@prisma/client";
 
-const appRouter = createRouter()
-  .merge("record.", recordRouter)
-  .merge("match.", matchRouter)
-  .merge("objectiveRecord.", objectiveRecordRouter)
-  .merge("pitRecord.", pitRecordRouter)
-  .merge("subjectiveRecord.", subjectiveRecordRouter);
-// .merge("blueAlliance.", blueAllianceRouter);
+const appRouter = router({
+  record: recordRouter,
+  match: matchRouter,
+  objectiveRecord: objectiveRecordRouter,
+  pitRecord: pitRecordRouter,
+  subjectiveRecord: subjectiveRecordRouter,
+});
 
 export type AppRouter = typeof appRouter;
 

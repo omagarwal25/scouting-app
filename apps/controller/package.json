@@ -41,16 +41,15 @@
   "dependencies": {
     "@griffins-scout/api": "*",
     "@griffins-scout/game": "*",
-    "@prisma/client": "^4.3.1",
-    "@trpc/server": "^9.27.2",
+    "@prisma/client": "^4.8.1",
+    "@trpc/server": "^10.8.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.2",
     "envsafe": "^2.0.3",
     "express": "^4.18.1",
-    "got": "^12.3.1",
-    "mongoose": "^6.5.4",
+    "got": "^12.5.3",
     "superjson": "^1.9.1",
-    "trpc-playground": "^0.3.2",
+    "trpc-playground": "^1.0.4",
     "zod": "^3.18.0"
   },
   "devDependencies": {
@@ -60,7 +59,8 @@
     "concurrently": "^7.3.0",
     "nodemon": "^2.0.19",
     "prettier": "^2.7.1",
-    "prisma": "^4.3.1",
+    "prisma": "^4.8.1",
+    "prisma-json-types-generator": "^1.0.3",
     "typescript": "^4.8.2"
   }
 }

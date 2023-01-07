@@ -1,35 +1,34 @@
 import { z } from "zod";
-import { createRouter } from "../context";
+import { publicProcedure, router } from "../trpc";
 
-export const subjectiveRecordRouter = createRouter()
-  .query("findAll", {
-    async resolve({ ctx: { prisma } }) {
-      return await prisma.subjectiveRecord.findMany({
-        include: { team: true, match: true },
-      });
-    },
-  })
-  .query("findByTeam", {
-    input: z.number().nonnegative().int(),
-    async resolve({ input, ctx: { prisma } }) {
+export const subjectiveRecordRouter = router({
+  findAll: publicProcedure.query(async ({ ctx: { prisma } }) => {
+    return await prisma.subjectiveRecord.findMany({
+      include: { team: true, match: true },
+    });
+  }),
+  findByTeam: publicProcedure
+    .input(z.number().nonnegative().int())
+    .query(async ({ input, ctx: { prisma } }) => {
       return await prisma.subjectiveRecord.findMany({
         where: { team: { number: input } },
         include: { team: true, match: true },
       });
-    },
-  })
-  .query("findByMatch", {
-    input: z.object({
-      type: z.enum([
-        "PRACTICE",
-        "QUALIFICATION",
-        "QUARTERFINAL",
-        "SEMIFINAL",
-        "FINAL",
-      ]),
-      number: z.number().nonnegative().int(),
     }),
-    async resolve({ input, ctx: { prisma } }) {
+  findByMatch: publicProcedure
+    .input(
+      z.object({
+        type: z.enum([
+          "PRACTICE",
+          "QUALIFICATION",
+          "QUARTERFINAL",
+          "SEMIFINAL",
+          "FINAL",
+        ]),
+        number: z.number().nonnegative().int(),
+      })
+    )
+    .query(async ({ input, ctx: { prisma } }) => {
       return await prisma.subjectiveRecord.findMany({
         where: {
           match: {
@@ -39,5 +38,5 @@ export const subjectiveRecordRouter = createRouter()
         },
         include: { team: true, match: true },
       });
-    },
-  });
+    }),
+});

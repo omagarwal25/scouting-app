@@ -20,7 +20,7 @@ const emit = defineEmits<{ (e: 'close'): void }>();
 
 const selected = ref<number | null>(null);
 const store = useCurrentGameStore();
-const matches = (await client.query('match.findAll')).sort((a, b) =>
+const matches = (await client.match.findAll.query()).sort((a, b) =>
   // sort practice, then qual tthen playoff,
   // if same type, then sort by number
   a.type === b.type ? a.number - b.number : a.type > b.type ? 1 : -1

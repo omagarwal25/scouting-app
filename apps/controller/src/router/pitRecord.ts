@@ -1,20 +1,18 @@
 import { z } from "zod";
-import { createRouter } from "../context";
+import { publicProcedure, router } from "../trpc";
 
-export const pitRecordRouter = createRouter()
-  .query("findAll", {
-    async resolve({ ctx: { prisma } }) {
-      return await prisma.pitRecord.findMany({
-        include: { team: true },
-      });
-    },
-  })
-  .query("findByTeamNumber", {
-    input: z.number().nonnegative().int(),
-    async resolve({ input, ctx: { prisma } }) {
+export const pitRecordRouter = router({
+  findAll: publicProcedure.query(async ({ ctx: { prisma } }) => {
+    return await prisma.pitRecord.findMany({
+      include: { team: true },
+    });
+  }),
+  findByTeamNumber: publicProcedure
+    .input(z.number().nonnegative().int())
+    .query(async ({ input, ctx: { prisma } }) => {
       return await prisma.pitRecord.findMany({
         where: { team: { number: input } },
         include: { team: true },
       });
-    },
-  });
+    }),
+});

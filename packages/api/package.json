@@ -16,7 +16,8 @@
       "command": "tsc",
       "clean": "if-file-deleted",
       "files": [
-        "src/**"
+        "src/**",
+        "../../apps/controller/**"
       ],
       "output": [
         "dist/**"

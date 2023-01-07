@@ -10,8 +10,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+generator records {
+  provider  = "prisma-json-types-generator"
+  namespace = "PrismaJson"
+}
+
 model ObjectiveRecord {
   id   Int  @id @default(autoincrement())
+  /// @json("ObjectiveRecord")
   data Json
 
   team       Team? @relation(fields: [teamNumber], references: [number])
@@ -28,6 +34,7 @@ model ObjectiveRecord {
 
 model SubjectiveRecord {
   id   Int  @id @default(autoincrement())
+  /// @json("SubjectiveRecord")
   data Json
 
   team       Team? @relation(fields: [teamNumber], references: [number])
@@ -44,6 +51,7 @@ model SubjectiveRecord {
 
 model PitRecord {
   id   Int  @id @default(autoincrement())
+  /// @json("PitRecord")
   data Json
 
   createdAt DateTime @default(now())

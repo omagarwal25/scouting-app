@@ -90,6 +90,6 @@ const onNext = async () => {
 };
 
 const onFetchTBA = async () => {
-  await client.mutation('match.importFromTBA');
+  await client.match.importFromTba.mutate();
 };
 </script>

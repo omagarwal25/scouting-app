@@ -294,15 +294,22 @@ export const createAggregateDropdownSort = <
   T extends GenericObject,
   U extends Primitive,
   K extends NestedPathsByType<T, AggregateDropdown<U>[]>
-  >(
-    id: K,
-    dir: "asc" | "desc"
-    on: 
+>(
+  id: K,
+  dir: "asc" | "desc",
+  on: U
 ): Sort<T> => ({
   id,
   fn: (a, b) => {
-    const aVal = nestedPathToValue(id, a);
-    const bVal = nestedPathToValue(id, b);
-    return aVal === bVal ? 0 : aVal ? 1 : -1;
-  }
+    const aVal = nestedPathToValue(id, a) as AggregateDropdown<U>[];
+    const bVal = nestedPathToValue(id, b) as AggregateDropdown<U>[];
+
+    const aCount =
+      aVal.find((agg: AggregateDropdown<U>) => agg.value === on)?.count ?? 0;
+    const bCount =
+      bVal.find((agg: AggregateDropdown<U>) => agg.value === on)?.count ?? 0;
+
+    return aCount - bCount;
+  },
   dir,
+});

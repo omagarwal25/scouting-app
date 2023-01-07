@@ -1,25 +1,16 @@
 import type { AppRouter } from '@griffins-scout/api';
-import { createTRPCClient } from '@trpc/client';
-import { inferProcedureInput, inferProcedureOutput } from '@trpc/server';
+import { createTRPCProxyClient, httpBatchLink } from '@trpc/client';
+import type { inferRouterInputs, inferRouterOutputs } from '@trpc/server';
 import superjson from 'superjson';
 
-export const client = createTRPCClient<AppRouter>({
-  url: 'http://localhost:8080/trpc',
+export const client = createTRPCProxyClient<AppRouter>({
+  links: [
+    httpBatchLink({
+      url: 'http://localhost:8080/trpc',
+    }),
+  ],
   transformer: superjson,
 });
 
-export type inferQueryOutput<
-  TRouteKey extends keyof AppRouter['_def']['queries']
-> = inferProcedureOutput<AppRouter['_def']['queries'][TRouteKey]>;
-
-export type inferQueryInput<
-  TRouteKey extends keyof AppRouter['_def']['queries']
-> = inferProcedureInput<AppRouter['_def']['queries'][TRouteKey]>;
-
-export type inferMutationOutput<
-  TRouteKey extends keyof AppRouter['_def']['mutations']
-> = inferProcedureOutput<AppRouter['_def']['mutations'][TRouteKey]>;
-
-export type inferMutationInput<
-  TRouteKey extends keyof AppRouter['_def']['mutations']
-> = inferProcedureInput<AppRouter['_def']['mutations'][TRouteKey]>;
+export type RouterInput = inferRouterInputs<AppRouter>;
+export type RouterOutput = inferRouterOutputs<AppRouter>;
