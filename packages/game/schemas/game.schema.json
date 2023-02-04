@@ -16,13 +16,5 @@
     },
     "allianceSize": { "type": "integer", "minimum": 2, "maximum": 3 }
   },
-  "required": [
-    "name",
-    "description",
-    "year",
-    "allianceSize",
-    "objectiveElements",
-    "subjectiveElements",
-    "pitElements"
-  ]
+  "required": ["name", "description", "year", "allianceSize", "elements"]
 }

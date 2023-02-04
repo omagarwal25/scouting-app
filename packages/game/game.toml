@@ -4,141 +4,141 @@ description = "Ducks Balls Cubes FTC"
 year = 2021
 allianceSize = 3
 
-[[subjectiveElements]]
+[[elements]]
 name = "scoutId"
 label = "Scout ID"
 screens = ["SubjectiveInfo"]
 
-[subjectiveElements.field]
+[elements.field]
 fieldType = "Dropdown"
 options = ["Red S", "Blue S"]
 
-[[subjectiveElements]]
+[[elements]]
 name = "matchType"
 label = "Match Type"
 screens = ["SubjectiveInfo"]
 
-[subjectiveElements.field]
+[elements.field]
 fieldType = "Dropdown"
 options = ["Practice", "Qualification", "Quarterfinal", "Semifinal", "Final"]
 
-[[subjectiveElements]]
+[[elements]]
 name = "matchNumber"
 label = "Match Number"
 screens = ["SubjectiveInfo"]
 
-[subjectiveElements.field]
+[elements.field]
 fieldType = "Numeric"
 isInteger = true
 incrementable = false
 min = 0
 
-[[subjectiveElements]]
+[[elements]]
 name = "teamOneNumber"
 label = "Team One Number"
 screens = ["SubjectiveInfo"]
 
-[subjectiveElements.field]
+[elements.field]
 fieldType = "Numeric"
 isInteger = true
 incrementable = false
 min = 0
 
-[[subjectiveElements]]
+[[elements]]
 name = "teamTwoNumber"
 label = "Team Two Number"
 screens = ["SubjectiveInfo"]
 
-[subjectiveElements.field]
+[elements.field]
 fieldType = "Numeric"
 isInteger = true
 incrementable = false
 min = 0
 
-[[subjectiveElements]]
+[[elements]]
 name = "teamThreeNumber"
 label = "Team Three Number"
 screens = ["SubjectiveInfo"]
 
-[subjectiveElements.field]
+[elements.field]
 fieldType = "Numeric"
 isInteger = true
 incrementable = false
 min = 0
 
-[[subjectiveElements]]
+[[elements]]
 name = "scoutName"
 label = "Scout Name"
 screens = ["SubjectiveOther"]
 
-[subjectiveElements.field]
+[elements.field]
 fieldType = "Text"
 
-[[objectiveElements]]
+[[elements]]
 name = "scoutId"
 label = "Scout ID"
 screens = ["ObjectiveInfo"]
 
-[objectiveElements.field]
+[elements.field]
 fieldType = "Dropdown"
 options = ["Red 1", "Red 2", "Red 3", "Blue 1", "Blue 2", "Blue 3"]
 
-[[objectiveElements]]
+[[elements]]
 name = "matchType"
 label = "Match Type"
 screens = ["ObjectiveInfo"]
 
-[objectiveElements.field]
+[elements.field]
 fieldType = "Dropdown"
 options = ["Practice", "Qualification", "Quarterfinal", "Semifinal", "Final"]
 
-[[objectiveElements]]
+[[elements]]
 name = "matchNumber"
 label = "Match Number"
 screens = ["ObjectiveInfo"]
 
-[objectiveElements.field]
+[elements.field]
 fieldType = "Numeric"
 isInteger = true
 incrementable = false
 min = 0
 
-[[objectiveElements]]
+[[elements]]
 name = "teamNumber"
 label = "Team Number"
 screens = ["ObjectiveInfo"]
 
-[objectiveElements.field]
+[elements.field]
 fieldType = "Numeric"
 isInteger = true
 incrementable = false
 min = 0
 
-[[objectiveElements]]
+[[elements]]
 name = "scoutName"
 label = "Scout Name"
 screens = ["ObjectiveOther"]
 
-[objectiveElements.field]
+[elements.field]
 fieldType = "Text"
 
-[[objectiveElements]]
+[[elements]]
 name = "duckDelivery"
 label = "Duck Delivery"
 screens = ["ObjectiveAuto", "ObjectiveEndgame"]
 
-[objectiveElements.field]
+[elements.field]
 fieldType = "Numeric"
 min = 0
 isInteger = true
 incrementable = true
 
-[[objectiveElements]]
+[[elements]]
 name = "parking"
 label = "Parking"
 screens = ["ObjectiveAuto", "ObjectivePostgame"]
 
-[objectiveElements.field]
+[elements.field]
 fieldType = "Dropdown"
 options = [
   "None",
@@ -148,198 +148,198 @@ options = [
   "Storage Partially (auto only)",
 ]
 
-[[objectiveElements]]
+[[elements]]
 name = "freightShippingHub"
 label = "Freight Shipping Hub (any level)"
 screens = ["ObjectiveAuto"]
 
-[objectiveElements.field]
+[elements.field]
 fieldType = "Numeric"
 min = 0
 isInteger = true
 incrementable = true
 
-[[objectiveElements]]
+[[elements]]
 name = "freightStorageUnit"
 label = "Freight Storage Unit"
 screens = ["ObjectiveAuto", "ObjectiveTeleop", "ObjectiveEndgame"]
 
-[objectiveElements.field]
+[elements.field]
 fieldType = "Numeric"
 min = 0
 isInteger = true
 incrementable = true
 
-[[objectiveElements]]
+[[elements]]
 name = "autoBonus"
 label = "Auto Bonus"
 screens = ["ObjectiveAuto"]
 
-[objectiveElements.field]
+[elements.field]
 fieldType = "Dropdown"
 options = ["None", "Team Shipping Element", "Duck"]
 
-[[objectiveElements]]
+[[elements]]
 name = "allianceShippingHubLevelOne"
 label = "Alliance Hub 1"
 screens = ["ObjectiveTeleop", "ObjectiveEndgame"]
 
-[objectiveElements.field]
+[elements.field]
 fieldType = "Numeric"
 min = 0
 isInteger = true
 incrementable = true
 
-[[objectiveElements]]
+[[elements]]
 name = "allianceShippingHubLevelTwo"
 label = "Alliance Hub 2"
 screens = ["ObjectiveTeleop", "ObjectiveEndgame"]
 
-[objectiveElements.field]
+[elements.field]
 fieldType = "Numeric"
 min = 0
 isInteger = true
 incrementable = true
 
-[[objectiveElements]]
+[[elements]]
 name = "allianceShippingHubLevelThree"
 label = "Alliance Hub 3"
 screens = ["ObjectiveTeleop", "ObjectiveEndgame"]
 
-[objectiveElements.field]
+[elements.field]
 fieldType = "Numeric"
 min = 0
 isInteger = true
 incrementable = true
 
-[[objectiveElements]]
+[[elements]]
 name = "sharedShippingHub"
 label = "Shared Shipping Hub"
 screens = ["ObjectiveTeleop", "ObjectiveEndgame"]
 
-[objectiveElements.field]
+[elements.field]
 fieldType = "Numeric"
 min = 0
 isInteger = true
 incrementable = true
 
-[[objectiveElements]]
+[[elements]]
 name = "allianceShippingHubBalanced"
 label = "Alliance Hub Balanced"
 screens = ["ObjectivePostgame"]
 
-[objectiveElements.field]
+[elements.field]
 fieldType = "Boolean"
 
-[[objectiveElements]]
+[[elements]]
 name = "sharedShippingHubUnbalanced"
 label = "Shared Hub Unbalanced (in favor)"
 screens = ["ObjectivePostgame"]
 
-[objectiveElements.field]
+[elements.field]
 fieldType = "Boolean"
 
-[[objectiveElements]]
+[[elements]]
 name = "capped"
 label = "Capped"
 screens = ["ObjectivePostgame"]
 
-[objectiveElements.field]
+[elements.field]
 fieldType = "Boolean"
 
-[[objectiveElements]]
+[[elements]]
 screens = ["ObjectivePregame"]
 name = "startingPosition"
 label = "Starting Position"
 
-[objectiveElements.field]
+[elements.field]
 fieldType = "Dropdown"
 options = ["Freightside", "Duckside"]
 
-[[objectiveElements]]
+[[elements]]
 name = "preload"
 label = "Preload"
 screens = ["ObjectivePregame"]
 
-[objectiveElements.field]
+[elements.field]
 fieldType = "Boolean"
 
-[[objectiveElements]]
+[[elements]]
 name = "rating"
 label = "Rating"
 screens = ["ObjectiveOther"]
 
-[objectiveElements.field]
+[elements.field]
 fieldType = "Numeric"
 min = 1
 max = 5
 isInteger = true
 incrementable = false
 
-[[subjectiveElements]]
+[[elements]]
 name = "notes"
 label = "Notes"
 screens = ["SubjectiveTeam"]
 
-[subjectiveElements.field]
+[elements.field]
 fieldType = "Text"
 
-[[pitElements]]
+[[elements]]
 name = "teamNumber"
 label = "Team Number"
 screens = ["PitInfo"]
 
-[pitElements.field]
+[elements.field]
 fieldType = "Numeric"
 isInteger = true
 incrementable = false
 
-[[pitElements]]
+[[elements]]
 name = "scoutName"
 label = "Scout Name"
 screens = ["PitOther"]
 
-[pitElements.field]
+[elements.field]
 fieldType = "Text"
 
-[[pitElements]]
+[[elements]]
 name = "underBridge"
 label = "Under Bridge"
 screens = ["PitSpecifications"]
 
-[pitElements.field]
+[elements.field]
 fieldType = "Boolean"
 
-[[pitElements]]
+[[elements]]
 name = "can5Ball"
 label = "Can 5 Ball"
 screens = ["PitAuto"]
 
-[pitElements.field]
+[elements.field]
 fieldType = "Boolean"
 
-[[pitElements]]
+[[elements]]
 name = "preferedCycle"
 label = "Prefered Cycle"
 screens = ["PitTeleop"]
 
-[pitElements.field]
+[elements.field]
 fieldType = "Dropdown"
 options = ["Freight", "Duck"]
 
-[[pitElements]]
+[[elements]]
 name = "canPark"
 label = "Can Park"
 screens = ["PitEndgame"]
 
-[pitElements.field]
+[elements.field]
 fieldType = "Boolean"
 
-[[pitElements]]
+[[elements]]
 name = "driveTrainType"
 label = "Drive Train Type"
 screens = ["PitDrive"]
 
-[pitElements.field]
+[elements.field]
 fieldType = "Dropdown"
 options = ["Mecanum", "Omni", "Tank", "Swerve"]
