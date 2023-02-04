@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { publicProcedure, router } from "../trpc";
+import { publicProcedure, router } from "../trpc.js";
 
 export const pitRecordRouter = router({
   findAll: publicProcedure.query(async ({ ctx: { prisma } }) => {

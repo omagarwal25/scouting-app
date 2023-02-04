@@ -8,7 +8,7 @@ import { objectiveRecordRouter } from "./router/objectiveRecord.js";
 import { pitRecordRouter } from "./router/pitRecord.js";
 import { recordRouter } from "./router/record.js";
 import { subjectiveRecordRouter } from "./router/subjectiveRecord.js";
-import { router } from "./trpc";
+import { router } from "./trpc.js";
 import { env } from "./utils/env.js";
 
 export type {

@@ -25,7 +25,17 @@
           "ObjectivePostgame",
           "ObjectivePregame",
           "ObjectiveInfo",
-          "ObjectiveOther"
+          "ObjectiveOther",
+          "PitAuto",
+          "PitTeleop",
+          "PitEndgame",
+          "PitInfo",
+          "PitOther",
+          "PitSpecifications",
+          "PitDrive",
+          "SubjectiveTeam",
+          "SubjectiveInfo",
+          "SubjectiveOther"
         ],
         "description": "The name of the screen"
       }
@@ -90,6 +100,23 @@
           },
 
           "required": ["options", "fieldType"]
+        },
+        {
+          "properties": {
+            "fieldType": {
+              "type": "string",
+              "enum": ["Grouping"]
+            },
+            "fields": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "$ref": "https://raw.githubusercontent.com/omagarwal25/scouting-app/main/packages/game/schemas/element.schema.json"
+              }
+            }
+          },
+
+          "required": ["fields", "fieldType"]
         }
       ]
     }

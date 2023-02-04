@@ -7,28 +7,14 @@
     "name": { "type": "string" },
     "description": { "type": "string" },
     "year": { "type": "integer" },
-    "objectiveElements": {
+    "elements": {
       "type": "array",
       "minItems": 1,
       "items": {
-        "$ref": "https://raw.githubusercontent.com/omagarwal25/scouting-app/main/packages/game/schemas/objectiveElement.schema.json"
+        "$ref": "https://raw.githubusercontent.com/omagarwal25/scouting-app/main/packages/game/schemas/element.schema.json"
       }
     },
-    "allianceSize": { "type": "integer", "minimum": 2, "maximum": 3 },
-    "subjectiveElements": {
-      "type": "array",
-      "minItems": 1,
-      "items": {
-        "$ref": "https://raw.githubusercontent.com/omagarwal25/scouting-app/main/packages/game/schemas/subjectiveElement.schema.json"
-      }
-    },
-    "pitElements": {
-      "type": "array",
-      "minItems": 1,
-      "items": {
-        "$ref": "https://raw.githubusercontent.com/omagarwal25/scouting-app/main/packages/game/schemas/pitElement.schema.json"
-      }
-    }
+    "allianceSize": { "type": "integer", "minimum": 2, "maximum": 3 }
   },
   "required": [
     "name",
