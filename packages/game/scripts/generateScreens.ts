@@ -5,17 +5,7 @@ import { game } from "../src/game";
 import { ScoutingElement } from "../src/types";
 
 // get all screens remove dupes
-const objectiveScreens = game.objectiveElements
-  .map((i) => i.screens)
-  .flat()
-  .filter((i, index, self) => self.indexOf(i) === index);
-
-const subjectiveScreens = game.subjectiveElements
-  .map((i) => i.screens)
-  .flat()
-  .filter((i, index, self) => self.indexOf(i) === index);
-
-const pitScreens = game.pitElements
+const screens = game.elements
   .map((i) => i.screens)
   .flat()
   .filter((i, index, self) => self.indexOf(i) === index);
@@ -150,24 +140,11 @@ function writeSchema(screen: string, elements: ScoutingElement[]) {
 }
 
 // for every screen, get all the elements with that screen and then generate types and more zod schemas
-objectiveScreens.forEach((screen) => {
-  const elements = game.objectiveElements.filter((i) =>
-    i.screens.includes(screen)
+
+screens.forEach((screen) => {
+  const elements = game.elements.filter((i) =>
+    i.screens.some((j: string) => j === screen)
   );
-
-  writeSchema(screen, elements);
-});
-
-subjectiveScreens.forEach((screen) => {
-  const elements = game.subjectiveElements.filter((i) =>
-    i.screens.includes(screen)
-  );
-
-  writeSchema(screen, elements);
-});
-
-pitScreens.forEach((screen) => {
-  const elements = game.pitElements.filter((i) => i.screens.includes(screen));
 
   writeSchema(screen, elements);
 });
@@ -261,13 +238,17 @@ defaultFile.addVariableStatement({
         w.write("z.object(");
         w.block(() => {
           // grab all the screens
-          objectiveScreens.forEach((screen) => {
-            w.write(
-              `${lowerCaseFirstLetter(screen.slice("objective".length))}: ${
-                lowerCaseFirstLetter(screen) + "Schema"
-              }.default(${lowerCaseFirstLetter(screen) + "Schema"}.parse({})),`
-            );
-          });
+          screens
+            .filter((s) => s.startsWith("Objective"))
+            .forEach((screen) => {
+              w.write(
+                `${lowerCaseFirstLetter(screen.slice("objective".length))}: ${
+                  lowerCaseFirstLetter(screen) + "Schema"
+                }.default(${
+                  lowerCaseFirstLetter(screen) + "Schema"
+                }.parse({})),`
+              );
+            });
         });
 
         w.write(")");
@@ -285,14 +266,18 @@ defaultFile.addVariableStatement({
         w.write("z.object(");
         w.block(() => {
           // grab all the screens
-          pitScreens.forEach((screen) => {
-            w.write(
-              // remove the pit from the screen name
-              `${lowerCaseFirstLetter(screen.slice("pit".length))}: ${
-                lowerCaseFirstLetter(screen) + "Schema"
-              }.default(${lowerCaseFirstLetter(screen) + "Schema"}.parse({})),`
-            );
-          });
+          screens
+            .filter((s) => s.startsWith("Pit"))
+            .forEach((screen) => {
+              w.write(
+                // remove the pit from the screen name
+                `${lowerCaseFirstLetter(screen.slice("pit".length))}: ${
+                  lowerCaseFirstLetter(screen) + "Schema"
+                }.default(${
+                  lowerCaseFirstLetter(screen) + "Schema"
+                }.parse({})),`
+              );
+            });
         });
 
         w.write(")");

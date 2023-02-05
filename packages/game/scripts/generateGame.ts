@@ -54,7 +54,7 @@ function getSchema(field: Field) {
 
 const info = getYearGame(getType());
 
-const objectiveElements = info.objectiveElements.map((element) => {
+const elements = info.elements.map((element) => {
   const zSchema = getSchema(element.field);
 
   return {
@@ -66,33 +66,9 @@ const objectiveElements = info.objectiveElements.map((element) => {
   };
 });
 
-const subjectiveElements = info.subjectiveElements.map((element) => {
-  const zSchema = getSchema(element.field);
-
-  return {
-    name: element.name,
-    label: element.label,
-    screens: element.screens,
-    schema: zSchema,
-    field: element.field,
-  };
-});
-
-const pitElements = info.pitElements.map((element) => {
-  const zSchema = getSchema(element.field);
-
-  return {
-    name: element.name,
-    label: element.label,
-    screens: element.screens,
-    schema: zSchema,
-    field: element.field,
-  };
-});
-
-const objectiveNames = objectiveElements.map(
-  (objectiveElement) => objectiveElement.name
-);
+const objectiveNames = elements
+  .filter((e) => e.screens.some((s: string) => s.startsWith("Objective")))
+  .map((e) => e.name);
 const objectiveRequired = [
   "scoutName",
   "scoutId",
@@ -109,9 +85,9 @@ objectiveRequired.forEach((name) => {
   }
 });
 
-const subjectiveNames = subjectiveElements.map(
-  (objectiveElement) => objectiveElement.name
-);
+const subjectiveNames = elements
+  .filter((e) => e.screens.some((s: string) => s.startsWith("Subjective")))
+  .map((e) => e.name);
 const subjectiveRequired = [
   "scoutName",
   "scoutId",
@@ -131,7 +107,9 @@ subjectiveRequired.forEach((name) => {
   }
 });
 
-const pitNames = pitElements.map((objectiveElement) => objectiveElement.name);
+const pitNames = elements
+  .filter((e) => e.screens.some((s: string) => s.startsWith("Objective")))
+  .map((e) => e.name);
 const pitRequired = ["teamNumber", "scoutName"];
 
 pitRequired.forEach((name) => {
@@ -157,51 +135,15 @@ main.addVariableStatement({
           writer.writeLine(`year: ${info.year},`);
           writer.writeLine(`allianceSize: ${info.allianceSize},`);
 
-          writer.writeLine(`objectiveElements: [`);
-          objectiveElements.forEach((objectiveElement) => {
+          writer.writeLine(`elements: [`);
+          elements.forEach((element) => {
             writer.block(() => {
-              writer.writeLine(`name: "${objectiveElement.name}",`);
-              writer.writeLine(`label: "${objectiveElement.label}",`);
-              writer.writeLine(
-                `screens: ${JSON.stringify(objectiveElement.screens)},`
-              );
+              writer.writeLine(`name: "${element.name}",`);
+              writer.writeLine(`label: "${element.label}",`);
+              writer.writeLine(`screens: ${JSON.stringify(element.screens)},`);
               writer.writeLine(`field:`);
-              writer.writeLine(JSON.stringify(objectiveElement.field) + ",");
-              writer.writeLine(`schema: ${objectiveElement.schema}`);
-            });
-
-            writer.writeLine(",");
-          });
-          writer.writeLine("],");
-
-          writer.writeLine(`subjectiveElements: [`);
-          subjectiveElements.forEach((subjectiveElement) => {
-            writer.block(() => {
-              writer.writeLine(`name: "${subjectiveElement.name}",`);
-              writer.writeLine(`label: "${subjectiveElement.label}",`);
-              writer.writeLine(
-                `screens: ${JSON.stringify(subjectiveElement.screens)},`
-              );
-              writer.writeLine(`field:`);
-              writer.writeLine(JSON.stringify(subjectiveElement.field) + ",");
-              writer.writeLine(`schema: ${subjectiveElement.schema}`);
-            });
-
-            writer.writeLine(",");
-          });
-          writer.writeLine("],");
-
-          writer.writeLine(`pitElements: [`);
-          pitElements.forEach((pitElement) => {
-            writer.block(() => {
-              writer.writeLine(`name: "${pitElement.name}",`);
-              writer.writeLine(`label: "${pitElement.label}",`);
-              writer.writeLine(
-                `screens: ${JSON.stringify(pitElement.screens)},`
-              );
-              writer.writeLine(`field:`);
-              writer.writeLine(JSON.stringify(pitElement.field) + ",");
-              writer.writeLine(`schema: ${pitElement.schema}`);
+              writer.writeLine(JSON.stringify(element.field) + ",");
+              writer.writeLine(`schema: ${element.schema}`);
             });
 
             writer.writeLine(",");

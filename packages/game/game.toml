@@ -1,7 +1,7 @@
-#:schema https://raw.githubusercontent.com/omagarwal25/scouting-app/main/packages/game/schemas/game.schema.json
-name = "FreightFrenzy"
-description = "Ducks Balls Cubes FTC"
-year = 2021
+#:schema ./schemas/game.schema.json
+name = "Charged Up"
+description = "Uwu"
+year = 2023
 allianceSize = 3
 
 [[elements]]
@@ -12,26 +12,6 @@ screens = ["SubjectiveInfo"]
 [elements.field]
 fieldType = "Dropdown"
 options = ["Red S", "Blue S"]
-
-[[elements]]
-name = "matchType"
-label = "Match Type"
-screens = ["SubjectiveInfo"]
-
-[elements.field]
-fieldType = "Dropdown"
-options = ["Practice", "Qualification", "Quarterfinal", "Semifinal", "Final"]
-
-[[elements]]
-name = "matchNumber"
-label = "Match Number"
-screens = ["SubjectiveInfo"]
-
-[elements.field]
-fieldType = "Numeric"
-isInteger = true
-incrementable = false
-min = 0
 
 [[elements]]
 name = "teamOneNumber"
@@ -67,14 +47,6 @@ incrementable = false
 min = 0
 
 [[elements]]
-name = "scoutName"
-label = "Scout Name"
-screens = ["SubjectiveOther"]
-
-[elements.field]
-fieldType = "Text"
-
-[[elements]]
 name = "scoutId"
 label = "Scout ID"
 screens = ["ObjectiveInfo"]
@@ -86,7 +58,7 @@ options = ["Red 1", "Red 2", "Red 3", "Blue 1", "Blue 2", "Blue 3"]
 [[elements]]
 name = "matchType"
 label = "Match Type"
-screens = ["ObjectiveInfo"]
+screens = ["ObjectiveInfo", "SubjectiveInfo"]
 
 [elements.field]
 fieldType = "Dropdown"
@@ -95,7 +67,7 @@ options = ["Practice", "Qualification", "Quarterfinal", "Semifinal", "Final"]
 [[elements]]
 name = "matchNumber"
 label = "Match Number"
-screens = ["ObjectiveInfo"]
+screens = ["ObjectiveInfo", "SubjectiveInfo"]
 
 [elements.field]
 fieldType = "Numeric"
@@ -106,7 +78,7 @@ min = 0
 [[elements]]
 name = "teamNumber"
 label = "Team Number"
-screens = ["ObjectiveInfo"]
+screens = ["ObjectiveInfo", "PitInfo"]
 
 [elements.field]
 fieldType = "Numeric"
@@ -117,144 +89,55 @@ min = 0
 [[elements]]
 name = "scoutName"
 label = "Scout Name"
-screens = ["ObjectiveOther"]
+screens = ["ObjectiveOther", "SubjectiveOther", "PitOther"]
 
 [elements.field]
 fieldType = "Text"
 
 [[elements]]
-name = "duckDelivery"
-label = "Duck Delivery"
-screens = ["ObjectiveAuto", "ObjectiveEndgame"]
-
-[elements.field]
-fieldType = "Numeric"
-min = 0
-isInteger = true
-incrementable = true
-
-[[elements]]
-name = "parking"
-label = "Parking"
-screens = ["ObjectiveAuto", "ObjectivePostgame"]
-
-[elements.field]
-fieldType = "Dropdown"
-options = [
-  "None",
-  "Warehouse Fully",
-  "Warehouse Partially (auto only)",
-  "Storage Fully",
-  "Storage Partially (auto only)",
-]
-
-[[elements]]
-name = "freightShippingHub"
-label = "Freight Shipping Hub (any level)"
-screens = ["ObjectiveAuto"]
-
-[elements.field]
-fieldType = "Numeric"
-min = 0
-isInteger = true
-incrementable = true
-
-[[elements]]
-name = "freightStorageUnit"
-label = "Freight Storage Unit"
-screens = ["ObjectiveAuto", "ObjectiveTeleop", "ObjectiveEndgame"]
-
-[elements.field]
-fieldType = "Numeric"
-min = 0
-isInteger = true
-incrementable = true
-
-[[elements]]
-name = "autoBonus"
-label = "Auto Bonus"
-screens = ["ObjectiveAuto"]
-
-[elements.field]
-fieldType = "Dropdown"
-options = ["None", "Team Shipping Element", "Duck"]
-
-[[elements]]
-name = "allianceShippingHubLevelOne"
-label = "Alliance Hub 1"
-screens = ["ObjectiveTeleop", "ObjectiveEndgame"]
-
-[elements.field]
-fieldType = "Numeric"
-min = 0
-isInteger = true
-incrementable = true
-
-[[elements]]
-name = "allianceShippingHubLevelTwo"
-label = "Alliance Hub 2"
-screens = ["ObjectiveTeleop", "ObjectiveEndgame"]
-
-[elements.field]
-fieldType = "Numeric"
-min = 0
-isInteger = true
-incrementable = true
-
-[[elements]]
-name = "allianceShippingHubLevelThree"
-label = "Alliance Hub 3"
-screens = ["ObjectiveTeleop", "ObjectiveEndgame"]
-
-[elements.field]
-fieldType = "Numeric"
-min = 0
-isInteger = true
-incrementable = true
-
-[[elements]]
-name = "sharedShippingHub"
-label = "Shared Shipping Hub"
-screens = ["ObjectiveTeleop", "ObjectiveEndgame"]
-
-[elements.field]
-fieldType = "Numeric"
-min = 0
-isInteger = true
-incrementable = true
-
-[[elements]]
-name = "allianceShippingHubBalanced"
-label = "Alliance Hub Balanced"
-screens = ["ObjectivePostgame"]
-
-[elements.field]
-fieldType = "Boolean"
-
-[[elements]]
-name = "sharedShippingHubUnbalanced"
-label = "Shared Hub Unbalanced (in favor)"
-screens = ["ObjectivePostgame"]
-
-[elements.field]
-fieldType = "Boolean"
-
-[[elements]]
-name = "capped"
-label = "Capped"
-screens = ["ObjectivePostgame"]
-
-[elements.field]
-fieldType = "Boolean"
-
-[[elements]]
+name = "gameElementOne"
+label = "Game Element 1"
 screens = ["ObjectivePregame"]
+
+[elements.field]
+fieldType = "Dropdown"
+options = ["Cone", "Cube"]
+
+[[elements]]
+name = "gameElementTwo"
+label = "Game Element 2"
+screens = ["ObjectivePregame"]
+
+[elements.field]
+fieldType = "Dropdown"
+options = ["Cone", "Cube"]
+
+[[elements]]
+name = "gameElementThree"
+label = "Game Element 3"
+screens = ["ObjectivePregame"]
+
+[elements.field]
+fieldType = "Dropdown"
+options = ["Cone", "Cube"]
+
+[[elements]]
+name = "gameElementFour"
+label = "Game Element 4"
+screens = ["ObjectivePregame"]
+
+[elements.field]
+fieldType = "Dropdown"
+options = ["Cone", "Cube"]
+
+[[elements]]
 name = "startingPosition"
 label = "Starting Position"
+screens = ["ObjectivePregame"]
 
 [elements.field]
 fieldType = "Dropdown"
-options = ["Freightside", "Duckside"]
+options = ["Barrier", "Co-op", "Audience"]
 
 [[elements]]
 name = "preload"
@@ -262,84 +145,127 @@ label = "Preload"
 screens = ["ObjectivePregame"]
 
 [elements.field]
+fieldType = "Dropdown"
+options = ["Cone", "Cube"]
+
+[[elements]]
+name = "autoAttempted"
+label = "Auto Attempted"
+screens = ["ObjectiveAuto"]
+
+[elements.field]
 fieldType = "Boolean"
 
 [[elements]]
-name = "rating"
-label = "Rating"
-screens = ["ObjectiveOther"]
-
-[elements.field]
-fieldType = "Numeric"
-min = 1
-max = 5
-isInteger = true
-incrementable = false
-
-[[elements]]
-name = "notes"
-label = "Notes"
-screens = ["SubjectiveTeam"]
-
-[elements.field]
-fieldType = "Text"
-
-[[elements]]
-name = "teamNumber"
-label = "Team Number"
-screens = ["PitInfo"]
+name = "conesPickedUp"
+label = "Cones Picked Up"
+screens = ["ObjectiveAuto"]
 
 [elements.field]
 fieldType = "Numeric"
 isInteger = true
-incrementable = false
+incrementable = true
+min = 0
 
 [[elements]]
-name = "scoutName"
-label = "Scout Name"
-screens = ["PitOther"]
+name = "cubesPickedUp"
+label = "Cubes Picked Up"
+screens = ["ObjectiveAuto"]
 
 [elements.field]
-fieldType = "Text"
+fieldType = "Numeric"
+isInteger = true
+incrementable = true
+min = 0
 
 [[elements]]
-name = "underBridge"
-label = "Under Bridge"
-screens = ["PitSpecifications"]
+name = "autoCubesTop"
+label = "Auto Cubes Top"
+screens = ["ObjectiveAuto"]
+
+[elements.field]
+fieldType = "Numeric"
+isInteger = true
+incrementable = true
+min = 0
+
+[[elements]]
+name = "autoCubesMiddle"
+label = "Auto Cubes Middle"
+screens = ["ObjectiveAuto"]
+
+[elements.field]
+fieldType = "Numeric"
+isInteger = true
+incrementable = true
+min = 0
+
+[[elements]]
+name = "autoCubesBottom"
+label = "Auto Cubes Bottom"
+screens = ["ObjectiveAuto"]
+
+[elements.field]
+fieldType = "Numeric"
+isInteger = true
+incrementable = true
+min = 0
+
+[[elements]]
+name = "autoConesTop"
+label = "Auto Cones Top"
+screens = ["ObjectiveAuto"]
+
+[elements.field]
+fieldType = "Numeric"
+isInteger = true
+incrementable = true
+min = 0
+
+[[elements]]
+name = "autoConesMiddle"
+label = "Auto Cones Middle"
+screens = ["ObjectiveAuto"]
+
+[elements.field]
+fieldType = "Numeric"
+isInteger = true
+incrementable = true
+min = 0
+
+[[elements]]
+name = "autoConesBottom"
+label = "Auto Cones Bottom"
+screens = ["ObjectiveAuto"]
+
+[elements.field]
+fieldType = "Numeric"
+isInteger = true
+incrementable = true
+min = 0
+
+[[elements]]
+name = "mobilityPointsAchieved"
+label = "Mobility Points Achieved"
+screens = ["ObjectiveAuto"]
 
 [elements.field]
 fieldType = "Boolean"
 
 [[elements]]
-name = "can5Ball"
-label = "Can 5 Ball"
-screens = ["PitAuto"]
-
-[elements.field]
-fieldType = "Boolean"
-
-[[elements]]
-name = "preferedCycle"
-label = "Prefered Cycle"
-screens = ["PitTeleop"]
+name = "endPosition"
+label = "End Position"
+screens = ["ObjectiveAuto"]
 
 [elements.field]
 fieldType = "Dropdown"
-options = ["Freight", "Duck"]
+options = ["Community", "Outside", "Docked", "Engaged"]
 
 [[elements]]
-name = "canPark"
-label = "Can Park"
-screens = ["PitEndgame"]
+name = "offensiveCycles"
+label = "Offensive Cycles"
+screens = ["ObjectiveTeleop"]
 
 [elements.field]
-fieldType = "Boolean"
+fieldType = "Grouping"
 
-[[elements]]
-name = "driveTrainType"
-label = "Drive Train Type"
-screens = ["PitDrive"]
-
-[elements.field]
-fieldType = "Dropdown"
-options = ["Mecanum", "Omni", "Tank", "Swerve"]

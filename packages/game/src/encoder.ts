@@ -42,7 +42,7 @@ export const encode = <T extends string>(
   type: "subjective" | "objective" | "pit"
 ) => {
   return keys.reduce((acc, key) => {
-    const elements: ScoutingElement[] = game[`${type}Elements`];
+    const elements: ScoutingElement[] = game["elements"];
     const element = elements.find((se) => se.name === key);
 
     if (!element) return acc;
@@ -80,7 +80,7 @@ export const decode = <B extends { [key: string]: string | number | boolean }>(
 
   for (let i = 0; i < keys.length; i++) {
     const key = keys[i];
-    const elements: ScoutingElement[] = game[`${type}Elements`];
+    const elements: ScoutingElement[] = game["elements"];
     const element = elements.find((se) => se.name === key);
 
     if (!element) continue;

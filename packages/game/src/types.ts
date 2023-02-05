@@ -6,13 +6,9 @@ export interface BaseElement {
   schema: ZodSchema;
 }
 
-export type ObjectiveElement = BaseElement & { screens: ObjectiveScreen[] };
-export type SubjectiveElement = BaseElement & {
-  screens: SubjectiveScreen[];
+export type ScoutingElement = BaseElement & {
+  screens: Screen[];
 };
-export type PitElement = BaseElement & { screens: PitScreen[] };
-
-export type ScoutingElement = ObjectiveElement | SubjectiveElement | PitElement;
 
 type ObjectiveScreen = `Objective${
   | "Pregame"
@@ -32,7 +28,9 @@ type PitScreen = `Pit${
   | "Other"
   | "Info"}`;
 
-export type Field =
+export type Screen = ObjectiveScreen | SubjectiveScreen | PitScreen;
+
+type NonRecursiveFields =
   | { fieldType: "Boolean" | "Text" }
   | {
       fieldType: "Numeric";
@@ -42,13 +40,15 @@ export type Field =
       incrementable: boolean;
     }
   | { fieldType: "Dropdown"; options: string[] };
+
+export type Field =
+  | NonRecursiveFields
+  | { fieldType: "Group"; fields: NonRecursiveFields[] };
 export interface YearGame {
   name: string;
   year: number;
   allianceSize: number;
   description: string;
 
-  objectiveElements: ObjectiveElement[];
-  subjectiveElements: SubjectiveElement[];
-  pitElements: PitElement[];
+  elements: ScoutingElement[];
 }
