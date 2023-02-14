@@ -536,7 +536,7 @@ elements:
   - name: robotLength
     label: Robot Length
     screens:
-      - PitDrive
+      - PitSpecifications
     field:
       fieldType: Numeric
       isInteger: false
@@ -545,7 +545,7 @@ elements:
   - name: robotWidth
     label: Robot Width
     screens:
-      - PitDrive
+      - PitSpecifications
     field:
       fieldType: Numeric
       isInteger: false
