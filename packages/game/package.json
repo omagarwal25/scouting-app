@@ -34,6 +34,7 @@
       "command": "ts-node ./scripts/generateGame.ts",
       "files": [
         "scripts/generateGame.ts",
+        "scripts/helpers.ts",
         "game.yaml",
         "game.toml",
         "game.json"
@@ -46,7 +47,8 @@
       "command": "ts-node ./scripts/generateScreens.ts",
       "files": [
         "scripts/generateScreens.ts",
-        "screens.yaml"
+        "screens.yaml",
+        "scripts/helpers.ts"
       ],
       "output": [
         "src/screens.ts",

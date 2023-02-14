@@ -1,8 +1,7 @@
-import { JSONSchema7 } from "json-schema";
-import jsonSchemaToZod from "json-schema-to-zod";
 import { CodeBlockWriter, Project, VariableDeclarationKind } from "ts-morph";
 import { game } from "../src/game";
 import { ScoutingElement } from "../src/types";
+import { getSchema } from "./helpers";
 
 // get all screens remove dupes
 const screens = game.elements
@@ -32,40 +31,24 @@ function writeSchema(screen: string, elements: ScoutingElement[]) {
   const objectMap: Record<string, { zod: string; default: string }> = {};
 
   elements.forEach((element) => {
-    const schema: JSONSchema7 = {};
     let defaultStr = "";
 
     if (element.field.fieldType === "Boolean") {
-      schema.type = "boolean";
       defaultStr = "false";
     } else if (element.field.fieldType === "Text") {
-      schema.type = "string";
       defaultStr = `""`;
     } else if (element.field.fieldType === "Numeric") {
-      schema.type = "number";
       if (element.field.min !== undefined) {
-        schema.minimum = element.field.min;
         defaultStr = `${element.field.min}`;
       } else {
-        schema.default = 0;
         defaultStr = "0";
       }
-      if (element.field.max !== undefined) {
-        schema.maximum = element.field.max;
-      }
-      if (element.field.isInteger) {
-        schema.multipleOf = 1;
-      }
     } else if (element.field.fieldType === "Dropdown") {
-      schema.type = "string";
-      schema.enum = element.field.options;
       defaultStr = `"${element.field.options[0]}"`;
     }
 
     objectMap[element.name] = {
-      zod: jsonSchemaToZod(schema, undefined, false)
-        .split("=")[1]
-        .replace(";", ""),
+      zod: getSchema(element.field),
       default: `.default(${defaultStr})`,
     };
   });

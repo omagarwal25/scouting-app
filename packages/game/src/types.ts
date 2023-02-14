@@ -30,7 +30,7 @@ type PitScreen = `Pit${
 
 export type Screen = ObjectiveScreen | SubjectiveScreen | PitScreen;
 
-type NonRecursiveFields =
+export type Field =
   | { fieldType: "Boolean" | "Text" }
   | {
       fieldType: "Numeric";
@@ -39,11 +39,9 @@ type NonRecursiveFields =
       isInteger: boolean;
       incrementable: boolean;
     }
-  | { fieldType: "Dropdown"; options: string[] };
+  | { fieldType: "Dropdown"; options: string[] }
+  | { fieldType: "Grouping"; fields: ScoutingElement[] };
 
-export type Field =
-  | NonRecursiveFields
-  | { fieldType: "Group"; fields: NonRecursiveFields[] };
 export interface YearGame {
   name: string;
   year: number;

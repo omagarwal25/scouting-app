@@ -2,7 +2,8 @@ import TOML from "@ltd/j-toml";
 import fs from "fs";
 import { CodeBlockWriter, Project, VariableDeclarationKind } from "ts-morph";
 import { parse } from "yaml";
-import { Field, YearGame } from "../src/types";
+import { YearGame } from "../src/types";
+import { getSchema } from "./helpers";
 
 // check if game.yaml exists
 function getType() {
@@ -27,42 +28,47 @@ function getYearGame(type: ReturnType<typeof getType>) {
   }
 }
 
-function getSchema(field: Field) {
-  if (field.fieldType === "Boolean") {
-    return "z.boolean()";
-  } else if (field.fieldType === "Text") {
-    // make sure that there isn't any $, !, @, or, ? in the string
-    return "z.string().refine((v) => {console.log(v); return !/[$!@?]/.test(v);}, { message: '❌ Cannot contain $, !, @, or ?' })";
-  } else if (field.fieldType === "Numeric") {
-    let schema = "z.number()";
-    if (field.isInteger) {
-      schema += ".int()";
-    }
-    if (field.min !== undefined) {
-      schema += `.gte(${field.min})`;
-    }
-    if (field.max !== undefined) {
-      schema += `.lte(${field.max})`;
-    }
-    return schema;
-  } else if (field.fieldType === "Dropdown") {
-    return `z.enum([${field.options.map((o) => `"${o}"`).join(", ")}])`;
-  } else {
-    throw new Error(`❌ Unknown field type ${field.fieldType}`);
-  }
-}
-
 const info = getYearGame(getType());
 
 const elements = info.elements.map((element) => {
   const zSchema = getSchema(element.field);
+
+  if (element.field.fieldType === "Grouping") {
+    element.field.fields.forEach((f) => {
+      if (f.field.fieldType === "Grouping") {
+        throw new Error(
+          `❌ Grouping elements cannot be nested. Please remove ${f.name} from ${element.name}`
+        );
+      }
+    });
+
+    return {
+      name: element.name,
+      label: element.label,
+      screens: element.screens,
+      schema: zSchema,
+      field: `{
+        fieldType: "Grouping",
+        fields: [${element.field.fields.map(
+          (f) =>
+            `{
+              name: "${f.name}",
+              label: "${f.label}",
+              screens: ${JSON.stringify(f.screens)},
+              field: ${JSON.stringify(f.field)},
+              schema: ${getSchema(f.field)},
+            }`
+        )}]
+      }`,
+    };
+  }
 
   return {
     name: element.name,
     label: element.label,
     screens: element.screens,
     schema: zSchema,
-    field: element.field,
+    field: JSON.stringify(element.field),
   };
 });
 
@@ -102,7 +108,7 @@ if (info.allianceSize === 3) subjectiveRequired.push("teamThreeNumber");
 subjectiveRequired.forEach((name) => {
   if (!subjectiveNames.includes(name)) {
     throw new Error(
-      `❌ Scoring element ${name} is required in subjectiveELements`
+      `❌ Scoring element ${name} is required in subjectiveElements`
     );
   }
 });
@@ -142,7 +148,7 @@ main.addVariableStatement({
               writer.writeLine(`label: "${element.label}",`);
               writer.writeLine(`screens: ${JSON.stringify(element.screens)},`);
               writer.writeLine(`field:`);
-              writer.writeLine(JSON.stringify(element.field) + ",");
+              writer.writeLine(element.field + ",");
               writer.writeLine(`schema: ${element.schema}`);
             });
 
