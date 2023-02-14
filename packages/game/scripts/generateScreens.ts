@@ -45,6 +45,8 @@ function writeSchema(screen: string, elements: ScoutingElement[]) {
       }
     } else if (element.field.fieldType === "Dropdown") {
       defaultStr = `"${element.field.options[0]}"`;
+    } else if (element.field.fieldType === "Grouping") {
+      defaultStr = `[]`;
     }
 
     objectMap[element.name] = {
