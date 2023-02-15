@@ -9,7 +9,7 @@ import {
   PitTobar,
   SubjectiveTopbar,
 } from '~/components/Topbar';
-import { game, ScoutingElement } from '~/models';
+import { game, Screen } from '~/models';
 import { RootStackParamList, RootTabScreenProps } from '~/types';
 import { FieldInput } from './FieldInput';
 
@@ -20,6 +20,8 @@ type Props<
   atom: WritableAtom<T, T>;
   navigation: RootTabScreenProps;
   nextPage: B;
+  currentPage: B;
+  screen: Screen;
   readonly keys: readonly Path<T>[];
   zodSchema: ZodSchema;
   type:
@@ -32,6 +34,12 @@ type Props<
       };
 };
 
+const getElement = (name: string, screen: Screen) => {
+  return game.elements.find(
+    (e) => e.name === name && e.screens.includes(screen)
+  );
+};
+
 export const InputModal = <
   T extends object,
   B extends keyof RootStackParamList
@@ -41,8 +49,9 @@ export const InputModal = <
   keys,
   nextPage,
   zodSchema,
+  screen,
   type,
-}: Props<T, B>) => {
+}: Omit<Props<T, B>, 'currentPage'>) => {
   const [state, setState] = useAtom(atom);
 
   const {
@@ -57,29 +66,9 @@ export const InputModal = <
   const onSubmit = handleSubmit((f) => {
     setState(f as T);
     navigation.navigation.navigate(
-      ...([nextPage] as [screen: keyof RootStackParamList])
+      ...([nextPage] as [keyof RootStackParamList])
     );
   });
-
-  const elements = new Map<string, ScoutingElement>();
-
-  // game.objectiveElements.forEach((element) => {
-  //   objectiveElements.set(element.name, element);
-  // });
-
-  if (type.name === 'objective') {
-    game.objectiveElements.forEach((element) => {
-      elements.set(element.name, element);
-    });
-  } else if (type.name === 'subjective') {
-    game.subjectiveElements.forEach((element) => {
-      elements.set(element.name, element);
-    });
-  } else {
-    game.pitElements.forEach((element) => {
-      elements.set(element.name, element);
-    });
-  }
 
   return (
     <>
@@ -97,9 +86,9 @@ export const InputModal = <
             error={
               (errors as Record<keyof T, FieldError>)[e as unknown as keyof T]
             }
-            field={elements.get(e)!!.field}
-            label={elements.get(e)!!.label}
-            key={elements.get(e)!!.name}
+            field={getElement(e, screen)!!.field}
+            label={getElement(e, screen)!!.label}
+            key={getElement(e, screen)!!.name}
           />
         ))}
         <Button label="Next" onPress={onSubmit} />
@@ -108,22 +97,29 @@ export const InputModal = <
   );
 };
 
-export const scoringCardFactory =
-  <T extends object, B extends keyof RootStackParamList>({
-    atom,
-    keys,
-    nextPage,
-    zodSchema,
-    type,
-  }: Omit<Props<T, B>, 'navigation'>) =>
-  (navigation: RootTabScreenProps) =>
-    (
+export const scoringCardFactory = <
+  T extends object,
+  B extends keyof RootStackParamList
+>({
+  atom,
+  keys,
+  nextPage,
+  zodSchema,
+  currentPage,
+  type,
+  screen,
+}: Omit<Props<T, B>, 'navigation'>) =>
+  [
+    (navigation: RootTabScreenProps) => (
       <InputModal
         atom={atom}
         navigation={navigation}
         keys={keys}
+        screen={screen}
         nextPage={nextPage}
         zodSchema={zodSchema}
         type={type}
       />
-    );
+    ),
+    currentPage,
+  ] as const;

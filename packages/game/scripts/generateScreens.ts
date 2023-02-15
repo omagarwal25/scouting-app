@@ -1,6 +1,7 @@
 import { CodeBlockWriter, Project, VariableDeclarationKind } from "ts-morph";
+
 import { game } from "../src/game";
-import { ScoutingElement } from "../src/types";
+import { Field, ScoutingElement } from "../src/types";
 import { getSchema } from "./helpers";
 
 // get all screens remove dupes
@@ -27,32 +28,54 @@ defaultFile.addImportDeclaration({
   namedImports: ["z"],
 });
 
+function getDefault(field: Field) {
+  if (field.fieldType !== "Grouping" && field.default !== undefined)
+    return JSON.stringify(field.default);
+
+  if (field.fieldType === "Boolean") {
+    return "false";
+  } else if (field.fieldType === "Text") {
+    return `""`;
+  } else if (field.fieldType === "Numeric") {
+    if (field.min !== undefined) {
+      return `${field.min}`;
+    } else {
+      return "0";
+    }
+  } else if (field.fieldType === "Dropdown") {
+    return `"${field.options[0]}"`;
+  } else if (field.fieldType === "Grouping") {
+    return `[]`;
+  }
+}
+
 function writeSchema(screen: string, elements: ScoutingElement[]) {
   const objectMap: Record<string, { zod: string; default: string }> = {};
 
   elements.forEach((element) => {
-    let defaultStr = "";
+    if (element.field.fieldType !== "Grouping") {
+      objectMap[element.name] = {
+        zod: getSchema(element.field),
+        default: `.default(${getDefault(element.field)})`,
+      };
+    } else {
+      // as its a we need to have defaults for every value.....
 
-    if (element.field.fieldType === "Boolean") {
-      defaultStr = "false";
-    } else if (element.field.fieldType === "Text") {
-      defaultStr = `""`;
-    } else if (element.field.fieldType === "Numeric") {
-      if (element.field.min !== undefined) {
-        defaultStr = `${element.field.min}`;
-      } else {
-        defaultStr = "0";
-      }
-    } else if (element.field.fieldType === "Dropdown") {
-      defaultStr = `"${element.field.options[0]}"`;
-    } else if (element.field.fieldType === "Grouping") {
-      defaultStr = `[]`;
+      const fields = element.field.fields.map((field) => {
+        return {
+          name: field.name,
+          zod: getSchema(field.field),
+          default: `.default(${getDefault(field.field)})`,
+        };
+      });
+
+      objectMap[element.name] = {
+        zod: `z.array(z.object({${fields
+          .map((field) => `${field.name}: ${field.zod}${field.default}`)
+          .join(",")}}))`,
+        default: `.default([])`,
+      };
     }
-
-    objectMap[element.name] = {
-      zod: getSchema(element.field),
-      default: `.default(${defaultStr})`,
-    };
   });
 
   // const schema = z.object(objectMap);

@@ -31,15 +31,17 @@ type PitScreen = `Pit${
 export type Screen = ObjectiveScreen | SubjectiveScreen | PitScreen;
 
 export type Field =
-  | { fieldType: "Boolean" | "Text" }
+  | { fieldType: "Boolean"; default?: boolean }
+  | { fieldType: "Text"; default?: string }
   | {
       fieldType: "Numeric";
       min?: number;
       max?: number;
       isInteger: boolean;
       incrementable: boolean;
+      default?: number;
     }
-  | { fieldType: "Dropdown"; options: string[] }
+  | { fieldType: "Dropdown"; options: string[]; default?: string }
   | { fieldType: "Grouping"; fields: ScoutingElement[] };
 
 export interface YearGame {

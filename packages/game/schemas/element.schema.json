@@ -48,7 +48,26 @@
           "properties": {
             "fieldType": {
               "type": "string",
-              "enum": ["Text", "Boolean"]
+              "enum": ["Text"]
+            },
+            "default": {
+              "type": "string",
+              "description": "The default value of the field"
+            }
+          },
+
+          "required": ["fieldType"]
+        },
+        {
+          "properties": {
+            "fieldType": {
+              "type": "string",
+              "enum": ["Boolean"]
+            },
+            "default": {
+              "type": "boolean",
+              "description": "The default value of the field",
+              "default": false
             }
           },
 
@@ -59,6 +78,10 @@
             "fieldType": {
               "type": "string",
               "enum": ["Numeric"]
+            },
+            "default": {
+              "type": "number",
+              "description": "The default value of the field"
             },
             "incrementable": {
               "type": "boolean",
@@ -87,6 +110,10 @@
             "fieldType": {
               "type": "string",
               "enum": ["Dropdown"]
+            },
+            "default": {
+              "type": "string",
+              "description": "The default value of the field"
             },
             "options": {
               "minItems": 1,

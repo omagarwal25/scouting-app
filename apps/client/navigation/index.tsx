@@ -1,8 +1,3 @@
-/**
- * If you are not familiar with React Navigation, refer to the "Fundamentals" guide:
- * https://reactnavigation.org/docs/getting-started
- *
- */
 import {
   DarkTheme,
   DefaultTheme,
@@ -12,9 +7,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ColorSchemeName } from 'react-native';
 import { QRCodeCard, RootScreen, ScannerCard } from '~/screens';
 import { scoringCards } from '~/screens/Modals';
-import NotFoundScreen from '~/screens/NotFoundScreen';
+import { NotFoundScreen } from '~/screens/NotFoundScreen';
 import { RootStackParamList } from '~/types';
-import LinkingConfiguration from './LinkingConfiguration';
+import { linking as LinkingConfiguration } from './LinkingConfiguration';
 
 export default function avigation({
   colorScheme,
@@ -31,10 +26,6 @@ export default function avigation({
   );
 }
 
-/**
- * A root stack navigator is often used for displaying modals on top of all other content.
- * https://reactnavigation.org/docs/modal
- */
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
@@ -51,8 +42,8 @@ function RootNavigator() {
         options={{ title: 'Oops!' }}
       />
       <Stack.Group screenOptions={{ presentation: 'card' }}>
-        {scoringCards.map((e) => (
-          <Stack.Screen key={e.name} name={e.name} component={e.factory} />
+        {scoringCards.map(([component, name]) => (
+          <Stack.Screen key={name} name={name} component={component} />
         ))}
         <Stack.Screen name="QR" component={QRCodeCard} />
         <Stack.Screen name="Scanner" component={ScannerCard} />

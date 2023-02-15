@@ -25,6 +25,6 @@ export function getSchema(field: Field): string {
       ${field.fields.map((f) => `${f.name}: ${getSchema(f.field)}`).join(",\n")}
     }))`;
   } else {
-    throw new Error(`❌ Unknown field type ${field.fieldType}`);
+    throw new Error(`❌ Unknown field type ${field}`);
   }
 }

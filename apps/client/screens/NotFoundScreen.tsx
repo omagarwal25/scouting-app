@@ -1,10 +1,9 @@
-import { TouchableOpacity } from 'react-native';
-import { Text } from 'react-native';
+import { Text, TouchableOpacity } from 'react-native';
 import { Container } from '~/components/Container';
 import { RootTabScreenProps } from '~/types';
 import tw from '~/utils/tailwind';
 
-export default function NotFoundScreen({ navigation }: RootTabScreenProps) {
+export function NotFoundScreen({ navigation }: RootTabScreenProps) {
   return (
     <Container>
       <Text style={tw`text-xl font-bold`}>This screen doesn't exist.</Text>
