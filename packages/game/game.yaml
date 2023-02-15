@@ -272,6 +272,7 @@ elements:
         - label: Collection Point
           name: collectionPoint
           field:
+            default: Single
             fieldType: Dropdown
             options:
               - Loading Zone

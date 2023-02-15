@@ -120,10 +120,11 @@ function writeSchema(screen: string, elements: ScoutingElement[]) {
   });
 
   defaultFile.addVariableStatement({
+    isExported: true,
     declarationKind: VariableDeclarationKind.Const,
     declarations: [
       {
-        name: lowerCaseFirstLetter(screen) + "Schema",
+        name: lowerCaseFirstLetter(screen) + "DefaultSchema",
         initializer: (w: CodeBlockWriter) => {
           w.write("z.object(");
           w.block(() => {
@@ -251,9 +252,9 @@ defaultFile.addVariableStatement({
             .forEach((screen) => {
               w.write(
                 `${lowerCaseFirstLetter(screen.slice("objective".length))}: ${
-                  lowerCaseFirstLetter(screen) + "Schema"
+                  lowerCaseFirstLetter(screen) + "DefaultSchema"
                 }.default(${
-                  lowerCaseFirstLetter(screen) + "Schema"
+                  lowerCaseFirstLetter(screen) + "DefaultSchema"
                 }.parse({})),`
               );
             });
@@ -280,9 +281,9 @@ defaultFile.addVariableStatement({
               w.write(
                 // remove the pit from the screen name
                 `${lowerCaseFirstLetter(screen.slice("pit".length))}: ${
-                  lowerCaseFirstLetter(screen) + "Schema"
+                  lowerCaseFirstLetter(screen) + "DefaultSchema"
                 }.default(${
-                  lowerCaseFirstLetter(screen) + "Schema"
+                  lowerCaseFirstLetter(screen) + "DefaultSchema"
                 }.parse({})),`
               );
             });
@@ -304,23 +305,23 @@ defaultFile.addVariableStatement({
         w.block(() => {
           // grab all the screens
           w.write(
-            "teamOne: subjectiveTeamSchema.default(subjectiveTeamSchema.parse({})),"
+            "teamOne: subjectiveTeamDefaultSchema.default(subjectiveTeamDefaultSchema.parse({})),"
           );
 
           w.write(
-            "teamTwo: subjectiveTeamSchema.default(subjectiveTeamSchema.parse({})),"
+            "teamTwo: subjectiveTeamDefaultSchema.default(subjectiveTeamDefaultSchema.parse({})),"
           );
 
           w.write(
-            "teamThree: subjectiveTeamSchema.default(subjectiveTeamSchema.parse({})),"
+            "teamThree: subjectiveTeamDefaultSchema.default(subjectiveTeamDefaultSchema.parse({})),"
           );
 
           w.write(
-            "info: subjectiveInfoSchema.default(subjectiveInfoSchema.parse({})),"
+            "info: subjectiveInfoDefaultSchema.default(subjectiveInfoDefaultSchema.parse({})),"
           );
 
           w.write(
-            "other: subjectiveOtherSchema.default(subjectiveOtherSchema.parse({}))"
+            "other: subjectiveOtherDefaultSchema.default(subjectiveOtherDefaultSchema.parse({}))"
           );
         });
 
