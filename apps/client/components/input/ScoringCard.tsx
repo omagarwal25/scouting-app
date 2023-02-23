@@ -1,6 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { SetStateAction, useAtom, WritableAtom } from 'jotai';
+import { Fragment, useEffect } from 'react';
 import { DeepPartial, FieldError, Path, useForm } from 'react-hook-form';
+import { Text, View } from 'react-native';
 import { ZodObject, ZodSchema } from 'zod';
 import { Button } from '~/components/Button';
 import { Container } from '~/components/Container';
@@ -11,6 +13,7 @@ import {
 } from '~/components/Topbar';
 import { game, ScoutingElement, Screen } from '~/models';
 import { RootStackParamList, RootTabScreenProps } from '~/types';
+import tw from '~/utils/tailwind';
 import { FieldInput } from './FieldInput';
 
 type Props<
@@ -60,6 +63,9 @@ export const InputModal = <
     handleSubmit,
     control,
     formState: { errors },
+    watch,
+    formState,
+    formState: { isValidating },
     setValue,
     getValues,
   } = useForm<T>({
@@ -71,29 +77,64 @@ export const InputModal = <
     const values = getValues();
 
     if (values[name] === undefined) {
-      const blank = defaults.shape[name].element.parse({});
+      const blank = defaults.shape[name].removeDefault().element.parse({});
 
       setValue(name as unknown as Path<T>, [blank] as any);
       return;
     }
 
     setValue(
-      name as unknown as Path<T>,
-      [...(values[name] as any), defaults.shape[name].element.parse({})] as any
+      `${name as string}.${
+        (values[name] as any[]).length
+      }` as unknown as Path<T>,
+
+      defaults.shape[name].removeDefault().element.parse({})
     );
   };
 
-  const onSubmit = handleSubmit((f) => {
-    setState(f as T);
+  const removeGrouping = (name: keyof T, index: number) => {
+    const values = getValues();
+
+    if (values[name] === undefined) {
+      return;
+    }
+
+    const newValues = (values[name] as any[]).filter((_, i) => i !== index);
+
+    setValue(name as unknown as Path<T>, newValues as any);
+  };
+
+  const onSubmit = handleSubmit(
+    (f) => {
+      console.log('hello its me');
+      setState(f as T);
+    },
+    (f) => console.log(f)
+  );
+
+  const onSubmitAndNavigate = () => {
+    onSubmit();
+
     navigation.navigation.navigate(
       ...([nextPage] as [keyof RootStackParamList])
     );
-  });
+  };
+
+  const data = watch();
 
   const groupings = keys
     .map((e) => getElement(e, screen))
     .filter((e) => e?.field.fieldType === 'Grouping')
-    .filter((e) => e !== undefined) as ScoutingElement[];
+    .filter((e) => e !== undefined)
+    .map(
+      (e) => [e as ScoutingElement, (data as any)[e!.name] as any[]] as const
+    );
+
+  useEffect(() => {
+    if (formState.isValid && !isValidating) {
+      onSubmit();
+    }
+  }, [data, isValidating, formState, onSubmit]);
 
   return (
     <>
@@ -117,16 +158,56 @@ export const InputModal = <
               label={getElement(e, screen)!!.label}
               key={getElement(e, screen)!!.name}
             />
-          ))} 
-  
-        {groupings.map((e) => (
-          <Button
-            key={e.name}
-            label={`Add ${e.label}`}
-            onPress={() => addGrouping(e.name as keyof T)}
-          />
+          ))}
+
+        {groupings.map(([e, data]) => (
+          <Fragment key={e.name}>
+            <Text style={tw`dark:text-white mt-2`}>{e.label}</Text>
+            {data.length > 0 ? (
+              data.map((_, i) => (
+                <Fragment key={i}>
+                  <Text style={tw`dark:text-white`}>Group {i}</Text>
+                  {e.field.fieldType === 'Grouping' &&
+                    e.field.fields.map((f) => (
+                      <FieldInput
+                        control={{
+                          control,
+                          name: `${e.name}.${i}.${f.name}` as any,
+                        }}
+                        error={
+                          (errors as Record<keyof T, FieldError>)[
+                            `${e.name}.${i}.${f.name}` as unknown as keyof T
+                          ]
+                        }
+                        field={f.field}
+                        label={f.label}
+                        key={f.name}
+                      />
+                    ))}
+                  <Button
+                    label="Delete"
+                    onPress={() => removeGrouping(e.name as keyof T, i)}
+                  />
+                </Fragment>
+              ))
+            ) : (
+              <Text style={tw`dark:text-white`}>None</Text>
+            )}
+          </Fragment>
         ))}
-        <Button label="Next" onPress={onSubmit} />
+
+        {groupings.map(([e, _]) => (
+          <View style={tw`mt-0.5`}>
+            <Button
+              key={e.name}
+              label={`Add ${e.label}`}
+              onPress={() => addGrouping(e.name as keyof T)}
+            />
+          </View>
+        ))}
+        <Text style={tw`mt-0.5`}>
+          <Button label="Next" onPress={onSubmitAndNavigate} />
+        </Text>
       </Container>
     </>
   );

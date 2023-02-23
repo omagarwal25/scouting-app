@@ -46,6 +46,8 @@ export const useCurrentGameStore = defineStore('currentGameStore', {
       await Promise.all(
         this.records.map((record) => client.record.createRecord.mutate(record))
       );
+
+      client.match.importFromTba.mutate();
     },
 
     async undo() {

@@ -4,28 +4,13 @@ import express from "express";
 import { expressHandler } from "trpc-playground/handlers/express";
 import { createContext } from "./context.js";
 import { matchRouter } from "./router/match.js";
-import { objectiveRecordRouter } from "./router/objectiveRecord.js";
-import { pitRecordRouter } from "./router/pitRecord.js";
 import { recordRouter } from "./router/record.js";
-import { subjectiveRecordRouter } from "./router/subjectiveRecord.js";
 import { router } from "./trpc.js";
 import { env } from "./utils/env.js";
-
-export type {
-  Match,
-  MatchType,
-  ObjectiveRecord as DBObjectiveRecordModel,
-  PitRecord as DBPitRecordModel,
-  SubjectiveRecord as DBSubjectiveRecordModel,
-  Team,
-} from "@prisma/client";
 
 const appRouter = router({
   record: recordRouter,
   match: matchRouter,
-  objectiveRecord: objectiveRecordRouter,
-  pitRecord: pitRecordRouter,
-  subjectiveRecord: subjectiveRecordRouter,
 });
 
 export type AppRouter = typeof appRouter;

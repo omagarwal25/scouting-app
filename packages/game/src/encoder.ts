@@ -67,18 +67,21 @@ export const encode = <T extends string>(
       return (
         acc +
         (state[key] as Record<string, string | number | boolean>[])
-          .map((i) => encodeCycle(i, screen))
-          .join("/")
+          .map((i) => encodeCycle(i, screen, element))
+          .join("/") +
+        "$"
       );
   }, "");
 };
 
 const encodeCycle = (
   state: Record<string, number | string | boolean>,
-  screen: Screen
+  screen: Screen,
+  grouping: ScoutingElement
 ) => {
   return Object.keys(state).reduce((acc, key) => {
-    const elements: ScoutingElement[] = game["elements"];
+    if (grouping.field.fieldType !== "Grouping") return acc;
+    const elements: ScoutingElement[] = grouping.field.fields;
     const element = elements.find(
       (se) => se.name === key && se.screens.includes(screen)
     );
@@ -161,7 +164,9 @@ const decodeCycle = (
 ): Record<string, string | number | boolean> => {
   const state: Record<string, string | number | boolean> = {};
   const split = str.split("|");
-  const elements: ScoutingElement[] = game["elements"];
+
+  if (grouping.field.fieldType !== "Grouping") return state;
+  const elements: ScoutingElement[] = grouping.field.fields;
   if (grouping.field.fieldType !== "Grouping") return state;
 
   const keys = grouping.field.fields.map((g) => g.name);

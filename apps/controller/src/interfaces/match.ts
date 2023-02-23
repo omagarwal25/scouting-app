@@ -1,105 +1,96 @@
 export interface TBAMatch {
-  actual_time: number;
+  actual_time: number | null;
   alliances: Alliances;
   comp_level: CompLevel;
   event_key: string;
   key: string;
   match_number: number;
-  post_result_time: number;
-  predicted_time: number;
-  score_breakdown: ScoreBreakdown;
+  post_result_time: number | null;
+  predicted_time: number | null;
+  score_breakdown: ScoreBreakdown | null;
   set_number: number;
   time: number;
-  videos: Video[];
+  videos: any[];
   winning_alliance: WinningAlliance;
 }
 
-interface Alliances {
+export interface Alliances {
   blue: AlliancesBlue;
   red: AlliancesBlue;
 }
 
-interface AlliancesBlue {
-  dq_team_keys: string[];
+export interface AlliancesBlue {
+  dq_team_keys: any[];
   score: number;
   surrogate_team_keys: any[];
   team_keys: string[];
 }
 
-type CompLevel = "f" | "qf" | "qm" | "sf";
+export type CompLevel = "ef" | "f" | "qf" | "qm" | "sf";
 
-interface ScoreBreakdown {
-  blue: ScoreBreakdownBlue;
-  red: ScoreBreakdownBlue;
+export interface ScoreBreakdown {
+  blue: AllianceScoreBreakdown;
+  red: AllianceScoreBreakdown;
 }
 
-interface ScoreBreakdownBlue {
-  adjustPoints: number;
-  autoCargoLowerBlue: number;
-  autoCargoLowerFar: number;
-  autoCargoLowerNear: number;
-  autoCargoLowerRed: number;
-  autoCargoPoints: number;
-  autoCargoTotal: number;
-  autoCargoUpperBlue: number;
-  autoCargoUpperFar: number;
-  autoCargoUpperNear: number;
-  autoCargoUpperRed: number;
+export interface AllianceScoreBreakdown {
+  activationBonusAchieved: boolean;
+  adjustPoints: number // NO;
+  autoBridgeState: BridgeState;
+  autoChargeStationPoints: number;
+  autoChargeStationRobot1: ChargeStation;
+  autoChargeStationRobot2: ChargeStation;
+  autoChargeStationRobot3: ChargeStation;
+  autoCommunity: Community;
+  autoDocked: boolean;
+  autoGamePieceCount: number;
+  autoGamePiecePoints: number;
+  autoMobilityPoints: number;
   autoPoints: number;
-  autoTaxiPoints: number;
-  cargoBonusRankingPoint: boolean;
-  endgamePoints: number;
-  endgameRobot1: EndgameRobot;
-  endgameRobot2: EndgameRobot;
-  endgameRobot3: EndgameRobot;
+  coopGamePieceCount: number;
+  coopertitionCriteriaMet: boolean;
+  endGameBridgeState: BridgeState;
+  endGameChargeStationPoints: number;
+  endGameChargeStationRobot1: ChargeStation;
+  endGameChargeStationRobot2: ChargeStation;
+  endGameChargeStationRobot3: ChargeStation;
+  endGameParkPoints: number; // no;
   foulCount: number;
   foulPoints: number;
-  hangarBonusRankingPoint: boolean;
-  matchCargoTotal: number;
-  quintetAchieved: boolean;
+  linkPoints: number;
+  links: Link[]; // NO;
+  mobilityRobot1: MobilityRobot;
+  mobilityRobot2: MobilityRobot;
+  mobilityRobot3: MobilityRobot;
   rp: number;
-  taxiRobot1: TaxiRobot;
-  taxiRobot2: TaxiRobot;
-  taxiRobot3: TaxiRobot;
+  sustainabilityBonusAchieved: boolean;
   techFoulCount: number;
-  teleopCargoLowerBlue: number;
-  teleopCargoLowerFar: number;
-  teleopCargoLowerNear: number;
-  teleopCargoLowerRed: number;
-  teleopCargoPoints: number;
-  teleopCargoTotal: number;
-  teleopCargoUpperBlue: number;
-  teleopCargoUpperFar: number;
-  teleopCargoUpperNear: number;
-  teleopCargoUpperRed: number;
+  teleopCommunity: Community; // convert to x top, y middle, z bottom;
+  teleopGamePieceCount: number;
+  teleopGamePiecePoints: number;
   teleopPoints: number;
+  totalChargeStationPoints: number;
   totalPoints: number;
 }
 
-enum EndgameRobot {
-  High = "High",
-  Low = "Low",
-  Mid = "Mid",
-  None = "None",
-  Traversal = "Traversal",
+export type BridgeState = "Level" | "NotLevel";
+export type ChargeStation = "Docked" | "None" | "Park";
+
+export interface Community {
+  B: Node[];
+  M: Node[];
+  T: Node[];
 }
 
-enum TaxiRobot {
-  No = "No",
-  Yes = "Yes",
+export type Node = "Cone" | "Cube" | "None";
+
+export interface Link {
+  nodes: number[];
+  row: Row;
 }
 
-interface Video {
-  key: string;
-  type: Type;
-}
+export type Row = "Bottom" | "Middle" | "Top";
 
-enum Type {
-  Youtube = "youtube",
-}
+type MobilityRobot = "Yes" | "No";
 
-enum WinningAlliance {
-  Blue = "blue",
-  Empty = "",
-  Red = "red",
-}
+export type WinningAlliance = "blue" | "" | "red";

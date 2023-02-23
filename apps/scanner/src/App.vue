@@ -9,14 +9,13 @@
     <div class="w-full p-4">
       <ScannerDash />
       <Codes v-if="store.currentMatch" :match="store.currentMatch" />
-      <div v-else>Hello</div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import ScannerDash from './components/scanner/ScannerDash.vue';
 import Codes from './components/display/Codes.vue';
+import ScannerDash from './components/scanner/ScannerDash.vue';
 import { useCurrentGameStore } from './store';
 
 const store = useCurrentGameStore();

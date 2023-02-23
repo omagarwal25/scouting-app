@@ -1,4 +1,8 @@
-import { envsafe, str, port, url } from "envsafe";
+import dotenv from "dotenv";
+import { envsafe, port, str, url } from "envsafe";
+
+dotenv.config();
+
 
 export const env = envsafe({
   NODE_ENV: str({
@@ -11,4 +15,5 @@ export const env = envsafe({
   X_TBA_AUTH_KEY: str(),
   DATABASE_URL: url(),
   EVENT_CODE: str(),
+  SHEET_ID: str(),
 });

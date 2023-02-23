@@ -1,8 +1,7 @@
-import type { MatchType } from "@prisma/client";
+import { ObjectiveInfo } from "@griffins-scout/game";
 import got from "got";
 
-import type { TBAMatch } from "../interfaces/match.js";
-import type { TBATeam } from "../interfaces/team.js";
+import type { CompLevel, TBAMatch } from "../interfaces/match.js";
 import { env } from "./env.js";
 
 const tbaBaseUrl = "https://www.thebluealliance.com/api/v3";
@@ -19,35 +18,24 @@ export const getMatches = async () => {
   }).json<TBAMatch[]>();
 };
 
-export const getTeam = async (teamNumber: number) => {
-  return got(`${tbaBaseUrl}/team/frc${teamNumber}`, {
-    headers: {
-      "X-TBA-Auth-Key": env.X_TBA_AUTH_KEY,
-    },
-  }).json<TBATeam>();
-};
+// export const getTeam = async (teamNumber: number) => {
+//   return got(`${tbaBaseUrl}/team/frc${teamNumber}`, {
+//     headers: {
+//       "X-TBA-Auth-Key": env.X_TBA_AUTH_KEY,
+//     },
+//   }).json<TBATeam>();
+// };
+
+// export const teamKeyToNumber = (teamKey: string) => {
+//   return parseInt(teamKey.split("frc")[1]);
+// };
 
 export const compLevelToMatchType = (
-  level: TBAMatch["comp_level"]
-): MatchType => {
-  if (level === "f") return "FINAL";
-  else if (level === "sf") return "SEMIFINAL";
-  else if (level === "qf") return "QUARTERFINAL";
-  else return "QUALIFICATION";
-};
-
-export const teamKeyToNumber = (teamKey: string) => {
-  return parseInt(teamKey.split("frc")[1]);
-};
-
-export const matchToMatchLevel = (match: TBAMatch) => {
-  const matchType = compLevelToMatchType(match.comp_level);
-
-  if (["FINAL", "QUALIFICATION", "PRACTICE"].includes(matchType)) {
-    return match.match_number;
+  compLevel: CompLevel
+): ObjectiveInfo["matchType"] => {
+  if (compLevel === "qm") {
+    return "Qualification";
+  } else {
+    return "Elimination";
   }
-
-  const totalSets = matchType === "SEMIFINAL" ? 2 : 4;
-
-  return (match.match_number - 1) * totalSets + match.set_number;
 };

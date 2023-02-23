@@ -19,7 +19,7 @@ export const TextInput = <T extends object>(props: Props<T>) => {
   return (
     <InputWrapper label={props.label}>
       <RInput
-        style={tw`border h-10 p-2.5 rounded mr-0 ml-auto border-griffins-blue dark:border-pheonix-red dark:text-white`}
+        style={tw`border h-10 p-2.5 rounded mr-0 ml-auto border-griffins-blue dark:border-pheonix-red dark:text-white w-1/2`}
         onBlur={onBlur}
         onChangeText={(value) => onChange(value)}
         value={String(value)}
