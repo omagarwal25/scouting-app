@@ -146,7 +146,7 @@ elements:
       options:
         - Barrier
         - Co-op
-        - Audience
+        - Cable Bump
   - name: preload
     label: Preload
     screens:
@@ -310,7 +310,7 @@ elements:
             options:
               - Barrier
               - Charge Station
-              - Audience
+              - Cable Bump
 
         - label: Scoring Height
           name: scoringHeight
@@ -332,7 +332,7 @@ elements:
             options:
               - Barrier
               - Co-op
-              - Audience
+              - Cable Bump
 
         - label: Scoring Success
           name: scoringSuccess
@@ -624,7 +624,7 @@ elements:
       options:
         - Barrier
         - Charge Station
-        - Audience
+        - Cable Bump
   - name: preferredGameElementOne
     label: Preferred Game Element One
     screens:
