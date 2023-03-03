@@ -1,29 +1,23 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { atom } from 'jotai';
 import { focusAtom } from 'jotai/optics';
-import { atomWithStorage, createJSONStorage } from 'jotai/utils';
+import { atomWithStorage } from 'jotai/utils';
 import {
-  game,
   ObjectiveRecord,
-  objectiveRecordDefault,
   PitRecord,
-  pitRecordDefault,
   SubjectiveRecord,
+  game,
+  objectiveRecordDefault,
+  pitRecordDefault,
   subjectiveRecordDefault,
 } from './models';
 
 export const recordTypeAtom = atomWithStorage<
   'subjective' | 'objective' | 'pit'
->(
-  'recordType',
-  'objective',
-  createJSONStorage(() => AsyncStorage)
-);
+>('recordTypeT', 'objective');
 
 export const subjectiveRecordAtom = atomWithStorage<SubjectiveRecord>(
   'subjectiveRecord',
-  { ...subjectiveRecordDefault },
-  createJSONStorage(() => AsyncStorage)
+  { ...subjectiveRecordDefault }
 );
 
 export const subjectiveTeamOneAtom = focusAtom(subjectiveRecordAtom, (optic) =>
@@ -51,8 +45,7 @@ const e: ObjectiveRecord = objectiveRecordDefault;
 
 export const objectiveRecordAtom = atomWithStorage<ObjectiveRecord>(
   'objectiveRecord',
-  { ...objectiveRecordDefault },
-  createJSONStorage(() => AsyncStorage)
+  { ...objectiveRecordDefault }
 );
 
 export const objectiveInfoAtom = focusAtom(objectiveRecordAtom, (optic) =>
@@ -83,11 +76,9 @@ export const objectiveOtherAtom = focusAtom(objectiveRecordAtom, (optic) =>
   optic.prop('other')
 );
 
-export const pitRecordAtom = atomWithStorage<PitRecord>(
-  'pitRecord',
-  { ...pitRecordDefault },
-  createJSONStorage(() => AsyncStorage)
-);
+export const pitRecordAtom = atomWithStorage<PitRecord>('pitRecord', {
+  ...pitRecordDefault,
+});
 
 export const pitInfoAtom = focusAtom(pitRecordAtom, (optic) =>
   optic.prop('info')

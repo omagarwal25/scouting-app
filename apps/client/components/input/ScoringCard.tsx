@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { SetStateAction, useAtom, WritableAtom } from 'jotai';
-import { Fragment, useEffect } from 'react';
+import { Fragment } from 'react';
 import { DeepPartial, FieldError, Path, useForm } from 'react-hook-form';
 import { Text, View } from 'react-native';
 import { ZodObject, ZodSchema } from 'zod';
@@ -83,10 +83,12 @@ export const InputModal = <
       return;
     }
 
+    const path = `${name as string}.${
+      (values[name] as any[]).length
+    }` as unknown as Path<T>;
+
     setValue(
-      `${name as string}.${
-        (values[name] as any[]).length
-      }` as unknown as Path<T>,
+      path,
 
       defaults.shape[name].removeDefault().element.parse({})
     );
@@ -104,13 +106,7 @@ export const InputModal = <
     setValue(name as unknown as Path<T>, newValues as any);
   };
 
-  const onSubmit = handleSubmit(
-    (f) => {
-      console.log('hello its me');
-      setState(f as T);
-    },
-    (f) => console.log(f)
-  );
+  const onSubmit = handleSubmit((f) => setState(f as T));
 
   const onSubmitAndNavigate = () => {
     onSubmit();
@@ -129,12 +125,6 @@ export const InputModal = <
     .map(
       (e) => [e as ScoutingElement, (data as any)[e!.name] as any[]] as const
     );
-
-  useEffect(() => {
-    if (formState.isValid && !isValidating) {
-      onSubmit();
-    }
-  }, [data, isValidating, formState, onSubmit]);
 
   return (
     <>
@@ -197,17 +187,16 @@ export const InputModal = <
         ))}
 
         {groupings.map(([e, _]) => (
-          <View style={tw`mt-0.5`}>
+          <View style={tw`mt-0.5`} key={e.name}>
             <Button
-              key={e.name}
               label={`Add ${e.label}`}
               onPress={() => addGrouping(e.name as keyof T)}
             />
           </View>
         ))}
-        <Text style={tw`mt-0.5`}>
+        <View style={tw`mt-0.5`}>
           <Button label="Next" onPress={onSubmitAndNavigate} />
-        </Text>
+        </View>
       </Container>
     </>
   );

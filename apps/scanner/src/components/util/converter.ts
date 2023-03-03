@@ -1,29 +1,28 @@
-import { MatchType } from '@griffins-scout/api';
+import { TBAMatch } from '@griffins-scout/api';
+
 import { ObjectiveInfo, SubjectiveInfo } from '@griffins-scout/game';
 
 export const matchTypeToObjectiveInfoMatchType = (
-  matchType: MatchType
+  matchType: TBAMatch['comp_level']
 ): ObjectiveInfo['matchType'] => {
-  const map = new Map<MatchType, ObjectiveInfo['matchType']>([
-    ['FINAL', 'Final'],
-    ['QUALIFICATION', 'Qualification'],
-    ['PRACTICE', 'Practice'],
-    ['SEMIFINAL', 'Semifinal'],
-    ['QUARTERFINAL', 'Quarterfinal'],
+  const map = new Map<TBAMatch['comp_level'], ObjectiveInfo['matchType']>([
+    ['f', 'Elimination'],
+    ['qm', 'Qualification'],
+    ['sf', 'Elimination'],
+    ['qf', 'Elimination'],
   ]);
 
   return map.get(matchType) ?? 'Practice';
 };
 
 export const matchTypeToSubjectiveInfoMatchType = (
-  matchType: MatchType
+  matchType: TBAMatch['comp_level']
 ): SubjectiveInfo['matchType'] => {
-  const map = new Map<MatchType, SubjectiveInfo['matchType']>([
-    ['FINAL', 'Final'],
-    ['QUALIFICATION', 'Qualification'],
-    ['PRACTICE', 'Practice'],
-    ['SEMIFINAL', 'Semifinal'],
-    ['QUARTERFINAL', 'Quarterfinal'],
+  const map = new Map<TBAMatch['comp_level'], SubjectiveInfo['matchType']>([
+    ['f', 'Elimination'],
+    ['qm', 'Qualification'],
+    ['sf', 'Elimination'],
+    ['qf', 'Elimination'],
   ]);
 
   return map.get(matchType) ?? 'Practice';

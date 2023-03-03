@@ -25,7 +25,7 @@
     </p>
     <p class="col-span-1 row-span-1 font-code text-xl">
       <p class="font-bold">Current Match</p>
-      <p >{{store.currentMatch?.type.toLowerCase()}} {{store.currentMatch?.number}}</p>
+      <p >{{store.currentMatch?.comp_level === "qm" ? "qualification" : store.currentMatch?.comp_level}} {{store.currentMatch?.match_number}} ({{ store.currentMatch?.set_number }}) @ ~{{ new Date(store.currentMatch?.predicted_time ?? 0).toLocaleTimeString() }}</p>
     </p>
     <p class="col-span-1 row-span-1 text-right font-code text-xl">
       <Station v-for="station in objectiveInfoSchema._def.shape().scoutId.Values" :station="station"/>

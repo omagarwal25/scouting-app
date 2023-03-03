@@ -123,7 +123,7 @@ function convertObjectiveFieldsToArray(record: ObjectiveRecord) {
         final = final.concat(e);
       } else {
         if (value === "") final.push("-");
-        final.push(value);
+        final.push(`${screen} ${key}`);
       }
     });
   });
@@ -327,12 +327,12 @@ function convertPitFieldsToArray(record: PitRecord) {
         });
 
         const elementKeys = Object.keys(map);
-        const e = elementKeys.map((key) => map[key]);
+        const e = elementKeys.map((key) => key);
 
         final = final.concat(e);
       } else {
         if (value === "") final.push("-");
-        final.push(value);
+        final.push(`${screen} ${key}`);
       }
     });
   });

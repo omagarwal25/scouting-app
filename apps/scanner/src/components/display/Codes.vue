@@ -1,20 +1,24 @@
 <template>
   <span
     class="mb-2 flex w-full items-center justify-center text-4xl font-bold lowercase"
-    >{{ subjectiveMatchType }} {{ props.match.number }}</span
+    >{{ subjectiveMatchType }} {{ props.match.match_number }} ({{
+      props.match.set_number
+    }})</span
   >
   <div class="grid grid-cols-3 gap-2">
     <ObjectiveCode
       v-for="(team, index) in [
-        ...props.match.redTeams,
-        ...props.match.blueTeams,
+        ...props.match.alliances.blue.team_keys.map((team) => team.slice(3)),
+        ...props.match.alliances.red.team_keys.map((team) => team.slice(3)),
       ]"
-      :color="index < props.match.blueTeams.length ? 'red' : 'blue'"
+      :color="
+        index < props.match.alliances.blue.team_keys.length ? 'red' : 'blue'
+      "
       :info="{
         scoutId: objectiveScoutIds[index],
         matchType: objectiveMatchType,
-        teamNumber: team.number,
-        matchNumber: props.match.number,
+        teamNumber: parseInt(team),
+        matchNumber: props.match.match_number,
       }"
     />
     <SubjectiveCode
@@ -22,10 +26,10 @@
       :info="{
         scoutId: 'Blue S',
         matchType: subjectiveMatchType,
-        teamOneNumber: blueTeams[0],
-        teamTwoNumber: blueTeams[1],
-        teamThreeNumber: blueTeams[2],
-        matchNumber: props.match.number,
+        teamOneNumber: parseInt(blueTeams[0]),
+        teamTwoNumber: parseInt(blueTeams[1]),
+        teamThreeNumber: parseInt(blueTeams[2]),
+        matchNumber: props.match.match_number,
       }"
     />
     <SubjectiveCode
@@ -33,10 +37,10 @@
       :info="{
         scoutId: 'Red S',
         matchType: subjectiveMatchType,
-        teamOneNumber: redTeams[0],
-        teamTwoNumber: redTeams[1],
-        teamThreeNumber: redTeams[2],
-        matchNumber: props.match.number,
+        teamOneNumber: parseInt(redTeams[0]),
+        teamTwoNumber: parseInt(redTeams[1]),
+        teamThreeNumber: parseInt(redTeams[2]),
+        matchNumber: props.match.match_number,
       }"
     />
   </div>
@@ -45,7 +49,7 @@
 <script setup lang="ts">
 import { ObjectiveInfo, objectiveInfoSchema } from '@griffins-scout/game';
 import { computed } from '@vue/reactivity';
-import { inferQueryOutput } from '~/api';
+import { RouterOutput } from '~/api';
 import {
   matchTypeToObjectiveInfoMatchType,
   matchTypeToSubjectiveInfoMatchType,
@@ -54,15 +58,15 @@ import ObjectiveCode from './ObjectiveCode.vue';
 import SubjectiveCode from './SubjectiveCode.vue';
 
 const props = defineProps<{
-  match: inferQueryOutput<'match.findAll'>[0];
+  match: RouterOutput['match']['findAll'][number];
 }>();
 
 const objectiveMatchType = computed(() =>
-  matchTypeToObjectiveInfoMatchType(props.match.type)
+  matchTypeToObjectiveInfoMatchType(props.match.comp_level)
 );
 
 const subjectiveMatchType = computed(() =>
-  matchTypeToSubjectiveInfoMatchType(props.match.type)
+  matchTypeToSubjectiveInfoMatchType(props.match.comp_level)
 );
 
 const objectiveScoutIds = computed(
@@ -74,9 +78,9 @@ const objectiveScoutIds = computed(
 
 // TODO: make this work for FTC
 const blueTeams = computed(() =>
-  props.match.blueTeams.map((team) => team.number)
+  props.match.alliances.blue.team_keys.map((team) => team.slice(3))
 );
 const redTeams = computed(() =>
-  props.match.redTeams.map((team) => team.number)
+  props.match.alliances.red.team_keys.map((team) => team.slice(3))
 );
 </script>

@@ -163,8 +163,8 @@ elements:
       - ObjectiveAuto
     field:
       fieldType: Boolean
-  - name: conesPickedUp
-    label: Cones Picked Up
+  - name: gamePiecesPickedUp
+    label: Game Pieces Picked Up
     screens:
       - ObjectiveAuto
     field:
@@ -172,17 +172,8 @@ elements:
       isInteger: true
       incrementable: true
       min: 0
-  - name: cubesPickedUp
-    label: Cubes Picked Up
-    screens:
-      - ObjectiveAuto
-    field:
-      fieldType: Numeric
-      isInteger: true
-      incrementable: true
-      min: 0
-  - name: autoCubesTop
-    label: Auto Cubes Top
+  - name: autoTop
+    label: Auto Game Pieces Top
     screens:
       - ObjectiveAuto
       - PitAuto
@@ -191,8 +182,8 @@ elements:
       isInteger: true
       incrementable: true
       min: 0
-  - name: autoCubesMiddle
-    label: Auto Cubes Middle
+  - name: autoMiddle
+    label: Auto Game Pieces Middle
     screens:
       - ObjectiveAuto
       - PitAuto
@@ -201,8 +192,8 @@ elements:
       isInteger: true
       incrementable: true
       min: 0
-  - name: autoCubesBottom
-    label: Auto Cubes Bottom
+  - name: autoHybrid
+    label: Auto Game Pieces Hybrid
     screens:
       - ObjectiveAuto
       - PitAuto
@@ -211,36 +202,39 @@ elements:
       isInteger: true
       incrementable: true
       min: 0
-  - name: autoConesTop
-    label: Auto Cones Top
+  - name: attemptedAutoTop
+    label: Auto Game Pieces Top Attempted
     screens:
       - ObjectiveAuto
-      - PitAuto
     field:
       fieldType: Numeric
       isInteger: true
       incrementable: true
       min: 0
-  - name: autoConesMiddle
-    label: Auto Cones Middle
+  - name: attemptedAutoMiddle
+    label: Auto Game Pieces Middle Attempted
     screens:
       - ObjectiveAuto
-      - PitAuto
     field:
       fieldType: Numeric
       isInteger: true
       incrementable: true
       min: 0
-  - name: autoConesBottom
-    label: Auto Cones Bottom
+  - name: attemptedAutoHybrid
+    label: Auto Game Pieces Hybrid Attempted
     screens:
       - ObjectiveAuto
-      - PitAuto
     field:
       fieldType: Numeric
       isInteger: true
       incrementable: true
       min: 0
+  - name: attemptedChargeStationEngage
+    label: Attempted Charge Station Engage
+    screens:
+      - ObjectiveAuto
+    field:
+      fieldType: Boolean
   - name: mobilityPointsAchieved
     label: Mobility Points Achieved
     screens:
@@ -364,6 +358,15 @@ elements:
             isInteger: false
             incrementable: false
             min: 0
+        - label: Offensive Fouls
+          name: offensiveFouls
+          screens:
+            - ObjectiveTeleop
+          field:
+            fieldType: Numeric
+            isInteger: true
+            incrementable: true
+            min: 0
   - name: defensiveCycles
     label: Defensive Cycles
     screens:
@@ -380,17 +383,8 @@ elements:
             isInteger: true
             incrementable: true
             min: 0
-        - label: Pin Fouls Committed
-          name: pinFoulsCommitted
-          screens:
-            - ObjectiveTeleop
-          field:
-            fieldType: Numeric
-            isInteger: true
-            incrementable: true
-            min: 0
-        - label: Other Fouls Committed
-          name: otherFoulsCommitted
+        - label: Defensive Fouls
+          name: defensiveFouls
           screens:
             - ObjectiveTeleop
           field:
@@ -418,8 +412,6 @@ elements:
         - Docked
         - Parked
         - Engaged
-        - Dock and Descored Engaged
-        - Fail to Dock
   - name: links
     label: Links
     screens:
@@ -514,6 +506,7 @@ elements:
         - "Omni Traction Omni"
         - "Traction Traction Traction"
         - "N/A"
+      default: "N/A"
   - name: robotLength
     label: Robot Length
     screens:
@@ -623,7 +616,7 @@ elements:
       fieldType: Dropdown
       options:
         - Barrier
-        - Charge Station
+        - Co-op
         - Cable Bump
   - name: preferredGameElementOne
     label: Preferred Game Element One

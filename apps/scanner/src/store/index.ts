@@ -1,15 +1,14 @@
+import { TBAMatch } from '@griffins-scout/api';
 import { defineStore } from 'pinia';
 import { client } from '~/api';
-import { RouterInput, RouterOutput } from './../api/index';
+import { RouterInput } from './../api/index';
 
 type Record = RouterInput['record']['createRecord'];
 
 export const useCurrentGameStore = defineStore('currentGameStore', {
   state: () => {
     return {
-      currentMatch: undefined as
-        | RouterOutput['match']['findAll'][number]
-        | undefined,
+      currentMatch: undefined as TBAMatch | undefined,
       records: [] as Record[],
     };
   },
@@ -25,9 +24,9 @@ export const useCurrentGameStore = defineStore('currentGameStore', {
   },
 
   actions: {
-    async setGame(id: number) {
+    async setGame(key: string) {
       const matches = await this.matches;
-      this.currentMatch = matches.find((m) => m.id === id);
+      this.currentMatch = matches.find((m) => m.key === key);
     },
 
     clearRecords() {
@@ -58,18 +57,18 @@ export const useCurrentGameStore = defineStore('currentGameStore', {
       this.records.push(record);
     },
 
-    async getNextGame() {
+    async getNextGame(): Promise<string | undefined> {
       const currentMatch = this.currentMatch;
       const matches = await this.matches;
 
       if (!currentMatch) return undefined;
 
-      const currentType = currentMatch.type;
-      const currentNumber = currentMatch.number;
+      const currentType = currentMatch.comp_level;
+      const currentNumber = currentMatch.match_number;
 
       return matches
-        .filter((match) => match.type === currentType)
-        .find((match) => match.number === currentNumber + 1)?.id;
+        .filter((match) => match.comp_level === currentType)
+        .find((match) => match.match_number === currentNumber + 1)?.key;
     },
   },
 });

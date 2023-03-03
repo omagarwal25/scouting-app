@@ -3,6 +3,7 @@ import cors from "cors";
 import express from "express";
 import { expressHandler } from "trpc-playground/handlers/express";
 import { createContext } from "./context.js";
+import { TBAMatch } from "./interfaces/match.js";
 import { matchRouter } from "./router/match.js";
 import { recordRouter } from "./router/record.js";
 import { router } from "./trpc.js";
@@ -14,6 +15,7 @@ const appRouter = router({
 });
 
 export type AppRouter = typeof appRouter;
+export type { TBAMatch };
 
 const trpcEndpoint = "/trpc";
 const trpcPlaygroundEndpoint = "/trpc-playground";

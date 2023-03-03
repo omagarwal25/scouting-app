@@ -12,7 +12,9 @@ import { addMatches, getAuthToken } from "../utils/sheet.js";
 // } from "../utils/blueAlliance.js";
 
 export const matchRouter = router({
-  findAll: publicProcedure.query(async () => {}),
+  findAll: publicProcedure.query(async () => {
+    return await getMatches();
+  }),
   findByTypeAndNumber: publicProcedure
     .input(
       z.object({

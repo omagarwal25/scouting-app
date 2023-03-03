@@ -5,7 +5,7 @@ export function getSchema(field: Field): string {
     return "z.boolean()";
   } else if (field.fieldType === "Text") {
     // make sure that there isn't any $, !, @, or, ? in the string
-    return "z.string().refine((v) => {console.log(v); return !/[$!@?]/.test(v);}, { message: '❌ Cannot contain $, !, @, or ?' })";
+    return "z.string().refine((v) => !/[$!@?]/.test(v), { message: '❌ Cannot contain $, !, @, or ?' })";
   } else if (field.fieldType === "Numeric") {
     let schema = "z.number()";
     if (field.isInteger) {

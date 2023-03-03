@@ -37,7 +37,6 @@ export const ScannerCard = ({ navigation }: RootTabScreenProps) => {
       await setType('objective');
       navigation.navigate('ObjectiveInfo');
     } else if (type === 'subjective') {
-      console.log('subjective', info);
       await setSubjectiveInfo(info);
       await setType('subjective');
       navigation.navigate('SubjectiveInfo');

@@ -1,9 +1,1 @@
-export type {
-  AppRouter,
-  DBObjectiveRecordModel,
-  DBPitRecordModel,
-  DBSubjectiveRecordModel,
-  Match,
-  MatchType,
-  Team,
-} from "../../../apps/controller/src/server";
+export type { AppRouter, TBAMatch } from "../../../apps/controller/src/server";
