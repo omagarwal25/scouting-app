@@ -3,7 +3,6 @@ import { envsafe, port, str, url } from "envsafe";
 
 dotenv.config();
 
-
 export const env = envsafe({
   NODE_ENV: str({
     devDefault: "development",
@@ -16,4 +15,5 @@ export const env = envsafe({
   DATABASE_URL: url(),
   EVENT_CODE: str(),
   SHEET_ID: str(),
+  CRED_PATH: str(),
 });

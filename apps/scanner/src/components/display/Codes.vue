@@ -8,8 +8,8 @@
   <div class="grid grid-cols-3 gap-2">
     <ObjectiveCode
       v-for="(team, index) in [
-        ...props.match.alliances.blue.team_keys.map((team) => team.slice(3)),
         ...props.match.alliances.red.team_keys.map((team) => team.slice(3)),
+        ...props.match.alliances.blue.team_keys.map((team) => team.slice(3)),
       ]"
       :color="
         index < props.match.alliances.blue.team_keys.length ? 'red' : 'blue'

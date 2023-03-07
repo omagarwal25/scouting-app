@@ -155,6 +155,7 @@ elements:
     field:
       fieldType: Dropdown
       options:
+        - None
         - Cone
         - Cube
   - name: autoAttempted
@@ -412,6 +413,15 @@ elements:
         - Docked
         - Parked
         - Engaged
+  - name: engageTime
+    label: Engage Time
+    screens:
+      - ObjectiveEndgame
+    field:
+      fieldType: Numeric
+      isInteger: false
+      incrementable: false
+      min: 0
   - name: links
     label: Links
     screens:
@@ -483,6 +493,14 @@ elements:
         - "2"
         - "3"
         - "N/A"
+  - name: drivetrainSpeed
+    label: Drivetrain Speed
+    screens:
+      - PitDrive
+    field:
+      fieldType: Numeric
+      isInteger: false
+      incrementable: false
   - name: drivetrainType
     label: Drivetrain Type
     screens:

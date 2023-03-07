@@ -148,9 +148,11 @@ export const decode = <
       state[key] = split[i] as B[typeof key];
     } else {
       const groupSplit = split[i].split("/");
-      state[key] = groupSplit.map((s) =>
-        decodeCycle(s, screen, element)
-      ) as unknown as B[typeof key];
+      if (groupSplit[0] === "") state[key] = [] as unknown as B[typeof key];
+      else
+        state[key] = groupSplit.map((s) =>
+          decodeCycle(s, screen, element)
+        ) as unknown as B[typeof key];
     }
   }
 

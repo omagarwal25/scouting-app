@@ -1,4 +1,5 @@
 import {
+  game,
   objectiveAutoKeys,
   objectiveEndgameKeys,
   objectiveInfoKeys,
@@ -35,8 +36,7 @@ import { env } from "./env.js";
 const sheets = google.sheets("v4");
 const SHEET_ID = env.SHEET_ID;
 const SCOPES = ["https://www.googleapis.com/auth/spreadsheets"];
-const KEY_FILE =
-  "/Users/oma/Documents/Coding/scouting-app/apps/controller/credentials.json";
+const KEY_FILE = env.CRED_PATH;
 
 type SheetName = "Quant Import" | "TBA Import" | "Pit Import" | "Subj Import";
 export type Auth =
@@ -76,10 +76,41 @@ async function getSpreadSheet(spreadsheetId: string, auth: Auth) {
   return res;
 }
 
-function convertObjectiveFieldsToArray(record: ObjectiveRecord) {
-  // we want to flatten the whole record into an array
-  // so we can easily add it to the sheet
+function screenToArray<T extends Record<string, any>, K extends keyof T>(
+  key: string,
+  screen: K,
+  record: T
+): string[] {
+  const value: any =
+    record[screen as keyof typeof record][
+      key as keyof typeof record[typeof screen]
+    ];
 
+  if (typeof value === "object") {
+    const map: Record<string, string> = {};
+
+    const element = game.elements.find((e) => e.name === key)!!.field;
+    if (element.fieldType !== "Grouping") return [];
+
+    const elementKeys = element.fields.map((e) => e.name);
+
+    elementKeys.map((e) => (map[e] = ""));
+
+    value.forEach((element: any) => {
+      elementKeys.forEach((elementKey) => {
+        map[elementKey] =
+          (map[elementKey] ? map[elementKey] + "," : "") + element[elementKey];
+      });
+    });
+
+    return elementKeys.map((key) => (map[key] !== "" ? map[key] : "-"));
+  } else {
+    if (value === "") return ["-"];
+    else return [value];
+  }
+}
+
+function convertObjectiveFieldsToArray(record: ObjectiveRecord) {
   let final: any[] = [];
 
   [
@@ -90,41 +121,9 @@ function convertObjectiveFieldsToArray(record: ObjectiveRecord) {
     [objectiveAutoKeys, "auto"] as const,
     [objectivePostgameKeys, "postgame"] as const,
     [objectiveOtherKeys, "other"] as const,
-  ].forEach(([keySet, screen]) => {
-    keySet.forEach((key) => {
-      const value: any =
-        record[screen as keyof typeof record][
-          key as keyof typeof record[typeof screen]
-        ];
-
-      if (typeof value === "object") {
-        // this means it's a nested object or array
-        // we only have have arrays of nested objects
-
-        // we want to convert the elements so that they are csv values of each field
-        // so its ["a,a,a", "b,b,b", "c,c,c"]
-
-        // convert each element to an array first
-
-        const map: Record<string, any> = {};
-
-        value.forEach((element: any) => {
-          const elementKeys = Object.keys(element);
-          elementKeys.forEach((elementKey) => {
-            map[elementKey] =
-              (map[elementKey] ? map[elementKey] + "," : "") +
-              element[elementKey];
-          });
-        });
-
-        const elementKeys = Object.keys(map);
-        const e = elementKeys.map((key) => map[key]);
-
-        final = final.concat(e);
-      } else {
-        if (value === "") final.push("-");
-        final.push(`${screen} ${key}`);
-      }
+  ].forEach(([keys, screen]) => {
+    keys.forEach((key) => {
+      final = final.concat(screenToArray(key, screen, record));
     });
   });
 
@@ -148,39 +147,7 @@ function convertSubjectiveFieldsToArray(record: SubjectiveRecord) {
     ] as const,
   ].forEach(([keySet, screen]) => {
     keySet.forEach((key) => {
-      const value: any =
-        record[screen as keyof typeof record][
-          key as keyof typeof record[typeof screen]
-        ];
-
-      if (typeof value === "object") {
-        // this means it's a nested object or array
-        // we only have have arrays of nested objects
-
-        // we want to convert the elements so that they are csv values of each field
-        // so its ["a,a,a", "b,b,b", "c,c,c"]
-
-        // convert each element to an array first
-
-        const map: Record<string, any> = {};
-
-        value.forEach((element: any) => {
-          const elementKeys = Object.keys(element);
-          elementKeys.forEach((elementKey) => {
-            map[elementKey] =
-              (map[elementKey] ? map[elementKey] + "," : "") +
-              element[elementKey];
-          });
-        });
-
-        const elementKeys = Object.keys(map);
-        const e = elementKeys.map((key) => map[key]);
-
-        one = one.concat(e);
-      } else {
-        if (value === "") one.push("-");
-        one.push(value);
-      }
+      one = one.concat(screenToArray(key, screen, record));
     });
   });
 
@@ -197,39 +164,7 @@ function convertSubjectiveFieldsToArray(record: SubjectiveRecord) {
     ] as const,
   ].forEach(([keySet, screen]) => {
     keySet.forEach((key) => {
-      const value: any =
-        record[screen as keyof typeof record][
-          key as keyof typeof record[typeof screen]
-        ];
-
-      if (typeof value === "object") {
-        // this means it's a nested object or array
-        // we only have have arrays of nested objects
-
-        // we want to convert the elements so that they are csv values of each field
-        // so its ["a,a,a", "b,b,b", "c,c,c"]
-
-        // convert each element to an array first
-
-        const map: Record<string, any> = {};
-
-        value.forEach((element: any) => {
-          const elementKeys = Object.keys(element);
-          elementKeys.forEach((elementKey) => {
-            map[elementKey] =
-              (map[elementKey] ? map[elementKey] + "," : "") +
-              element[elementKey];
-          });
-        });
-
-        const elementKeys = Object.keys(map);
-        const e = elementKeys.map((key) => map[key]);
-
-        two = two.concat(e);
-      } else {
-        if (value === "") two.push("-");
-        two.push(value);
-      }
+      two = two.concat(screenToArray(key, screen, record));
     });
   });
 
@@ -246,39 +181,7 @@ function convertSubjectiveFieldsToArray(record: SubjectiveRecord) {
     ] as const,
   ].forEach(([keySet, screen]) => {
     keySet.forEach((key) => {
-      const value: any =
-        record[screen as keyof typeof record][
-          key as keyof typeof record[typeof screen]
-        ];
-
-      if (typeof value === "object") {
-        // this means it's a nested object or array
-        // we only have have arrays of nested objects
-
-        // we want to convert the elements so that they are csv values of each field
-        // so its ["a,a,a", "b,b,b", "c,c,c"]
-
-        // convert each element to an array first
-
-        const map: Record<string, any> = {};
-
-        value.forEach((element: any) => {
-          const elementKeys = Object.keys(element);
-          elementKeys.forEach((elementKey) => {
-            map[elementKey] =
-              (map[elementKey] ? map[elementKey] + "," : "") +
-              element[elementKey];
-          });
-        });
-
-        const elementKeys = Object.keys(map);
-        const e = elementKeys.map((key) => map[key]);
-
-        three = three.concat(e);
-      } else {
-        if (value === "") three.push("-");
-        three.push(value);
-      }
+      three = three.concat(screenToArray(key, screen, record));
     });
   });
 
@@ -286,9 +189,6 @@ function convertSubjectiveFieldsToArray(record: SubjectiveRecord) {
 }
 
 function convertPitFieldsToArray(record: PitRecord) {
-  // we want to flatten the whole record into an array
-  // so we can easily add it to the sheet
-
   let final: any[] = [];
 
   [
@@ -299,41 +199,9 @@ function convertPitFieldsToArray(record: PitRecord) {
     [pitInfoKeys, "info"] as const,
     [pitSpecificationsKeys, "specifications"] as const,
     [pitDriveKeys, "drive"] as const,
-  ].forEach(([keySet, screen]) => {
-    keySet.forEach((key) => {
-      const value: any =
-        record[screen as keyof typeof record][
-          key as keyof typeof record[typeof screen]
-        ];
-
-      if (typeof value === "object") {
-        // this means it's a nested object or array
-        // we only have have arrays of nested objects
-
-        // we want to convert the elements so that they are csv values of each field
-        // so its ["a,a,a", "b,b,b", "c,c,c"]
-
-        // convert each element to an array first
-
-        const map: Record<string, any> = {};
-
-        value.forEach((element: any) => {
-          const elementKeys = Object.keys(element);
-          elementKeys.forEach((elementKey) => {
-            map[elementKey] =
-              (map[elementKey] ? map[elementKey] + "," : "") +
-              element[elementKey];
-          });
-        });
-
-        const elementKeys = Object.keys(map);
-        const e = elementKeys.map((key) => key);
-
-        final = final.concat(e);
-      } else {
-        if (value === "") final.push("-");
-        final.push(`${screen} ${key}`);
-      }
+  ].forEach(([keys, screen]) => {
+    keys.forEach((key) => {
+      final = final.concat(screenToArray(key, screen, record));
     });
   });
 
@@ -507,20 +375,6 @@ function convertMatchToArray(match: TBAMatch): any[][] {
   return final;
 }
 
-// function convertSubjectiveFieldsToArray(record: SubjectiveRecord) {
-//   const final: any[] = [];
-
-//   [[
-//     subjectiveTeamKeys, "teamOne"
-//   ], [
-//     subjectiveTeamKeys, "teamTwo"
-//     ], [
-//       subjectiveTeamKeys, "teamThree"
-//     ], [subjectiveInfoKeys, "info"],
-//     [subjectiveOtherKeys, "other"]].forEach(([keySet, screen]) => {
-
-// }
-
 /**
  * getSpreadSheetValues - returns values for a specific tab in a sheet
  *
@@ -551,7 +405,10 @@ async function getSpreadSheetValues(
  * @param  [sheet="In Progress"] sheet to add proposal to
  * @return append response from google, else returns error
  */
-export async function addObjectiveRecord(auth: Auth, record: ObjectiveRecord) {
+export async function addObjectiveRecord(
+  auth: Auth,
+  record: ObjectiveRecord[]
+) {
   const sheet: SheetName = "Quant Import";
   const request = {
     spreadsheetId: SHEET_ID,
@@ -563,7 +420,7 @@ export async function addObjectiveRecord(auth: Auth, record: ObjectiveRecord) {
     resource: {
       range: `'${sheet}'!A2:BZ2`,
       majorDimension: "ROWS",
-      values: [convertObjectiveFieldsToArray(record)],
+      values: record.map(convertObjectiveFieldsToArray),
     },
 
     auth,
@@ -578,10 +435,10 @@ export async function addObjectiveRecord(auth: Auth, record: ObjectiveRecord) {
 
 export async function addSubjectiveRecord(
   auth: Auth,
-  record: SubjectiveRecord
+  record: SubjectiveRecord[]
 ) {
   const sheet: SheetName = "Subj Import";
-  console.log(convertSubjectiveFieldsToArray(record));
+
   const request = {
     spreadsheetId: SHEET_ID,
 
@@ -592,7 +449,7 @@ export async function addSubjectiveRecord(
     resource: {
       range: `'${sheet}'!A2:BZ2`,
       majorDimension: "ROWS",
-      values: convertSubjectiveFieldsToArray(record),
+      values: record.map(convertSubjectiveFieldsToArray),
     },
 
     auth,
@@ -600,16 +457,14 @@ export async function addSubjectiveRecord(
 
   try {
     const response = await sheets.spreadsheets.values.append(request);
-    console.log(response);
   } catch (e) {
     console.log(e);
   }
 }
 
-export async function addPitRecord(auth: Auth, record: PitRecord) {
-  console.log("HELLO THERE");
+export async function addPitRecord(auth: Auth, record: PitRecord[]) {
   const sheet: SheetName = "Pit Import";
-  console.log(convertPitFieldsToArray(record));
+
   const request = {
     spreadsheetId: SHEET_ID,
 
@@ -620,7 +475,7 @@ export async function addPitRecord(auth: Auth, record: PitRecord) {
     resource: {
       range: `'${sheet}'!A2:BZ2`,
       majorDimension: "ROWS",
-      values: [convertPitFieldsToArray(record)],
+      values: record.map(convertPitFieldsToArray),
     },
 
     auth,
@@ -637,7 +492,6 @@ export async function addMatches(auth: Auth, record: TBAMatch[]) {
   const sheet: SheetName = "TBA Import";
 
   await removeMatches(auth);
-  // record.map(convertMatchToArray).map((match) => console.log(match.join(", ")));
 
   const request = {
     // The ID of the spreadsheet to update.
@@ -659,240 +513,15 @@ export async function addMatches(auth: Auth, record: TBAMatch[]) {
     auth,
   };
 
-  // console.log("eq", request.resource.values[0]);
   try {
     const response = sheets.spreadsheets.values.append(request);
   } catch (e) {
     console.log(e);
   }
-  // console.log(response, "hi");
-  // console.log(JSON.stringify(response, null, 2));
-  // return response;
 }
 
-// /**
-//  * parseSheetDate - parses a date from the google sheet into a unix timestamp
-//  *
-//  * @param  date input string from sheet
-//  * @return unix timestamp
-//  */
-// function parseSheetDate(date: string) {
-//   if (date == undefined) return undefined;
-
-//   const parsedDate = String(date);
-
-//   let outDate;
-
-//   if (parsedDate.split("/").length == 3) outDate = new Date(date).getTime();
-//   else outDate = parseInt(parsedDate.split("/")[0].slice(1));
-
-//   if (isNaN(outDate)) return undefined;
-//   else return outDate;
-// }
-
-// /**
-//  * parseSheetProposals - parses a list  of objections into an array
-//  *
-//  * @param  rawInput objections from sheet
-//  * @return parsed objections
-//  */
-// function parseSheetProposals(rawInput: string) {
-//   try {
-//     let array = rawInput.split(",");
-//     array.forEach((item, i) => {
-//       array[i] = item.trim();
-//     });
-//     return array;
-//   } catch {
-//     return undefined;
-//   }
-// }
-
-// function parseJsonFromSheet(rawInput: string) {
-//   try {
-//     let parsed = JSON.parse(rawInput);
-//     return parsed;
-//   } catch {
-//     return rawInput;
-//   }
-// }
-
-// /**
-//  * arrayToProposal - converts an array from a sheet into a proposal object
-//  *
-//  * @param  input array to convert
-//  * @return converted proposal object
-//  */
-// function arrayToProposal(input: string[]) {
-//   let newProposal: Proposal = {
-//     uuid: input[0],
-//     name: input[1],
-//     proposedBy: input[2],
-//     type: input[3],
-//     description: input[4],
-//     coordinates: input[5] || undefined,
-//     imageLink: input[6] || undefined,
-//     threadLink: input[7],
-//     dateProposed: parseSheetDate(input[8]) ?? 0,
-//     actionDate: parseSheetDate(input[9]),
-//     objections: parseSheetProposals(input[10]) ?? ["0"],
-//     numExtensions: parseInt(input[11]),
-//     otherJson: parseJsonFromSheet(input[12]),
-//   };
-
-//   return newProposal;
-// }
-
-// /**
-//  * getAllProposals - gets all proposals from the sheet
-//  *
-//  * @param auth authToken
-//  * @return all proposals object
-//  */
-// export async function getAllProposals(auth: Auth) {
-//   let sheetsToIterate: SheetName[] = [
-//     "Approved",
-//     "In Progress",
-//     "Denied/Postponed",
-//   ];
-
-//   let output: AllProposals = {
-//     approved: [],
-//     denied: [],
-//     inProgress: [],
-//     all: [],
-//   };
-
-//   let gettingSheets = new Promise((resolve) => {
-//     let numToResolve = sheetsToIterate.length;
-//     sheetsToIterate.forEach(async (sheetName) => {
-//       let spreadsheet = await getSpreadSheetValues(SHEET_ID, auth, sheetName);
-//       let values = spreadsheet.data.values;
-
-//       if (values) {
-//         values.shift(); //ignore title rows
-//         //values.shift();
-
-//         values.forEach((value: string[]) => {
-//           const proposal = arrayToProposal(value);
-//           switch (sheetName) {
-//             case "Approved":
-//               output.approved.push(proposal);
-//               break;
-//             case "In Progress":
-//               output.inProgress.push(proposal);
-//               break;
-//             case "Denied/Postponed":
-//               output.denied.push(proposal);
-//               break;
-//           }
-//           output.all.push(proposal);
-//         });
-
-//         numToResolve--;
-//         if (numToResolve == 0) resolve(true);
-//       }
-//     });
-//   });
-
-//   await gettingSheets;
-//   return output;
-// }
-
-// /**
-//  * deDupe - same as "remove duplicates" in sheets.
-//  * doesn't cross-check between tabs
-//  *
-//  * @param  authToken
-//  * @return batch response from google or error
-//  */
-// export async function deDupe(auth: Auth) {
-//   const request = {
-//     // The spreadsheet to apply the updates to.
-//     spreadsheetId: SHEET_ID,
-
-//     resource: {
-//       requests: [
-//         {
-//           deleteDuplicates: {
-//             range: {
-//               sheetId: 0,
-//               startRowIndex: 0,
-//               startColumnIndex: 0,
-//               endColumnIndex: 11,
-//             },
-//             comparisonColumns: [
-//               {
-//                 sheetId: 0,
-//                 dimension: "COLUMNS",
-//                 startIndex: 0,
-//                 endIndex: 11,
-//               },
-//             ],
-//           },
-//         },
-//         {
-//           deleteDuplicates: {
-//             range: {
-//               sheetId: 218609302,
-//               startRowIndex: 0,
-//               startColumnIndex: 0,
-//               endColumnIndex: 11,
-//             },
-//             comparisonColumns: [
-//               {
-//                 sheetId: 218609302,
-//                 dimension: "COLUMNS",
-//                 startIndex: 0,
-//                 endIndex: 11,
-//               },
-//             ],
-//           },
-//         },
-//         {
-//           deleteDuplicates: {
-//             range: {
-//               sheetId: 106354102,
-//               startRowIndex: 0,
-//               startColumnIndex: 0,
-//               endColumnIndex: 11,
-//             },
-//             comparisonColumns: [
-//               {
-//                 sheetId: 106354102,
-//                 dimension: "COLUMNS",
-//                 startIndex: 0,
-//                 endIndex: 11,
-//               },
-//             ],
-//           },
-//         },
-//       ],
-//     },
-
-//     auth,
-//   };
-
-//   try {
-//     const response = (await sheets.spreadsheets.batchUpdate(request)).data;
-//     return response;
-//   } catch (err) {
-//     return err;
-//   }
-// }
-
-// /**
-//  * removeProposal - removes a proposal from the sheet
-//  *
-//  * @param  auth authToken
-//  * @param  proposalId id of the proposal to remove
-//  * @param  [allProposals] list of all proposals and their locations, will be retrieved if not provided
-//  * @return list of all proposals
-//  */
 export async function removeMatches(auth: Auth) {
   const sheetName: SheetName = "TBA Import";
-
-  console.log("clearing sheet");
 
   const request = {
     spreadsheetId: SHEET_ID,
@@ -905,30 +534,7 @@ export async function removeMatches(auth: Auth) {
 
   try {
     const response = (await sheets.spreadsheets.values.clear(request)).data;
-    console.log(response);
   } catch (err) {
     console.log(err);
   }
 }
-
-// //just some demo testing functions below
-// // getAuthToken().then((authToken) => {
-// //   let newProposal: Proposal = {
-// //     uid: 24,
-// //     name: "Test Proposal",
-// //     proposedBy: "scary",
-// //     type: "town",
-// //     description: "a thing",
-// //     threadLink: "https://google.com",
-// //     dateProposed: Date.now(),
-// //   };
-// // getAllProposals(authToken).then(console.log);
-// //
-// // addProposal(authToken, newProposal).then((result) => {
-// //   console.log(result);
-// // });
-// //
-// // removeProposal(authToken, 24);
-// //
-// // deDupe(authToken).then(console.log);
-// // });

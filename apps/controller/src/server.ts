@@ -47,7 +47,6 @@ const main = async () => {
 
   app.listen(env.PORT, () => {
     console.log(`server listening at http://localhost:${env.PORT}`);
-    console.log("Hello");
     console.log(
       `tRPC playground listening at http://localhost:${env.PORT}${trpcPlaygroundEndpoint}`
     );

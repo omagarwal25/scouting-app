@@ -3,7 +3,7 @@ import { defineStore } from 'pinia';
 import { client } from '~/api';
 import { RouterInput } from './../api/index';
 
-type Record = RouterInput['record']['createRecord'];
+type Record = RouterInput['record']['createRecord'][number];
 
 export const useCurrentGameStore = defineStore('currentGameStore', {
   state: () => {
@@ -42,9 +42,7 @@ export const useCurrentGameStore = defineStore('currentGameStore', {
       // all goods
       // tbh, i dont think it matters what game its associated
 
-      await Promise.all(
-        this.records.map((record) => client.record.createRecord.mutate(record))
-      );
+      client.record.createRecord.mutate(this.records);
 
       client.match.importFromTba.mutate();
     },
