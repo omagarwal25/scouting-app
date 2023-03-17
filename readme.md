@@ -22,9 +22,10 @@ Currently, this is a work in progress.
 - [ ] OPR calculations
 - [ ] points field onto scoring elements so that the app can do math?
 - [ ] data sharing systems
+- [ ] https://nivo.rocks/swarmplot/
 
 [Old Client](https://github.com/omagarwal25/scouting-client)
-[Old Server](httpsL//github.com/omagarwal25/scouting-server)
+[Old Server](https://github.com/omagarwal25/scouting-server)
 
 ## Usage
 
