@@ -183,11 +183,29 @@ elements:
       isInteger: true
       incrementable: true
       min: 0
+  - name: attemptedAutoTop
+    label: Auto Game Pieces Top Attempted
+    screens:
+      - ObjectiveAuto
+    field:
+      fieldType: Numeric
+      isInteger: true
+      incrementable: true
+      min: 0
   - name: autoMiddle
     label: Auto Game Pieces Middle
     screens:
       - ObjectiveAuto
       - PitAuto
+    field:
+      fieldType: Numeric
+      isInteger: true
+      incrementable: true
+      min: 0
+  - name: attemptedAutoMiddle
+    label: Auto Game Pieces Middle Attempted
+    screens:
+      - ObjectiveAuto
     field:
       fieldType: Numeric
       isInteger: true
@@ -203,24 +221,6 @@ elements:
       isInteger: true
       incrementable: true
       min: 0
-  - name: attemptedAutoTop
-    label: Auto Game Pieces Top Attempted
-    screens:
-      - ObjectiveAuto
-    field:
-      fieldType: Numeric
-      isInteger: true
-      incrementable: true
-      min: 0
-  - name: attemptedAutoMiddle
-    label: Auto Game Pieces Middle Attempted
-    screens:
-      - ObjectiveAuto
-    field:
-      fieldType: Numeric
-      isInteger: true
-      incrementable: true
-      min: 0
   - name: attemptedAutoHybrid
     label: Auto Game Pieces Hybrid Attempted
     screens:
@@ -230,12 +230,6 @@ elements:
       isInteger: true
       incrementable: true
       min: 0
-  - name: attemptedChargeStationEngage
-    label: Attempted Charge Station Engage
-    screens:
-      - ObjectiveAuto
-    field:
-      fieldType: Boolean
   - name: mobilityPointsAchieved
     label: Mobility Points Achieved
     screens:
@@ -255,6 +249,12 @@ elements:
         - Outside
         - Docked
         - Engaged
+  - name: attemptedChargeStationEngage
+    label: Attempted Charge Station Engage
+    screens:
+      - ObjectiveAuto
+    field:
+      fieldType: Boolean
   - name: offensiveCycles
     label: Offensive Cycles
     screens:
@@ -268,10 +268,10 @@ elements:
             default: Single
             fieldType: Dropdown
             options:
-              - Loading Zone
+              - LZ
+              - Other Floor
               - Single
               - Double High
-              - Opponents Loading Zone
               - Other
           screens:
             - ObjectiveTeleop
@@ -337,11 +337,13 @@ elements:
             fieldType: Dropdown
             options:
               - Success
-              - Failed, Dropped to Hybrid
+              - Dropped Hybrid
+              - Dropped
               - Failed
+              - None
 
-        - label: Loading Zone To Community Time
-          name: loadingZoneToCommunityTime
+        - label: Pickup to Loss of Possession Time
+          name: pickupToLossOfPossesstionTime
           screens:
             - ObjectiveTeleop
           field:
@@ -350,15 +352,13 @@ elements:
             incrementable: false
             min: 0
 
-        - label: Community to Score Time
-          name: communityToScoreTime
+        - label: Encountered Defense?
+          name: encounteredDefense
+          field:
+            fieldType: Boolean
           screens:
             - ObjectiveTeleop
-          field:
-            fieldType: Numeric
-            isInteger: false
-            incrementable: false
-            min: 0
+
         - label: Offensive Fouls
           name: offensiveFouls
           screens:
@@ -422,33 +422,6 @@ elements:
       isInteger: false
       incrementable: false
       min: 0
-  - name: links
-    label: Links
-    screens:
-      - ObjectiveEndgame
-    field:
-      fieldType: Numeric
-      isInteger: true
-      incrementable: true
-      min: 0
-  - name: coopBonusAchieved
-    label: Co-op Bonus Achieved
-    screens:
-      - ObjectiveEndgame
-    field:
-      fieldType: Boolean
-  - name: sustainabilityBonusAchieved
-    label: Sustainability Bonus Achieved
-    screens:
-      - ObjectiveEndgame
-    field:
-      fieldType: Boolean
-  - name: activationPointsAchieved
-    label: Activation Points Achieved
-    screens:
-      - ObjectiveEndgame
-    field:
-      fieldType: Boolean
   - name: driverAwareness
     label: Driver Awareness
     screens:
