@@ -1,7 +1,7 @@
 {
   "name": "@griffins-scout/scanner",
   "private": true,
-  "version": "0.0.0",
+  "version": "2.1.0",
   "scripts": {
     "dev": "wireit",
     "build": "vue-tsc --noEmit && vite build",

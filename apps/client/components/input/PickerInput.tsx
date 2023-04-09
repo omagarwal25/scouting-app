@@ -60,7 +60,7 @@ const MultiButton = <T extends object>(props: Props<T>) => {
             onPress={() => onPick(e)}
             key={e}
             style={tw`ml-2 border rounded p-3 flex items-center border-griffins-blue dark:border-pheonix-red ${
-              value !== e ? 'bg-griffins-blue dark:bg-pheonix-red' : ''
+              value === e ? 'bg-griffins-blue dark:bg-pheonix-red' : ''
             }`}
           >
             <Text style={tw`dark:text-white`}>{e}</Text>
@@ -72,7 +72,7 @@ const MultiButton = <T extends object>(props: Props<T>) => {
 };
 
 export const PickerInput = <T extends object>(props: Props<T>) => {
-  if (props.items.length <= 5) {
+  if (props.items.length <= 6) {
     return <MultiButton {...props} />;
   }
   return <NativePickerInput {...props} />;

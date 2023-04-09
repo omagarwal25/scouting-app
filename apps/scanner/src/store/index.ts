@@ -1,6 +1,18 @@
 import { TBAMatch } from '@griffins-scout/api';
+import {
+  ObjectiveRecord,
+  PitRecord,
+  SubjectiveRecord,
+  convertObjectiveFieldsToArray,
+  convertPitFieldsToArray,
+  convertSubjectiveFieldsToArray,
+  objectiveHeaders,
+  pitHeaders,
+  subjectiveHeaders,
+} from '@griffins-scout/game';
 import { defineStore } from 'pinia';
 import { client } from '~/api';
+import { downloadCSVData } from '~/components/util/csv';
 import { RouterInput } from './../api/index';
 
 type Record = RouterInput['record']['createRecord'][number];
@@ -42,9 +54,41 @@ export const useCurrentGameStore = defineStore('currentGameStore', {
       // all goods
       // tbh, i dont think it matters what game its associated
 
-      client.record.createRecord.mutate(this.records);
+      downloadCSVData(
+        this.records
+          .filter((e) => e.type === 'subjective')
+          .map((r) =>
+            convertSubjectiveFieldsToArray(r.record as SubjectiveRecord)
+          ),
+        subjectiveHeaders(),
+        `${Date.now().toLocaleString()}-subjective`
+      );
 
-      client.match.importFromTba.mutate();
+      downloadCSVData(
+        this.records
+          .filter((e) => e.type === 'pit')
+          .map((r) => convertPitFieldsToArray(r.record as PitRecord)),
+        pitHeaders(),
+        `${Date.now().toLocaleString()}-pit`
+      );
+
+      downloadCSVData(
+        this.records
+          .filter((e) => e.type === 'objective')
+          .map((r) =>
+            convertObjectiveFieldsToArray(
+              r.record as unknown as ObjectiveRecord
+            )
+          ),
+        objectiveHeaders(),
+        `${Date.now().toLocaleString()}-objective`
+      );
+
+      try {
+        client.record.createRecord.mutate(this.records);
+      } catch (e) {
+        console.log(e);
+      }
     },
 
     async undo() {

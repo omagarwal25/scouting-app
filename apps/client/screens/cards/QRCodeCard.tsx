@@ -1,10 +1,13 @@
-import { View } from 'react-native';
+import { Text, View } from 'react-native';
 
 // import { gameAtom, saveGameAtom } from '~/state';
 
+import { saveToLibraryAsync, usePermissions } from 'expo-media-library';
 import { useAtom } from 'jotai';
+import { useRef } from 'react';
 import { Alert } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
+import { captureRef } from 'react-native-view-shot';
 import { Button } from '~/components/Button';
 import { Container } from '~/components/Container';
 import { ObjectiveTopbar, PitTobar, Topbar } from '~/components/Topbar';
@@ -26,13 +29,41 @@ import { RootTabScreenProps } from '~/types';
 import tw from '~/utils/tailwind';
 
 export function QRCodeCard({ navigation }: RootTabScreenProps) {
+  const [status, requestPermission] = usePermissions();
   const [objectiveRecord] = useAtom(objectiveRecordAtom);
   const [subjectiveRecord] = useAtom(subjectiveRecordAtom);
   const [pitRecord] = useAtom(pitRecordAtom);
+  const imageRef = useRef(null);
+
+  if (status === null) requestPermission();
 
   // the way to check if we are in subjective or objective is to see the scout ID of the subjective info, if it is Red 1 then we are objective
 
   const [type] = useAtom(recordTypeAtom);
+
+  const getName = () => {
+    const time = new Date().toLocaleTimeString();
+
+    if (type === 'subjective') {
+      const {
+        teamOneNumber,
+        teamTwoNumber,
+        teamThreeNumber,
+        matchNumber,
+        matchType,
+        scoutId,
+      } = subjectiveRecord.info;
+      return `Subjective ${teamOneNumber} ${teamTwoNumber} ${teamThreeNumber} ${matchType} ${matchNumber} ${scoutId} ${time}`;
+    }
+    if (type === 'objective') {
+      const { teamNumber, matchType, matchNumber, scoutId } =
+        objectiveRecord.info;
+      return `Objective ${teamNumber} ${matchType} ${matchNumber} ${scoutId} ${time}`;
+    }
+
+    const { teamNumber } = pitRecord.info;
+    return `Pit ${teamNumber} ${time}`;
+  };
 
   const encoded =
     type === 'subjective'
@@ -56,13 +87,32 @@ export function QRCodeCard({ navigation }: RootTabScreenProps) {
         {
           text: 'Confirm',
           style: 'destructive',
-          onPress: () => navigation.navigate('Root'),
+          onPress: async () => {
+            await onSaveImageAsync();
+            navigation.navigate('Root');
+          },
         },
       ]
     );
 
+  const onSaveImageAsync = async () => {
+    try {
+      const localUri = await captureRef(imageRef, {
+        quality: 1,
+        fileName: getName(),
+      });
+
+      await saveToLibraryAsync(localUri);
+      if (localUri) {
+        // alert('Saved!');
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
-    <>
+    <View ref={imageRef}>
       {type === 'subjective' ? (
         <Topbar color="blue" text="Subjective" />
       ) : type === 'objective' ? (
@@ -71,6 +121,7 @@ export function QRCodeCard({ navigation }: RootTabScreenProps) {
         <PitTobar />
       )}
       <Container>
+        <Text style={tw`dark:text-white`}>{getName()}</Text>
         <QRCode
           value={encoded}
           // value={JSON.stringify(game.gameInfo)}
@@ -85,6 +136,6 @@ export function QRCodeCard({ navigation }: RootTabScreenProps) {
 
         <Button onPress={() => createAlert()} label="Go Home!" />
       </Container>
-    </>
+    </View>
   );
 }

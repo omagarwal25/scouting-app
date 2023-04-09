@@ -1,25 +1,10 @@
 import {
-  game,
-  objectiveAutoKeys,
-  objectiveEndgameKeys,
-  objectiveInfoKeys,
-  objectiveOtherKeys,
-  objectivePostgameKeys,
-  objectivePregameKeys,
   ObjectiveRecord,
-  objectiveTeleopKeys,
-  pitAutoKeys,
-  pitDriveKeys,
-  pitEndgameKeys,
-  pitInfoKeys,
-  pitOtherKeys,
   PitRecord,
-  pitSpecificationsKeys,
-  pitTeleopKeys,
-  subjectiveInfoKeys,
-  subjectiveOtherKeys,
   SubjectiveRecord,
-  subjectiveTeamKeys,
+  convertObjectiveFieldsToArray,
+  convertPitFieldsToArray,
+  convertSubjectiveFieldsToArray,
 } from "@griffins-scout/game";
 import type {
   BaseExternalAccountClient,
@@ -74,138 +59,6 @@ async function getSpreadSheet(spreadsheetId: string, auth: Auth) {
     auth,
   });
   return res;
-}
-
-function screenToArray<T extends Record<string, any>, K extends keyof T>(
-  key: string,
-  screen: K,
-  record: T
-): string[] {
-  const value: any =
-    record[screen as keyof typeof record][
-      key as keyof typeof record[typeof screen]
-    ];
-
-  if (typeof value === "object") {
-    const map: Record<string, string> = {};
-
-    const element = game.elements.find((e) => e.name === key)!!.field;
-    if (element.fieldType !== "Grouping") return [];
-
-    const elementKeys = element.fields.map((e) => e.name);
-
-    elementKeys.map((e) => (map[e] = ""));
-
-    value.forEach((element: any) => {
-      elementKeys.forEach((elementKey) => {
-        map[elementKey] =
-          (map[elementKey] ? map[elementKey] + "," : "") + element[elementKey];
-      });
-    });
-
-    return elementKeys.map((key) => (map[key] !== "" ? map[key] : "-"));
-  } else {
-    if (value === "") return ["-"];
-    else return [value];
-  }
-}
-
-function convertObjectiveFieldsToArray(record: ObjectiveRecord) {
-  let final: any[] = [];
-
-  [
-    [objectivePregameKeys, "pregame"] as const,
-    [objectiveTeleopKeys, "teleop"] as const,
-    [objectiveEndgameKeys, "endgame"] as const,
-    [objectiveInfoKeys, "info"] as const,
-    [objectiveAutoKeys, "auto"] as const,
-    [objectivePostgameKeys, "postgame"] as const,
-    [objectiveOtherKeys, "other"] as const,
-  ].forEach(([keys, screen]) => {
-    keys.forEach((key) => {
-      final = final.concat(screenToArray(key, screen, record));
-    });
-  });
-
-  return final;
-}
-
-function convertSubjectiveFieldsToArray(record: SubjectiveRecord) {
-  // we want to flatten the whole record into an array
-  // so we can easily add it to the sheet
-
-  let one: any[] = [];
-
-  [
-    [subjectiveTeamKeys, "teamOne"] as const,
-    [subjectiveOtherKeys, "other"] as const,
-    [
-      subjectiveInfoKeys.filter(
-        (e) => e !== "teamThreeNumber" && e !== "teamTwoNumber"
-      ),
-      "info",
-    ] as const,
-  ].forEach(([keySet, screen]) => {
-    keySet.forEach((key) => {
-      one = one.concat(screenToArray(key, screen, record));
-    });
-  });
-
-  let two: any[] = [];
-
-  [
-    [subjectiveTeamKeys, "teamTwo"] as const,
-    [subjectiveOtherKeys, "other"] as const,
-    [
-      subjectiveInfoKeys.filter(
-        (e) => e !== "teamOneNumber" && e !== "teamThreeNumber"
-      ),
-      "info",
-    ] as const,
-  ].forEach(([keySet, screen]) => {
-    keySet.forEach((key) => {
-      two = two.concat(screenToArray(key, screen, record));
-    });
-  });
-
-  let three: any[] = [];
-
-  [
-    [subjectiveTeamKeys, "teamThree"] as const,
-    [subjectiveOtherKeys, "other"] as const,
-    [
-      subjectiveInfoKeys.filter(
-        (e) => e !== "teamOneNumber" && e !== "teamTwoNumber"
-      ),
-      "info",
-    ] as const,
-  ].forEach(([keySet, screen]) => {
-    keySet.forEach((key) => {
-      three = three.concat(screenToArray(key, screen, record));
-    });
-  });
-
-  return [one, two, three];
-}
-
-function convertPitFieldsToArray(record: PitRecord) {
-  let final: any[] = [];
-
-  [
-    [pitAutoKeys, "auto"] as const,
-    [pitTeleopKeys, "teleop"] as const,
-    [pitEndgameKeys, "endgame"] as const,
-    [pitOtherKeys, "other"] as const,
-    [pitInfoKeys, "info"] as const,
-    [pitSpecificationsKeys, "specifications"] as const,
-    [pitDriveKeys, "drive"] as const,
-  ].forEach(([keys, screen]) => {
-    keys.forEach((key) => {
-      final = final.concat(screenToArray(key, screen, record));
-    });
-  });
-
-  return final;
 }
 
 function communityToArray(community: Community) {
@@ -420,7 +273,7 @@ export async function addObjectiveRecord(
     resource: {
       range: `'${sheet}'!A2:BZ2`,
       majorDimension: "ROWS",
-      values: record.map(convertObjectiveFieldsToArray),
+      values: record.map((r) => convertObjectiveFieldsToArray(r)),
     },
 
     auth,
@@ -449,7 +302,7 @@ export async function addSubjectiveRecord(
     resource: {
       range: `'${sheet}'!A2:BZ2`,
       majorDimension: "ROWS",
-      values: record.map(convertSubjectiveFieldsToArray),
+      values: record.map((r) => convertSubjectiveFieldsToArray(r)).flat(),
     },
 
     auth,
@@ -457,6 +310,7 @@ export async function addSubjectiveRecord(
 
   try {
     const response = await sheets.spreadsheets.values.append(request);
+    console.log(response);
   } catch (e) {
     console.log(e);
   }
@@ -475,7 +329,7 @@ export async function addPitRecord(auth: Auth, record: PitRecord[]) {
     resource: {
       range: `'${sheet}'!A2:BZ2`,
       majorDimension: "ROWS",
-      values: record.map(convertPitFieldsToArray),
+      values: record.map((r) => convertPitFieldsToArray(r)),
     },
 
     auth,

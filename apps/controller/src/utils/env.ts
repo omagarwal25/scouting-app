@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import { envsafe, port, str, url } from "envsafe";
+import { envsafe, port, str } from "envsafe";
 
 dotenv.config();
 
@@ -12,8 +12,9 @@ export const env = envsafe({
     devDefault: 8080,
   }),
   X_TBA_AUTH_KEY: str(),
-  DATABASE_URL: url(),
   EVENT_CODE: str(),
   SHEET_ID: str(),
   CRED_PATH: str(),
 });
+
+console.log(env.EVENT_CODE);

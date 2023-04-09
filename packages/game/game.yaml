@@ -306,6 +306,7 @@ elements:
               - Barrier
               - Charge Station
               - Cable Bump
+              - None
 
         - label: Scoring Height
           name: scoringHeight
@@ -317,6 +318,8 @@ elements:
               - Bottom
               - Middle
               - Top
+              - Ferry
+              - None
 
         - label: Scoring Grid Area
           name: scoringGridArea
@@ -328,6 +331,7 @@ elements:
               - Barrier
               - Co-op
               - Cable Bump
+              - None
 
         - label: Scoring Success
           name: scoringSuccess
@@ -340,7 +344,13 @@ elements:
               - Dropped Hybrid
               - Dropped
               - Failed
-              - None
+
+        - label: Bulldozed?
+          name: bulldoze
+          screens:
+            - ObjectiveTeleop
+          field:
+            fieldType: Boolean
 
         - label: Pickup to Loss of Possession Time
           name: pickupToLossOfPossesstionTime
