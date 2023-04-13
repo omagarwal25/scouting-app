@@ -1,5 +1,6 @@
 import { TBAMatch } from '@griffins-scout/api';
 import {
+  GameRecord,
   ObjectiveRecord,
   PitRecord,
   SubjectiveRecord,
@@ -11,22 +12,19 @@ import {
   subjectiveHeaders,
 } from '@griffins-scout/game';
 import { defineStore } from 'pinia';
-import { client } from '~/api';
+import { RouterInput, client } from '~/api';
 import { downloadCSVData } from '~/components/util/csv';
-import { RouterInput } from './../api/index';
-
-type Record = RouterInput['record']['createRecord'][number];
 
 export const useCurrentGameStore = defineStore('currentGameStore', {
   state: () => {
     return {
       currentMatch: undefined as TBAMatch | undefined,
-      records: [] as Record[],
+      records: [] as GameRecord[],
     };
   },
 
   getters: {
-    currentRecord(): Record | undefined {
+    currentRecord(): GameRecord | undefined {
       return this.records.at(-1);
     },
 
@@ -85,7 +83,9 @@ export const useCurrentGameStore = defineStore('currentGameStore', {
       );
 
       try {
-        client.record.createRecord.mutate(this.records);
+        client.record.createRecord.mutate(
+          this.records as unknown as RouterInput['record']['createRecord']
+        );
       } catch (e) {
         console.log(e);
       }
@@ -95,7 +95,8 @@ export const useCurrentGameStore = defineStore('currentGameStore', {
       this.records.pop();
     },
 
-    async addRecord(record: Record) {
+    async addRecord(record: GameRecord) {
+      console.log(record);
       this.records.push(record);
     },
 

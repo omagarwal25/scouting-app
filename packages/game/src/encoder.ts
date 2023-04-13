@@ -1,3 +1,4 @@
+import { z } from "zod";
 import { game } from "./game";
 import {
   objectiveAutoKeys,
@@ -8,6 +9,7 @@ import {
   objectivePostgameKeys,
   objectivePregameKeys,
   ObjectiveRecord,
+  objectiveRecordSchema,
   objectiveTeleopKeys,
   pitAutoKeys,
   pitDriveKeys,
@@ -16,15 +18,37 @@ import {
   pitInfoKeys,
   pitOtherKeys,
   PitRecord,
+  pitRecordSchema,
   pitSpecificationsKeys,
   pitTeleopKeys,
   SubjectiveInfo,
   subjectiveInfoKeys,
   subjectiveOtherKeys,
   SubjectiveRecord,
+  subjectiveRecordSchema,
   subjectiveTeamKeys,
 } from "./screens";
 import { ScoutingElement, Screen } from "./types";
+
+export const recordSchema = z
+  .object({
+    type: z.literal("subjective"),
+    record: subjectiveRecordSchema,
+  })
+  .or(
+    z.object({
+      type: z.literal("objective"),
+      record: objectiveRecordSchema,
+    })
+  )
+  .or(
+    z.object({
+      type: z.literal("pit"),
+      record: pitRecordSchema,
+    })
+  );
+
+export type GameRecord = z.infer<typeof recordSchema>;
 
 // encodes and decodes game state, using auto and other screens
 // fun compression algorithm
@@ -313,12 +337,7 @@ export const getEncodedType = (
   else throw new Error("Invalid encoded string");
 };
 
-export const decodeRecord = (
-  str: string
-):
-  | { type: "subjective"; record: SubjectiveRecord }
-  | { type: "objective"; record: ObjectiveRecord }
-  | { type: "pit"; record: PitRecord } => {
+export const decodeRecord = (str: string): GameRecord => {
   const type = getEncodedType(str);
   if (type === "objective") return { type, record: decodeObjectiveRecord(str) };
   if (type === "subjective")

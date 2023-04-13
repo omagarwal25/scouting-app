@@ -13,16 +13,17 @@ Currently, this is a work in progress.
 - [x] write a giant script that spins everything up at the same time
 - [x] escape hatch for scanner app that lets you pick match manually :)
 - [ ] Create viewer app
-- [ ] Better Expo Go Experience aaagh
-- [ ] add subjective data
-- [ ] pit scouting
-- [ ] blue alliance integration (pulling match data)
+- [x] Better Expo Go Experience aaagh
+- [x] add subjective data
+- [x] pit scouting
+- [x] blue alliance integration (pulling match data)
 - [ ] app UI redesign, bigger and easier to use buttons
-- [ ] import export data
-- [ ] OPR calculations
+- [x] import export data
 - [ ] points field onto scoring elements so that the app can do math?
 - [ ] data sharing systems
 - [ ] https://nivo.rocks/swarmplot/
+- [ ] have a think about how we want to make the viewer app so that it's longlasting, maybe have a config file (seperate or the same?) (auto generation!)
+- [ ] https://www.youtube.com/watch?v=B7ygRIQcQPE
 
 [Old Client](https://github.com/omagarwal25/scouting-client)
 [Old Server](https://github.com/omagarwal25/scouting-server)

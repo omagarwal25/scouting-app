@@ -12,14 +12,9 @@
 
 <script lang="ts" setup>
 import { decodeRecord } from '@griffins-scout/game';
-import { ref } from 'vue';
 // @ts-ignore
 import { QrStream } from 'vue3-qr-reader';
 import { useCurrentGameStore } from '~/store';
-
-const result = ref<string>();
-const isLoading = ref(false);
-const error = ref<string>();
 
 const store = useCurrentGameStore();
 
