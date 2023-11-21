@@ -1,4 +1,4 @@
-import { recordSchema } from "@griffins-scout/game";
+import { objectiveInfoSchema, recordSchema } from "@griffins-scout/game";
 import { z } from "zod";
 import { publicProcedure, router } from "../trpc.js";
 import { getMatches } from "../utils/blueAlliance.js";
@@ -34,7 +34,7 @@ export const recordRouter = router({
       await addSubjectiveRecord(await getAuthToken(), subj as any);
       await addPitRecord(await getAuthToken(), pit as any);
 
-      const matches = await getMatches();
-      await addMatches(await getAuthToken(), matches);
+      // const matches = await getMatches();
+      // await addMatches(await getAuthToken(), matches);
     }),
 });

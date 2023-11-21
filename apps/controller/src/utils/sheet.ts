@@ -148,6 +148,7 @@ function convertMatchToArray(match: TBAMatch): any[][] {
 
       record.push(g.rp);
       record.push(g.sustainabilityBonusAchieved);
+      record.push(g.extraGamePieceCount);
     }
 
     final.push(record);

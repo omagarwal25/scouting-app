@@ -298,6 +298,7 @@ elements:
 
         - label: Route
           name: route
+          default: None
           screens:
             - ObjectiveTeleop
           field:
@@ -310,6 +311,7 @@ elements:
 
         - label: Scoring Height
           name: scoringHeight
+          default: None
           screens:
             - ObjectiveTeleop
           field:
@@ -323,6 +325,7 @@ elements:
 
         - label: Scoring Grid Area
           name: scoringGridArea
+          default: None
           screens:
             - ObjectiveTeleop
           field:
@@ -335,6 +338,7 @@ elements:
 
         - label: Scoring Success
           name: scoringSuccess
+          default: Success
           screens:
             - ObjectiveTeleop
           field:
@@ -347,6 +351,7 @@ elements:
 
         - label: Bulldozed?
           name: bulldoze
+          default: False
           screens:
             - ObjectiveTeleop
           field:
@@ -364,6 +369,7 @@ elements:
 
         - label: Encountered Defense?
           name: encounteredDefense
+          default: False
           field:
             fieldType: Boolean
           screens:

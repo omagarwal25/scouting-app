@@ -42,7 +42,7 @@
     "@google-cloud/local-auth": "^2.1.1",
     "@griffins-scout/api": "*",
     "@griffins-scout/game": "*",
-    "@trpc/server": "^10.8.1",
+    "@trpc/server": "^10.35.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "envsafe": "^2.0.3",
@@ -50,7 +50,7 @@
     "google-auth-library": "^8.7.0",
     "googleapis": "^111.0.0",
     "got": "^12.5.3",
-    "superjson": "^1.9.1",
+    "superjson": "^1.13.1",
     "trpc-playground": "^1.0.4",
     "zod": "^3.20.6"
   },

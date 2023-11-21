@@ -1,3 +1,4 @@
+import { TBAMatch } from '@griffins-scout/api';
 import { atom } from 'jotai';
 import { focusAtom } from 'jotai/optics';
 import { atomWithStorage } from 'jotai/utils';
@@ -9,7 +10,27 @@ import {
   objectiveRecordDefault,
   pitRecordDefault,
   subjectiveRecordDefault,
+  SubjectiveInfo,
+  ObjectiveInfo,
 } from './models';
+
+type AppSettings =
+  | {
+    connection: 'offline';
+  }
+  | {
+    connection: 'online';
+    scoutId: SubjectiveInfo['scoutId'] | ObjectiveInfo['scoutId'] | null;
+    match: TBAMatch | null;
+  };
+
+export const appSettingsAtom = atomWithStorage<AppSettings>('appSettings', {
+  connection: 'offline',
+});
+
+export const onlineAtom = atom(
+  (get) => get(appSettingsAtom).connection === 'online'
+);
 
 export const recordTypeAtom = atomWithStorage<
   'subjective' | 'objective' | 'pit'
@@ -40,8 +61,6 @@ export const subjectiveInfoAtom = focusAtom(subjectiveRecordAtom, (optic) =>
 export const subjectiveOtherAtom = focusAtom(subjectiveRecordAtom, (optic) =>
   optic.prop('other')
 );
-
-const e: ObjectiveRecord = objectiveRecordDefault;
 
 export const objectiveRecordAtom = atomWithStorage<ObjectiveRecord>(
   'objectiveRecord',
@@ -108,10 +127,10 @@ export const pitEndgameAtom = focusAtom(pitRecordAtom, (optic) =>
   optic.prop('endgame')
 );
 
-export const resetAtom = atom(null, async (get, set, _update) => {
-  await set(objectiveRecordAtom, { ...objectiveRecordDefault });
-  await set(subjectiveRecordAtom, { ...subjectiveRecordDefault });
-  await set(pitRecordAtom, { ...pitRecordDefault });
+export const resetAtom = atom(null, async (_get, set, _update) => {
+  set(objectiveRecordAtom, { ...objectiveRecordDefault });
+  set(subjectiveRecordAtom, { ...subjectiveRecordDefault });
+  set(pitRecordAtom, { ...pitRecordDefault });
 
-  await set(recordTypeAtom, 'objective');
+  set(recordTypeAtom, 'objective');
 });

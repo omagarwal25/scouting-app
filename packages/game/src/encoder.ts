@@ -137,10 +137,10 @@ const encodeCycle = (
 export const decode = <
   B extends {
     [key: string]:
-      | string
-      | number
-      | boolean
-      | Record<string, string | number | boolean>[];
+    | string
+    | number
+    | boolean
+    | Record<string, string | number | boolean>[];
   }
 >(
   str: string,

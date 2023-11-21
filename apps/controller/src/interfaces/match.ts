@@ -54,6 +54,7 @@ export interface AllianceScoreBreakdown {
   endGameChargeStationRobot1: ChargeStation;
   endGameChargeStationRobot2: ChargeStation;
   endGameChargeStationRobot3: ChargeStation;
+  extraGamePieceCount: number;
   endGameParkPoints: number; // no;
   foulCount: number;
   foulPoints: number;
