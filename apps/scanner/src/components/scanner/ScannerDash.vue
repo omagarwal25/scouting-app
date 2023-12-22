@@ -15,7 +15,7 @@
       <p>Scout Name: {{ currentRecord.record.other.scoutName }}</p>
       <p>Match Type: {{ currentRecord.record.info.matchType }}</p>
       <p>Match Number: {{ currentRecord.record.info.matchNumber }}</p>
-      <!-- TODO if using FTC then remove the last set -->
+      <!-- TODO: if using FTC then remove the last set -->
       <p>Team Numbers: {{ currentRecord.record.info.teamOneNumber }} {{ currentRecord.record.info.teamTwoNumber }} {{ currentRecord.record.info.teamThreeNumber }}</p>
     </p>
     <p v-else class="col-span-2 row-span-1 font-code text-xl">

@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import { envsafe, port, str } from "envsafe";
+import { envsafe, port, str, url } from "envsafe";
 
 dotenv.config();
 
@@ -15,6 +15,7 @@ export const env = envsafe({
   EVENT_CODE: str(),
   SHEET_ID: str(),
   CRED_PATH: str(),
+  DATABASE_URL: url(),
 });
 
 console.log(env.EVENT_CODE);

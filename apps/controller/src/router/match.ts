@@ -15,22 +15,8 @@ export const matchRouter = router({
   findAll: publicProcedure.query(async () => {
     return await getMatches();
   }),
-  findByTypeAndNumber: publicProcedure
-    .input(
-      z.object({
-        type: z.enum([
-          "PRACTICE",
-          "QUALIFICATION",
-          "QUARTERFINAL",
-          "SEMIFINAL",
-          "FINAL",
-        ]),
 
-        number: z.number().nonnegative().int(),
-      })
-    )
-    .query(async () => {}),
-  deleteAll: publicProcedure.mutation(async () => {}),
+
   importFromTba: publicProcedure.mutation(async () => {
     const matches = await getMatches();
 

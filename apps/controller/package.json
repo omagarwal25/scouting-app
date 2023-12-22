@@ -7,9 +7,26 @@
   "scripts": {
     "build": "wireit",
     "start": "wireit",
+    "gen": "wireit",
+    "push": "wireit",
     "dev": "concurrently --kill-others --names \"BUILD,RUN\" -c \"bgBlue.bold,bgMagenta.bold\" \"tsc --build -w --pretty\" \"nodemon -q -w dist dist/src/server.js\""
   },
   "wireit": {
+    "gen": {
+      "command": "prisma generate",
+      "files": [
+        "prisma/schema.prisma"
+      ]
+    },
+    "push": {
+      "command": "prisma db push",
+      "files": [
+        "prisma/schema.prisma"
+      ],
+      "dependencies": [
+        "gen"
+      ]
+    },
     "build": {
       "server": true,
       "command": "tsc --build --pretty",
@@ -22,13 +39,15 @@
       ],
       "clean": "if-file-deleted",
       "dependencies": [
+        "gen",
         "../../packages/game:build"
       ]
     },
     "start": {
       "command": "node dist/src/server.js",
       "dependencies": [
-        "build"
+        "build",
+        "push"
       ],
       "files": [
         "dist/**",
@@ -42,6 +61,7 @@
     "@google-cloud/local-auth": "^2.1.1",
     "@griffins-scout/api": "*",
     "@griffins-scout/game": "*",
+    "@prisma/client": "5.7.1",
     "@trpc/server": "^10.35.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
@@ -61,6 +81,7 @@
     "concurrently": "^7.3.0",
     "nodemon": "^2.0.19",
     "prettier": "^2.7.1",
+    "prisma": "^5.7.1",
     "typescript": "^4.8.2"
   }
 }

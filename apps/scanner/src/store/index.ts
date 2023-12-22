@@ -44,10 +44,10 @@ export const useCurrentGameStore = defineStore('currentGameStore', {
     },
 
     async sendRecords() {
-      // TODO all we have to do is just send off the matches
+      // TODO: all we have to do is just send off the matches
 
-      // TODO deal with the off case
-      // BUG THIS IS IMPORTANT BECAUSE OF PRACTICE MATCH SCOUTING.
+      // TODO: deal with the off case
+      // BUG: THIS IS IMPORTANT BECAUSE OF PRACTICE MATCH SCOUTING.
       // IT WILL NOT EXIST IN TBA. ALSO WE NEED AN ESCAPE HATCH
       // all goods
       // tbh, i dont think it matters what game its associated
