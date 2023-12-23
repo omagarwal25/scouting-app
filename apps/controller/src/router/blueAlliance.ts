@@ -11,11 +11,11 @@ import { addMatches, getAuthToken } from "../utils/sheet.js";
 //   teamKeyToNumber,
 // } from "../utils/blueAlliance.js";
 
-export const matchRouter = router({
-  findAll: publicProcedure.query(async () => {
-    return await getMatches();
+export const blueAllianceRouter = router({
+  findAll: publicProcedure.query(async ({ ctx: { db } }) => {
+    // return await getMatches();
+    return db.tBARecord.findMany();
   }),
-
 
   importFromTba: publicProcedure.mutation(async () => {
     const matches = await getMatches();

@@ -4,14 +4,20 @@ import express from "express";
 import { expressHandler } from "trpc-playground/handlers/express";
 import { createContext } from "./context.js";
 import { TBAMatch } from "./interfaces/match.js";
-import { matchRouter } from "./router/match.js";
+import { blueAllianceRouter } from "./router/blueAlliance.js";
+import { objectiveRouter } from "./router/objective.js";
+import { pitRouter } from "./router/pit.js";
 import { recordRouter } from "./router/record.js";
+import { subjectiveRouter } from "./router/subjective.js";
 import { router } from "./trpc.js";
 import { env } from "./utils/env.js";
 
 const appRouter = router({
   record: recordRouter,
-  match: matchRouter,
+  blueAlliance: blueAllianceRouter,
+  objective: objectiveRouter,
+  subjective: subjectiveRouter,
+  pit: pitRouter,
 });
 
 export type AppRouter = typeof appRouter;

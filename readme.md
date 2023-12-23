@@ -27,6 +27,9 @@ Currently, this is a work in progress.
 
 [Old Client](https://github.com/omagarwal25/scouting-client)
 [Old Server](https://github.com/omagarwal25/scouting-server)
+[Sytem Diagram](https://excalidraw.com/#json=lbxq5bGRVkCmEuD6uKx75,9VgSadcQ5oE6S-vvNMDTAA)
+
+![System Diagram](https://github.com/omagarwal25/scouting-app/blob/dev/scouting-app-architecture.png?raw=true)
 
 ## Usage
 
