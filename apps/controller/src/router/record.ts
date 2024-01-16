@@ -13,11 +13,6 @@ export const recordRouter = router({
           content: i,
         }));
 
-      const subj = input
-        .filter((i) => i.type === "subjective")
-        .map((i) => i.record)
-        .map((i) => ({ content: i }));
-
       const pit = input
         .filter((i) => i.type === "pit")
         .map((i) => i.record)
@@ -25,10 +20,6 @@ export const recordRouter = router({
 
       await db.objectiveRecord.createMany({
         data: obj,
-      });
-
-      await db.subjectiveRecord.createMany({
-        data: subj,
       });
 
       await db.pitRecord.createMany({

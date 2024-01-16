@@ -21,28 +21,6 @@
         matchNumber: props.match.match_number,
       }"
     />
-    <SubjectiveCode
-      color="blue"
-      :info="{
-        scoutId: 'Blue S',
-        matchType: subjectiveMatchType,
-        teamOneNumber: parseInt(blueTeams[0]),
-        teamTwoNumber: parseInt(blueTeams[1]),
-        teamThreeNumber: parseInt(blueTeams[2]),
-        matchNumber: props.match.match_number,
-      }"
-    />
-    <SubjectiveCode
-      color="red"
-      :info="{
-        scoutId: 'Red S',
-        matchType: subjectiveMatchType,
-        teamOneNumber: parseInt(redTeams[0]),
-        teamTwoNumber: parseInt(redTeams[1]),
-        teamThreeNumber: parseInt(redTeams[2]),
-        matchNumber: props.match.match_number,
-      }"
-    />
   </div>
 </template>
 

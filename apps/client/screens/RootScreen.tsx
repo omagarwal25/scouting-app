@@ -24,11 +24,6 @@ export function RootScreen({ navigation }: RootTabScreenProps) {
     navigation.navigate('ObjectiveInfo');
   };
 
-  const handleSubjective = async () => {
-    await reset();
-    setType('subjective');
-    navigation.navigate('SubjectiveInfo');
-  };
 
   const handlePit = async () => {
     await reset();
@@ -61,8 +56,6 @@ export function RootScreen({ navigation }: RootTabScreenProps) {
       </InputWrapper>
       <View style={tw`p-0.5`} />
       <Button label="Manual Entry (Objective)" onPress={handleObjective} />
-      <View style={tw`p-0.5`} />
-      <Button label="Manual Entry (Subjective)" onPress={handleSubjective} />
       <View style={tw`p-0.5`} />
       <Button label="Manual Entry (Pit)" onPress={handlePit} />
       <View style={tw`p-0.5`} />

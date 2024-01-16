@@ -5,12 +5,9 @@ import { atomWithStorage } from 'jotai/utils';
 import {
   ObjectiveRecord,
   PitRecord,
-  SubjectiveRecord,
   game,
   objectiveRecordDefault,
   pitRecordDefault,
-  subjectiveRecordDefault,
-  SubjectiveInfo,
   ObjectiveInfo,
 } from './models';
 
@@ -20,7 +17,7 @@ type AppSettings =
   }
   | {
     connection: 'online';
-    scoutId: SubjectiveInfo['scoutId'] | ObjectiveInfo['scoutId'] | null;
+    scoutId: ObjectiveInfo['scoutId'] | null;
     match: TBAMatch | null;
   };
 
@@ -33,34 +30,8 @@ export const onlineAtom = atom(
 );
 
 export const recordTypeAtom = atomWithStorage<
-  'subjective' | 'objective' | 'pit'
+  'objective' | 'pit'
 >('recordTypeT', 'objective');
-
-export const subjectiveRecordAtom = atomWithStorage<SubjectiveRecord>(
-  'subjectiveRecord',
-  { ...subjectiveRecordDefault }
-);
-
-export const subjectiveTeamOneAtom = focusAtom(subjectiveRecordAtom, (optic) =>
-  optic.prop('teamOne')
-);
-
-export const subjectiveTeamTwoAtom = focusAtom(subjectiveRecordAtom, (optic) =>
-  optic.prop('teamTwo')
-);
-
-export const subjectiveTeamThreeAtom =
-  game.allianceSize === 3
-    ? focusAtom(subjectiveRecordAtom, (optic) => optic.prop('teamThree'))
-    : null;
-
-export const subjectiveInfoAtom = focusAtom(subjectiveRecordAtom, (optic) =>
-  optic.prop('info')
-);
-
-export const subjectiveOtherAtom = focusAtom(subjectiveRecordAtom, (optic) =>
-  optic.prop('other')
-);
 
 export const objectiveRecordAtom = atomWithStorage<ObjectiveRecord>(
   'objectiveRecord',
@@ -129,7 +100,6 @@ export const pitEndgameAtom = focusAtom(pitRecordAtom, (optic) =>
 
 export const resetAtom = atom(null, async (_get, set, _update) => {
   set(objectiveRecordAtom, { ...objectiveRecordDefault });
-  set(subjectiveRecordAtom, { ...subjectiveRecordDefault });
   set(pitRecordAtom, { ...pitRecordDefault });
 
   set(recordTypeAtom, 'objective');

@@ -6,11 +6,7 @@ import { Text, View } from 'react-native';
 import { ZodObject, ZodSchema } from 'zod';
 import { Button } from '~/components/Button';
 import { Container } from '~/components/Container';
-import {
-  ObjectiveTopbar,
-  PitTobar,
-  SubjectiveTopbar,
-} from '~/components/Topbar';
+import { ObjectiveTopbar, PitTopbar } from '~/components/Topbar';
 import { game, ScoutingElement, Screen } from '~/models';
 import { RootStackParamList, RootTabScreenProps } from '~/types';
 import tw from '~/utils/tailwind';
@@ -28,14 +24,9 @@ type Props<
   readonly keys: readonly Path<T>[];
   zodSchema: ZodSchema;
   defaults: ZodObject<any>;
-  type:
-    | {
-        name: 'objective' | 'pit';
-      }
-    | {
-        name: 'subjective';
-        team: 'one' | 'two' | 'three' | 'none';
-      };
+  type: {
+    name: 'objective' | 'pit';
+  };
 };
 
 const getElement = (name: string, screen: Screen) => {
@@ -128,13 +119,7 @@ export const InputModal = <
 
   return (
     <>
-      {type.name === 'subjective' ? (
-        <SubjectiveTopbar team={type.team} />
-      ) : type.name === 'objective' ? (
-        <ObjectiveTopbar />
-      ) : (
-        <PitTobar />
-      )}
+      {type.name === 'objective' ? <ObjectiveTopbar /> : <PitTopbar />}
       <Container>
         {keys
           .filter((e) => getElement(e, screen)?.field.fieldType !== 'Grouping')

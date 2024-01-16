@@ -1,0 +1,34 @@
+procs:
+  controller:
+    cmd:
+      - npm
+      - run
+      - start
+    cwd: <CONFIG_DIR>/apps/controller
+    stop: SIGINT
+  scanner:
+    cmd:
+      - npm
+      - run
+      - dev
+    cwd: <CONFIG_DIR>/apps/scanner
+    stop: SIGINT
+  tba:
+    cmd:
+      - npm
+      - run
+      - start
+    cwd: <CONFIG_DIR>/apps/tba
+    stop: SIGINT
+    # studio:
+    #   cmd:
+    #     - yarn
+    #     - prisma
+    #     - studio
+    #   cwd: <CONFIG_DIR>/apps/controller
+    #   stop: SIGINT
+# webpack: webpack serve
+# tests:
+#   shell: jest -w
+#   env:
+#     NODE_ENV: test

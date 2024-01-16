@@ -188,29 +188,6 @@ file.addVariableStatement({
   isExported: true,
   declarations: [
     {
-      name: "subjectiveRecordSchema",
-      initializer: `z.object({
-        teamOne: subjectiveTeamSchema,
-        teamTwo: subjectiveTeamSchema,
-        ${game.allianceSize === 3 ? "teamThree: subjectiveTeamSchema" : ""},
-        info: subjectiveInfoSchema,
-        other: subjectiveOtherSchema
-      })`,
-    },
-  ],
-});
-
-file.addTypeAlias({
-  name: "SubjectiveRecord",
-  isExported: true,
-  type: `z.infer<typeof subjectiveRecordSchema>`,
-});
-
-file.addVariableStatement({
-  declarationKind: VariableDeclarationKind.Const,
-  isExported: true,
-  declarations: [
-    {
       name: "pitRecordSchema",
       initializer: `z.object({
         auto: pitAutoSchema,
@@ -297,58 +274,11 @@ defaultFile.addVariableStatement({
 
 defaultFile.addVariableStatement({
   declarationKind: VariableDeclarationKind.Const,
-  declarations: [
-    {
-      name: "subjectiveRecordSchema",
-      initializer: (w: CodeBlockWriter) => {
-        w.write("z.object(");
-        w.block(() => {
-          // grab all the screens
-          w.write(
-            "teamOne: subjectiveTeamDefaultSchema.default(subjectiveTeamDefaultSchema.parse({})),"
-          );
-
-          w.write(
-            "teamTwo: subjectiveTeamDefaultSchema.default(subjectiveTeamDefaultSchema.parse({})),"
-          );
-
-          w.write(
-            "teamThree: subjectiveTeamDefaultSchema.default(subjectiveTeamDefaultSchema.parse({})),"
-          );
-
-          w.write(
-            "info: subjectiveInfoDefaultSchema.default(subjectiveInfoDefaultSchema.parse({})),"
-          );
-
-          w.write(
-            "other: subjectiveOtherDefaultSchema.default(subjectiveOtherDefaultSchema.parse({}))"
-          );
-        });
-
-        w.write(")");
-      },
-    },
-  ],
-});
-
-defaultFile.addVariableStatement({
-  declarationKind: VariableDeclarationKind.Const,
   isExported: true,
   declarations: [
     {
       name: "objectiveRecordDefault",
       initializer: "objectiveRecordSchema.parse({})",
-    },
-  ],
-});
-
-defaultFile.addVariableStatement({
-  declarationKind: VariableDeclarationKind.Const,
-  isExported: true,
-  declarations: [
-    {
-      name: "subjectiveRecordDefault",
-      initializer: "subjectiveRecordSchema.parse({})",
     },
   ],
 });

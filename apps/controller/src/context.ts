@@ -13,10 +13,12 @@ export const createContext = () => {
       "error",
     ],
   });
-  prisma.$on("query", (e) => {
+
+  db.$on("query", (e) => {
     console.log("Query: " + e.query);
     console.log("Duration: " + e.duration + "ms");
   });
+
   return {
     db,
   };

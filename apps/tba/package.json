@@ -1,0 +1,60 @@
+{
+  "name": "@griffins-scout/tba",
+  "version": "2.1.0",
+  "type": "module",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "build": "wireit",
+    "start": "wireit",
+    "dev": "concurrently --kill-others --names \"BUILD,RUN\" -c \"bgBlue.bold,bgMagenta.bold\" \"tsc --build -w --pretty\" \"nodemon -q -w dist dist/src/main.js\""
+  },
+  "wireit": {
+    "build": {
+      "server": true,
+      "command": "tsc --build --pretty",
+      "files": [
+        "src/**/*.ts",
+        "tsconfig.json"
+      ],
+      "output": [
+        "dist/**"
+      ],
+      "clean": "if-file-deleted",
+      "dependencies": [
+        "../../packages/api:build"
+      ]
+    },
+    "start": {
+      "command": "node dist/src/main.js",
+      "dependencies": [
+        "build"
+      ],
+      "files": [
+        "dist/**",
+        "src/**/*.ts",
+        "tsconfig.json"
+      ],
+      "clean": "if-file-deleted"
+    }
+  },
+  "dependencies": {
+    "@griffins-scout/api": "*",
+    "dotenv": "^16.0.3",
+    "envsafe": "^2.0.3",
+    "got": "^12.5.3",
+    "node-fetch": "^3.3.2",
+    "superjson": "^1.13.1",
+    "undici": "^6.2.1",
+    "whatwg-fetch": "^3.6.20",
+    "zod": "^3.20.6"
+  },
+  "devDependencies": {
+    "@types/node": "^18.7.14",
+    "@types/whatwg-fetch": "^0.0.33",
+    "concurrently": "^7.3.0",
+    "nodemon": "^2.0.19",
+    "prettier": "^2.7.1",
+    "typescript": "^4.8.2"
+  }
+}

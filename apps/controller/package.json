@@ -59,7 +59,6 @@
   },
   "dependencies": {
     "@google-cloud/local-auth": "^2.1.1",
-    "@griffins-scout/api": "*",
     "@griffins-scout/game": "*",
     "@prisma/client": "5.7.1",
     "@trpc/server": "^10.35.0",

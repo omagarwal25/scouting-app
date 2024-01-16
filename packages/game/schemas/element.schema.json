@@ -32,10 +32,7 @@
           "PitInfo",
           "PitOther",
           "PitSpecifications",
-          "PitDrive",
-          "SubjectiveTeam",
-          "SubjectiveInfo",
-          "SubjectiveOther"
+          "PitDrive"
         ],
         "description": "The name of the screen"
       }
