@@ -186,6 +186,7 @@ elements:
               - Opposing Wing
           screens:
             - ObjectiveTeleop
+
         - label: Route
           name: route
           default: None
@@ -197,6 +198,7 @@ elements:
               - Amp
               - Stage
               - Source
+
         - label: Shooting Area
           name: shootingArea
           default: Starting
@@ -210,6 +212,7 @@ elements:
               - Protected
               - Wing
               - Other
+
         - label: Scoring Area
           name: scoringArea
           default: None
@@ -221,6 +224,7 @@ elements:
               - Amp
               - Speaker
               - Ferry
+
         - label: Scoring Successful?
           name: scoringSuccess
           default: Success
@@ -228,6 +232,7 @@ elements:
             - ObjectiveTeleop
           field:
             fieldType: Boolean
+
         - label: Amplified?
           name: amplified
           default: False
@@ -235,6 +240,7 @@ elements:
             - ObjectiveTeleop
           field:
             fieldType: Boolean
+
         - label: Pickup to Loss of Possession Time
           name: pickupToLossOfPossesstionTime
           screens:
@@ -244,6 +250,7 @@ elements:
             isInteger: false
             incrementable: false
             min: 0
+
         - label: Encountered Defense?
           name: encounteredDefense
           default: False
@@ -251,6 +258,7 @@ elements:
             fieldType: Boolean
           screens:
             - ObjectiveTeleop
+
         - label: Offensive Fouls
           name: offensiveFouls
           screens:
@@ -312,17 +320,16 @@ elements:
   - name: piecesInTrap
     label: Pieces In Trap
     screens:
-      - ObjectiveEndgame
+      - ObjectiveTeleop
     field:
       fieldType: Numeric
       isInteger: true
       incrementable: true
       min: 0
-      max: 3
   - name: attemptedPiecesInTrap
     label: Attempted Pieces In Trap
     screens:
-      - ObjectiveEndgame
+      - ObjectiveTeleop
     field:
       fieldType: Numeric
       isInteger: true
@@ -558,6 +565,7 @@ elements:
         - Cone
         - Cube
         - No Preference
+
   - name: notes
     label: Notes
     screens:

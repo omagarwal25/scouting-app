@@ -15,6 +15,9 @@
     "build": {
       "command": "tsc",
       "clean": "if-file-deleted",
+      "dependencies": [
+        "../../apps/controller:build"
+      ],
       "files": [
         "src/**",
         "../../apps/controller/**"

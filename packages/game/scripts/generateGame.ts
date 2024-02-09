@@ -91,28 +91,6 @@ objectiveRequired.forEach((name) => {
   }
 });
 
-const subjectiveNames = elements
-  .filter((e) => e.screens.some((s: string) => s.startsWith("Subjective")))
-  .map((e) => e.name);
-const subjectiveRequired = [
-  "scoutName",
-  "scoutId",
-  "matchType",
-  "matchNumber",
-  "teamOneNumber",
-  "teamTwoNumber",
-];
-
-if (info.allianceSize === 3) subjectiveRequired.push("teamThreeNumber");
-
-subjectiveRequired.forEach((name) => {
-  if (!subjectiveNames.includes(name)) {
-    throw new Error(
-      `❌ Scoring element ${name} is required in subjectiveElements`
-    );
-  }
-});
-
 const pitNames = elements
   .filter((e) => e.screens.some((s: string) => s.startsWith("Objective")))
   .map((e) => e.name);

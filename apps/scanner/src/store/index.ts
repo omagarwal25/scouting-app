@@ -3,13 +3,10 @@ import {
   GameRecord,
   ObjectiveRecord,
   PitRecord,
-  SubjectiveRecord,
   convertObjectiveFieldsToArray,
   convertPitFieldsToArray,
-  convertSubjectiveFieldsToArray,
   objectiveHeaders,
   pitHeaders,
-  subjectiveHeaders,
 } from '@griffins-scout/game';
 import { defineStore } from 'pinia';
 import { RouterInput, client } from '~/api';
@@ -29,7 +26,8 @@ export const useCurrentGameStore = defineStore('currentGameStore', {
     },
 
     async matches() {
-      return client.match.findAll.query();
+      const res = await client.blueAlliance.findAll.query();
+      return res.map((r) => r.content)
     },
   },
 
@@ -44,23 +42,13 @@ export const useCurrentGameStore = defineStore('currentGameStore', {
     },
 
     async sendRecords() {
-      // TODO all we have to do is just send off the matches
+      // TODO: all we have to do is just send off the matches
 
-      // TODO deal with the off case
-      // BUG THIS IS IMPORTANT BECAUSE OF PRACTICE MATCH SCOUTING.
+      // TODO: deal with the off case
+      // BUG: THIS IS IMPORTANT BECAUSE OF PRACTICE MATCH SCOUTING.
       // IT WILL NOT EXIST IN TBA. ALSO WE NEED AN ESCAPE HATCH
       // all goods
       // tbh, i dont think it matters what game its associated
-
-      downloadCSVData(
-        this.records
-          .filter((e) => e.type === 'subjective')
-          .map((r) =>
-            convertSubjectiveFieldsToArray(r.record as SubjectiveRecord)
-          ),
-        subjectiveHeaders(),
-        `${Date.now().toLocaleString()}-subjective`
-      );
 
       downloadCSVData(
         this.records
@@ -109,7 +97,7 @@ export const useCurrentGameStore = defineStore('currentGameStore', {
       const currentType = currentMatch.comp_level;
       const currentNumber = currentMatch.match_number;
 
-      return matches
+      matches
         .filter((match) => match.comp_level === currentType)
         .find((match) => match.match_number === currentNumber + 1)?.key;
     },

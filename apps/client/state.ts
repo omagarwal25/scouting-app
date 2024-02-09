@@ -1,47 +1,37 @@
+import { TBAMatch } from '@griffins-scout/api';
 import { atom } from 'jotai';
 import { focusAtom } from 'jotai/optics';
 import { atomWithStorage } from 'jotai/utils';
 import {
   ObjectiveRecord,
   PitRecord,
-  SubjectiveRecord,
   game,
   objectiveRecordDefault,
   pitRecordDefault,
-  subjectiveRecordDefault,
+  ObjectiveInfo,
 } from './models';
 
+type AppSettings =
+  | {
+    connection: 'offline';
+  }
+  | {
+    connection: 'online';
+    scoutId: ObjectiveInfo['scoutId'] | null;
+    match: TBAMatch | null;
+  };
+
+export const appSettingsAtom = atomWithStorage<AppSettings>('appSettings', {
+  connection: 'offline',
+});
+
+export const onlineAtom = atom(
+  (get) => get(appSettingsAtom).connection === 'online'
+);
+
 export const recordTypeAtom = atomWithStorage<
-  'subjective' | 'objective' | 'pit'
+  'objective' | 'pit'
 >('recordTypeT', 'objective');
-
-export const subjectiveRecordAtom = atomWithStorage<SubjectiveRecord>(
-  'subjectiveRecord',
-  { ...subjectiveRecordDefault }
-);
-
-export const subjectiveTeamOneAtom = focusAtom(subjectiveRecordAtom, (optic) =>
-  optic.prop('teamOne')
-);
-
-export const subjectiveTeamTwoAtom = focusAtom(subjectiveRecordAtom, (optic) =>
-  optic.prop('teamTwo')
-);
-
-export const subjectiveTeamThreeAtom =
-  game.allianceSize === 3
-    ? focusAtom(subjectiveRecordAtom, (optic) => optic.prop('teamThree'))
-    : null;
-
-export const subjectiveInfoAtom = focusAtom(subjectiveRecordAtom, (optic) =>
-  optic.prop('info')
-);
-
-export const subjectiveOtherAtom = focusAtom(subjectiveRecordAtom, (optic) =>
-  optic.prop('other')
-);
-
-const e: ObjectiveRecord = objectiveRecordDefault;
 
 export const objectiveRecordAtom = atomWithStorage<ObjectiveRecord>(
   'objectiveRecord',
@@ -108,10 +98,9 @@ export const pitEndgameAtom = focusAtom(pitRecordAtom, (optic) =>
   optic.prop('endgame')
 );
 
-export const resetAtom = atom(null, async (get, set, _update) => {
-  await set(objectiveRecordAtom, { ...objectiveRecordDefault });
-  await set(subjectiveRecordAtom, { ...subjectiveRecordDefault });
-  await set(pitRecordAtom, { ...pitRecordDefault });
+export const resetAtom = atom(null, async (_get, set, _update) => {
+  set(objectiveRecordAtom, { ...objectiveRecordDefault });
+  set(pitRecordAtom, { ...pitRecordDefault });
 
-  await set(recordTypeAtom, 'objective');
+  set(recordTypeAtom, 'objective');
 });

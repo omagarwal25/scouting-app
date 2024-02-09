@@ -1,9 +1,45 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/omagarwal25/scouting-app/main/packages/game/schemas/game.schema.json
-name: Crescendo
+name: Charged Up
 description: Uwu
-year: 2024
+year: 2023
 allianceSize: 3
 elements:
+  - name: scoutId
+    label: Scout ID
+    screens:
+      - SubjectiveInfo
+    field:
+      fieldType: Dropdown
+      options:
+        - Red S
+        - Blue S
+  - name: teamOneNumber
+    label: Team One Number
+    screens:
+      - SubjectiveInfo
+    field:
+      fieldType: Numeric
+      isInteger: true
+      incrementable: false
+      min: 0
+  - name: teamTwoNumber
+    label: Team Two Number
+    screens:
+      - SubjectiveInfo
+    field:
+      fieldType: Numeric
+      isInteger: true
+      incrementable: false
+      min: 0
+  - name: teamThreeNumber
+    label: Team Three Number
+    screens:
+      - SubjectiveInfo
+    field:
+      fieldType: Numeric
+      isInteger: true
+      incrementable: false
+      min: 0
   - name: scoutId
     label: Scout ID
     screens:
@@ -17,10 +53,20 @@ elements:
         - Blue 1
         - Blue 2
         - Blue 3
+  - name: scoutId
+    label: Scout ID
+    screens:
+      - SubjectiveInfo
+    field:
+      fieldType: Dropdown
+      options:
+        - Red S
+        - Blue S
   - name: matchType
     label: Match Type
     screens:
       - ObjectiveInfo
+      - SubjectiveInfo
     field:
       fieldType: Dropdown
       options:
@@ -31,6 +77,7 @@ elements:
     label: Match Number
     screens:
       - ObjectiveInfo
+      - SubjectiveInfo
     field:
       fieldType: Numeric
       isInteger: true
@@ -50,9 +97,46 @@ elements:
     label: Scout Name
     screens:
       - ObjectiveOther
+      - SubjectiveOther
       - PitOther
     field:
       fieldType: Text
+  - name: gameElementOne
+    label: Game Element 1
+    screens:
+      - ObjectivePregame
+    field:
+      fieldType: Dropdown
+      options:
+        - Cone
+        - Cube
+  - name: gameElementTwo
+    label: Game Element 2
+    screens:
+      - ObjectivePregame
+    field:
+      fieldType: Dropdown
+      options:
+        - Cone
+        - Cube
+  - name: gameElementThree
+    label: Game Element 3
+    screens:
+      - ObjectivePregame
+    field:
+      fieldType: Dropdown
+      options:
+        - Cone
+        - Cube
+  - name: gameElementFour
+    label: Game Element 4
+    screens:
+      - ObjectivePregame
+    field:
+      fieldType: Dropdown
+      options:
+        - Cone
+        - Cube
   - name: startingPosition
     label: Starting Position
     screens:
@@ -60,31 +144,28 @@ elements:
     field:
       fieldType: Dropdown
       options:
-        - Amp
-        - Subwoofer
-        - Source
-  - name: touchingSubwoofer
-    label: Touching Subwoofer?
-    screens:
-      - ObjectivePregame
-      - PitAuto
-    field:
-      fieldType: Boolean
+        - Barrier
+        - Co-op
+        - Cable Bump
   - name: preload
     label: Preload
     screens:
       - ObjectivePregame
       - PitAuto
     field:
-      fieldType: Boolean
+      fieldType: Dropdown
+      options:
+        - None
+        - Cone
+        - Cube
   - name: autoAttempted
     label: Auto Attempted
     screens:
       - ObjectiveAuto
     field:
       fieldType: Boolean
-  - name: gamePiecesPickedUpWing
-    label: Game Pieces Picked Up From Wing
+  - name: gamePiecesPickedUp
+    label: Game Pieces Picked Up
     screens:
       - ObjectiveAuto
     field:
@@ -92,17 +173,8 @@ elements:
       isInteger: true
       incrementable: true
       min: 0
-  - name: gamePiecesPickedUpCenter
-    label: Game Pieces Picked Up From Center
-    screens:
-      - ObjectiveAuto
-    field:
-      fieldType: Numeric
-      isInteger: true
-      incrementable: true
-      min: 0
-  - name: autoSpeaker
-    label: Auto Game Pieces Speaker
+  - name: autoTop
+    label: Auto Game Pieces Top
     screens:
       - ObjectiveAuto
       - PitAuto
@@ -111,8 +183,8 @@ elements:
       isInteger: true
       incrementable: true
       min: 0
-  - name: attemptedAutoSpeaker
-    label: Auto Game Pieces Speaker Attempted
+  - name: attemptedAutoTop
+    label: Auto Game Pieces Top Attempted
     screens:
       - ObjectiveAuto
     field:
@@ -120,8 +192,8 @@ elements:
       isInteger: true
       incrementable: true
       min: 0
-  - name: autoAmp
-    label: Auto Game Pieces Amp
+  - name: autoMiddle
+    label: Auto Game Pieces Middle
     screens:
       - ObjectiveAuto
       - PitAuto
@@ -130,8 +202,8 @@ elements:
       isInteger: true
       incrementable: true
       min: 0
-  - name: attemptedAutoAmp
-    label: Auto Game Pieces Amp Attempted
+  - name: attemptedAutoMiddle
+    label: Auto Game Pieces Middle Attempted
     screens:
       - ObjectiveAuto
     field:
@@ -139,8 +211,8 @@ elements:
       isInteger: true
       incrementable: true
       min: 0
-  - name: autoFloor
-    label: Auto Game Pieces Deposited Floor
+  - name: autoHybrid
+    label: Auto Game Pieces Hybrid
     screens:
       - ObjectiveAuto
       - PitAuto
@@ -149,8 +221,8 @@ elements:
       isInteger: true
       incrementable: true
       min: 0
-  - name: attemptedAutoFloor
-    label: Auto Game Pieces Deposited Floor Attempted
+  - name: attemptedAutoHybrid
+    label: Auto Game Pieces Hybrid Attempted
     screens:
       - ObjectiveAuto
     field:
@@ -158,11 +230,29 @@ elements:
       isInteger: true
       incrementable: true
       min: 0
-  - name: exitedStartingZone
-    label: Exited Starting Zone
+  - name: mobilityPointsAchieved
+    label: Mobility Points Achieved
     screens:
       - ObjectiveAuto
       - PitAuto
+    field:
+      fieldType: Boolean
+  - name: endPosition
+    label: End Position
+    screens:
+      - ObjectiveAuto
+      - PitAuto
+    field:
+      fieldType: Dropdown
+      options:
+        - Community
+        - Outside
+        - Docked
+        - Engaged
+  - name: attemptedChargeStationEngage
+    label: Attempted Charge Station Engage
+    screens:
+      - ObjectiveAuto
     field:
       fieldType: Boolean
   - name: offensiveCycles
@@ -175,17 +265,37 @@ elements:
         - label: Collection Point
           name: collectionPoint
           field:
-            default: Source Floor
+            default: Single
             fieldType: Dropdown
             options:
-              - Alliance Wing
-              - Opposing Source
-              - Midfield
-              - Source
-              - Source Floor
-              - Opposing Wing
+              - LZ
+              - Other Floor
+              - Single
+              - Double High
+              - Other
           screens:
             - ObjectiveTeleop
+
+        - label: Piece
+          name: piece
+          screens:
+            - ObjectiveTeleop
+          field:
+            fieldType: Dropdown
+            options:
+              - Cone
+              - Cube
+
+        - label: Orientation
+          name: orientation
+          screens:
+            - ObjectiveTeleop
+          field:
+            fieldType: Dropdown
+            options:
+              - Upright
+              - Tipped
+
         - label: Route
           name: route
           default: None
@@ -194,47 +304,59 @@ elements:
           field:
             fieldType: Dropdown
             options:
-              - Amp
-              - Stage
-              - Source
-        - label: Shooting Area
-          name: shootingArea
-          default: Starting
-          screens:
-            - ObjectiveTeleop
-          field:
-            fieldType: Dropdown
-            options:
-              - Subwoofer
-              - Starting
-              - Protected
-              - Wing
-              - Other
-        - label: Scoring Area
-          name: scoringArea
+              - Barrier
+              - Charge Station
+              - Cable Bump
+              - None
+
+        - label: Scoring Height
+          name: scoringHeight
           default: None
           screens:
             - ObjectiveTeleop
           field:
             fieldType: Dropdown
             options:
-              - Amp
-              - Speaker
+              - Bottom
+              - Middle
+              - Top
               - Ferry
-        - label: Scoring Successful?
+              - None
+
+        - label: Scoring Grid Area
+          name: scoringGridArea
+          default: None
+          screens:
+            - ObjectiveTeleop
+          field:
+            fieldType: Dropdown
+            options:
+              - Barrier
+              - Co-op
+              - Cable Bump
+              - None
+
+        - label: Scoring Success
           name: scoringSuccess
           default: Success
           screens:
             - ObjectiveTeleop
           field:
-            fieldType: Boolean
-        - label: Amplified?
-          name: amplified
+            fieldType: Dropdown
+            options:
+              - Success
+              - Dropped Hybrid
+              - Dropped
+              - Failed
+
+        - label: Bulldozed?
+          name: bulldoze
           default: False
           screens:
             - ObjectiveTeleop
           field:
             fieldType: Boolean
+
         - label: Pickup to Loss of Possession Time
           name: pickupToLossOfPossesstionTime
           screens:
@@ -244,6 +366,7 @@ elements:
             isInteger: false
             incrementable: false
             min: 0
+
         - label: Encountered Defense?
           name: encounteredDefense
           default: False
@@ -251,6 +374,7 @@ elements:
             fieldType: Boolean
           screens:
             - ObjectiveTeleop
+
         - label: Offensive Fouls
           name: offensiveFouls
           screens:
@@ -276,21 +400,6 @@ elements:
             isInteger: true
             incrementable: true
             min: 0
-        - label: Defense Location
-          name: defenseLocation
-          default: Other
-          screens:
-            - ObjectiveTeleop
-          field:
-            fieldType: Dropdown
-            options:
-              - Allied Amp
-              - Opposing Amp
-              - Allied Source
-              - Opposing Source
-              - Allied Wing
-              - Opposing Wing
-              - Other
         - label: Defensive Fouls
           name: defensiveFouls
           screens:
@@ -309,37 +418,19 @@ elements:
             isInteger: false
             incrementable: false
             min: 0
-  - name: piecesInTrap
-    label: Pieces In Trap
-    screens:
-      - ObjectiveEndgame
-    field:
-      fieldType: Numeric
-      isInteger: true
-      incrementable: true
-      min: 0
-      max: 3
-  - name: attemptedPiecesInTrap
-    label: Attempted Pieces In Trap
-    screens:
-      - ObjectiveEndgame
-    field:
-      fieldType: Numeric
-      isInteger: true
-      incrementable: true
-      min: 0
-  - name: climbStatus
-    label: Climb Status
+  - name: chargeStation
+    label: Charge Station
     screens:
       - ObjectiveEndgame
     field:
       fieldType: Dropdown
       options:
-        - Successful
-        - Unsuccessful
-        - Not Attempted
-  - name: climbTime
-    label: Climb Time Time
+        - None
+        - Docked
+        - Parked
+        - Engaged
+  - name: engageTime
+    label: Engage Time
     screens:
       - ObjectiveEndgame
     field:
@@ -347,34 +438,50 @@ elements:
       isInteger: false
       incrementable: false
       min: 0
-  - name: parked
-    label: Parked
+  - name: driverAwareness
+    label: Driver Awareness
     screens:
-      - ObjectiveEndgame
-    field:
-      fieldType: Boolean
-  - name: spotlit
-    label: Spotlit
-    screens:
-      - ObjectiveEndgame
-    field:
-      fieldType: Boolean
-  - name: robotsOnChainWith
-    label: Robots On Chain With
-    screens:
-      - ObjectiveEndgame
+      - SubjectiveTeam
     field:
       fieldType: Dropdown
       options:
-        - "0"
         - "1"
         - "2"
-  - name: coopertitionBonus
-    label: Coopertition Bonus
+        - "3"
+        - "N/A"
+  - name: interactions
+    label: Interactions
     screens:
-      - ObjectivePostgame
+      - SubjectiveTeam
     field:
-      fieldType: Boolean
+      fieldType: Dropdown
+      options:
+        - "1"
+        - "2"
+        - "3"
+        - "N/A"
+  - name: defense
+    label: Defense
+    screens:
+      - SubjectiveTeam
+    field:
+      fieldType: Dropdown
+      options:
+        - "1"
+        - "2"
+        - "3"
+        - "N/A"
+  - name: robustness
+    label: Robustness
+    screens:
+      - SubjectiveTeam
+    field:
+      fieldType: Dropdown
+      options:
+        - "1"
+        - "2"
+        - "3"
+        - "N/A"
   - name: drivetrainSpeed
     label: Drivetrain Speed
     screens:
@@ -558,9 +665,11 @@ elements:
         - Cone
         - Cube
         - No Preference
+
   - name: notes
     label: Notes
     screens:
+      - SubjectiveTeam
       - ObjectivePostgame
       - PitOther
     field:

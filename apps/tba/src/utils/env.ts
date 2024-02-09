@@ -8,14 +8,9 @@ export const env = envsafe({
     devDefault: "development",
     choices: ["development", "test", "production"],
   }),
-  PORT: port({
-    devDefault: 8080,
-  }),
   X_TBA_AUTH_KEY: str(),
   EVENT_CODE: str(),
-  SHEET_ID: str(),
-  CRED_PATH: str(),
-  DATABASE_URL: url(),
+  CONTROLLER_URL: url(),
 });
 
 console.log(env.EVENT_CODE);

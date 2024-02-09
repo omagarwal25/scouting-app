@@ -89,7 +89,7 @@ const onNext = async () => {
   }
 };
 
-const onFetchTBA = async () => {
-  await client.match.importFromTba.mutate();
-};
+// const onFetchTBA = async () => {
+//   await client.match.importFromTba.mutate();
+// };
 </script>
