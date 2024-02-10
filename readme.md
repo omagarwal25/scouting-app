@@ -4,6 +4,8 @@
 
 A scouting app designed for FRC by Team 1884 but can also be used to scout VEX and FTC.
 
+This system HAS been battle tested by Team 1884 at regionals at worlds. Main will remain as a stable version but the development branch will have all the newest features. For now, I would not recommend pulling from either branch in the middle of a competition to avoid potential issues.
+
 Paper getting hard to manage? Use scouting client to record teams on your phone and then save the data into a QR code. This is designed for events where wifi coverage is limited.
 
 Currently, this is a work in progress.
