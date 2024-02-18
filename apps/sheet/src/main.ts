@@ -21,7 +21,7 @@ const SHEET_ID = env.SHEET_ID;
 const SCOPES = ["https://www.googleapis.com/auth/spreadsheets"];
 const KEY_FILE = env.CRED_PATH;
 
-type SheetName = "Quant Import" | "TBA Import" | "Pit Import" | "Subj Import";
+type SheetName = "Quant Import" | "TBA Import" | "Pit Import";
 export type Auth =
     | JWT
     | Compute

@@ -3,7 +3,6 @@ import { TBAMatch } from "../server.js";
 
 import { publicProcedure, router } from "../trpc.js";
 import { getMatches } from "../utils/blueAlliance.js";
-import { addMatches, getAuthToken } from "../utils/sheet.js";
 // import {
 //   compLevelToMatchType,
 //   getMatches,
