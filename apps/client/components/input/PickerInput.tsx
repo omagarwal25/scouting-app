@@ -14,7 +14,8 @@ type Props<T extends FieldValues> = {
   label: string;
   items: string[];
 };
-const NativePickerInput = <T extends object>(props: Props<T>) => {
+
+export const NativePickerInput = <T extends object>(props: Props<T>) => {
   const {
     field: { value, onChange },
   } = useController(props.control);

@@ -2,6 +2,7 @@ import { TBAMatch } from '@griffins-scout/api';
 import { atom } from 'jotai';
 import { focusAtom } from 'jotai/optics';
 import { atomWithStorage } from 'jotai/utils';
+import { z } from 'zod';
 import {
   ObjectiveRecord,
   PitRecord,
@@ -10,6 +11,7 @@ import {
   pitRecordDefault,
   ObjectiveInfo,
 } from './models';
+
 
 type AppSettings =
   | {
@@ -29,9 +31,10 @@ export const onlineAtom = atom(
   (get) => get(appSettingsAtom).connection === 'online'
 );
 
-export const recordTypeAtom = atomWithStorage<
-  'objective' | 'pit'
->('recordTypeT', 'objective');
+export const recordTypeAtom = atomWithStorage<'objective' | 'pit'>(
+  'recordTypeT',
+  'objective'
+);
 
 export const objectiveRecordAtom = atomWithStorage<ObjectiveRecord>(
   'objectiveRecord',

@@ -3,6 +3,7 @@ import { Switch, Text, View } from 'react-native';
 import { Button } from '~/components/Button';
 import { Container } from '~/components/Container';
 import { InputWrapper } from '~/components/input/InputWrapper';
+import { Online } from '~/components/Online';
 import {
   appSettingsAtom,
   onlineAtom,
@@ -23,7 +24,6 @@ export function RootScreen({ navigation }: RootTabScreenProps) {
     setType('objective');
     navigation.navigate('ObjectiveInfo');
   };
-
 
   const handlePit = async () => {
     await reset();
@@ -54,6 +54,7 @@ export function RootScreen({ navigation }: RootTabScreenProps) {
           value={isOnline}
         />
       </InputWrapper>
+      {isOnline && <Online />}
       <View style={tw`p-0.5`} />
       <Button label="Manual Entry (Objective)" onPress={handleObjective} />
       <View style={tw`p-0.5`} />
