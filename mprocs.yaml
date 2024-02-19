@@ -20,6 +20,13 @@ procs:
       - start
     cwd: <CONFIG_DIR>/apps/tba
     stop: SIGINT
+  sheet:
+    cmd:
+      - npm
+      - run
+      - start
+    cwd: <CONFIG_DIR>/apps/sheet
+    stop: SIGINT
     # studio:
     #   cmd:
     #     - yarn

@@ -2,7 +2,6 @@ import { z } from "zod";
 import { TBAMatch } from "../server.js";
 
 import { publicProcedure, router } from "../trpc.js";
-import { getMatches } from "../utils/blueAlliance.js";
 // import {
 //   compLevelToMatchType,
 //   getMatches,

@@ -8,9 +8,8 @@ export const env = envsafe({
     devDefault: "development",
     choices: ["development", "test", "production"],
   }),
-  X_TBA_AUTH_KEY: str(),
-  EVENT_CODE: str(),
   CONTROLLER_URL: url(),
+  SHEET_ID: str(),
+  CRED_PATH: str(),
 });
 
-console.log(env.EVENT_CODE);
