@@ -572,6 +572,7 @@ elements:
     label: Notes
     screens:
       - PitOther
+      - ObjectivePostgame
     field:
       fieldType: Text
   - name: intakeInsideFramePerimeter
