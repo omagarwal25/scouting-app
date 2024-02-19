@@ -66,7 +66,7 @@ export async function addObjectiveRecord(
         resource: {
             range: `'${sheet}'!A2:BZ2`,
             majorDimension: "ROWS",
-            values: record.map((r) => objectiveHeaders()),
+            values: record.map((r) => convertObjectiveFieldsToArray(r)),
         },
 
         auth,
