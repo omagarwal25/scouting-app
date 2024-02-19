@@ -47,6 +47,7 @@ export function RootScreen({ navigation }: RootTabScreenProps) {
   return (
     <Container>
       <Text style={tw`font-bold text-xl dark:text-white`}>Griffins Scout</Text>
+      <View style={tw`p-0.5`} />
       <InputWrapper label="Online Mode">
         <Switch
           style={tw`h-10 p-2.5 mr-0 ml-auto`}
@@ -54,13 +55,15 @@ export function RootScreen({ navigation }: RootTabScreenProps) {
           value={isOnline}
         />
       </InputWrapper>
-      {isOnline && <Online />}
-      <View style={tw`p-0.5`} />
-      <Button label="Manual Entry (Objective)" onPress={handleObjective} />
-      <View style={tw`p-0.5`} />
-      <Button label="Manual Entry (Pit)" onPress={handlePit} />
-      <View style={tw`p-0.5`} />
-      <Button label="QR Entry" onPress={handleQR} />
-    </Container>
+      {isOnline && <Online navigation={navigation} />}
+      {!isOnline && (<>
+        <View style={tw`p-0.5`} />
+        <Button label="Manual Entry (Objective)" onPress={handleObjective} />
+        <View style={tw`p-0.5`} />
+        <Button label="Manual Entry (Pit)" onPress={handlePit} />
+        <View style={tw`p-0.5`} />
+        <Button label="QR Entry" onPress={handleQR} /></>)
+      }
+    </Container >
   );
 }

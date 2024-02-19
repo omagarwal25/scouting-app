@@ -1,16 +1,16 @@
-import { objectiveRecordSchema } from "@griffins-scout/game";
+import { ObjectiveRecord, objectiveRecordSchema } from "@griffins-scout/game";
 import { z } from "zod";
 import { publicProcedure, router } from "../trpc.js";
 
 export const objectiveRouter = router({
   findAll: publicProcedure.query(async ({ ctx: { db } }) => {
-    return db.tBARecord.findMany();
+    return db.objectiveRecord.findMany() as unknown as { id: string, content: ObjectiveRecord }[];
   }),
 
   create: publicProcedure
     .input(objectiveRecordSchema)
     .mutation(async ({ input, ctx: { db } }) => {
-      await db.subjectiveRecord.create({
+      await db.objectiveRecord.create({
         data: { content: input },
       });
     }),
@@ -18,7 +18,7 @@ export const objectiveRouter = router({
   createMany: publicProcedure
     .input(z.array(objectiveRecordSchema))
     .mutation(async ({ input, ctx: { db } }) => {
-      await db.subjectiveRecord.createMany({
+      await db.objectiveRecord.createMany({
         data: {
           content: input,
         },
@@ -28,10 +28,10 @@ export const objectiveRouter = router({
   deleteOne: publicProcedure
     .input(z.string().cuid())
     .mutation(async ({ input, ctx: { db } }) => {
-      await db.subjectiveRecord.delete({ where: { id: input } });
+      await db.objectiveRecord.delete({ where: { id: input } });
     }),
 
   deleteAll: publicProcedure.mutation(async ({ ctx: { db } }) => {
-    await db.subjectiveRecord.deleteMany({});
+    await db.objectiveRecord.deleteMany({});
   }),
 });

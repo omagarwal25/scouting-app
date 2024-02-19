@@ -15,15 +15,18 @@ import Colors from '~/constants/Colors';
 import layout from '~/constants/Layout';
 import useColorScheme from '~/hooks/useColorScheme';
 import { encodeObjectiveRecord, encodePitRecord } from '~/models';
-import { objectiveRecordAtom, pitRecordAtom, recordTypeAtom } from '~/state';
+import { appSettingsAtom, objectiveRecordAtom, pitRecordAtom, recordTypeAtom } from '~/state';
 import { RootTabScreenProps } from '~/types';
 import tw from '~/utils/tailwind';
+import { trpc } from '~/utils/trpc';
 
 export function QRCodeCard({ navigation }: RootTabScreenProps) {
   const [status, requestPermission] = usePermissions();
   const [objectiveRecord] = useAtom(objectiveRecordAtom);
   const [pitRecord] = useAtom(pitRecordAtom);
   const imageRef = useRef(null);
+  const [settings] = useAtom(appSettingsAtom);
+  const { mutate } = trpc.objective.create.useMutation();
 
   if (status === null) requestPermission();
 
@@ -65,6 +68,12 @@ export function QRCodeCard({ navigation }: RootTabScreenProps) {
           onPress: async () => {
             await onSaveImageAsync();
             navigation.navigate('Root');
+
+            if (settings.connection === 'online') {
+              if (type === 'objective') {
+                mutate(objectiveRecord);
+              }
+            }
           },
         },
       ]

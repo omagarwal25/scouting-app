@@ -417,6 +417,7 @@ elements:
       options:
         - "MaxSwerve"
         - "SwerveX"
+        - "SDS"
         - "Other"
         - "N/A"
       default: "N/A"
@@ -480,31 +481,31 @@ elements:
   - name: shootLocationOne
     label: Can they shoot from against the subwoofer?
     screens:
-      - ObjectivePostgame
+      -  PitTeleop
     field:
       fieldType: Boolean
   - name: shootLocationTwo
     label: Can they shoot from the robot starting zone?
     screens:
-      - ObjectivePostgame
+      - PitTeleop
     field:
       fieldType: Boolean
   - name: shootLocationThree
     label: Can they shoot from the protected zone?
     screens:
-      - ObjectivePostgame
+      - PitTeleop
     field:
       fieldType: Boolean
   - name: shootLocationFour
     label: Can they shoot from another spot in the wing?
     screens:
-      - ObjectivePostgame
+      - PitTeleop
     field:
       fieldType: Boolean
   - name: shootLocationFive
     label: Do they shoot from anywhere else?
     screens:
-      - ObjectivePostgame
+      - PitTeleop
     field:
       fieldType: Boolean
   - name: canDriveUnderStage
@@ -570,7 +571,6 @@ elements:
   - name: notes
     label: Notes
     screens:
-      - ObjectivePostgame
       - PitOther
     field:
       fieldType: Text
@@ -583,7 +583,6 @@ elements:
   - name: photo
     label: Have you taken a photo of the robot?
     screens:
-      - ObjectivePostgame
       - PitOther
     field:
       fieldType: Boolean

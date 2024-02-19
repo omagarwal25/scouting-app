@@ -5,6 +5,7 @@ import {
     convertObjectiveFieldsToArray,
     convertPitFieldsToArray,
     ObjectiveInfo,
+    objectiveHeaders,
 } from "@griffins-scout/game";
 import type {
     BaseExternalAccountClient,
@@ -50,6 +51,10 @@ export async function addObjectiveRecord(
     auth: Auth,
     record: ObjectiveRecord[]
 ) {
+    await removeObjective(auth);
+
+    console.log(record)
+
     const sheet: SheetName = "Quant Import";
     const request = {
         spreadsheetId: SHEET_ID,
@@ -61,7 +66,7 @@ export async function addObjectiveRecord(
         resource: {
             range: `'${sheet}'!A2:BZ2`,
             majorDimension: "ROWS",
-            values: record.map((r) => convertObjectiveFieldsToArray(r)),
+            values: record.map((r) => objectiveHeaders()),
         },
 
         auth,
@@ -162,6 +167,24 @@ export async function removeMatches(auth: Auth) {
     }
 }
 
+export async function removeObjective(auth: Auth) {
+    const sheetName: SheetName = "Quant Import";
+
+    const request = {
+        spreadsheetId: SHEET_ID,
+
+        // The A1 notation of the values to update.
+        range: `'${sheetName}'!A${2}:AZ${1000}`,
+
+        auth,
+    };
+
+    try {
+        const response = (await sheets.spreadsheets.values.clear(request)).data;
+    } catch (err) {
+        console.log(err);
+    }
+}
 
 
 function convertMatchToArray(match: TBAMatch): any[][] {
@@ -378,6 +401,13 @@ const main = async () => {
 
         console.log("Adding matches to sheet");
         await addMatches(auth, matches.map(m => m.content));
+
+
+        console.log("Getting objective records from server");
+        const objectiveRecords = await client.objective.findAll.query();
+
+        console.log("Adding objective records to sheet");
+        await addObjectiveRecord(auth, objectiveRecords.map(m => m.content));
     }, 5 * 60 * 1000);
 };
 

@@ -4,13 +4,13 @@ import { publicProcedure, router } from "../trpc.js";
 
 export const pitRouter = router({
   findAll: publicProcedure.query(async ({ ctx: { db } }) => {
-    return db.tBARecord.findMany();
+    return db.pitRecord.findMany();
   }),
 
   create: publicProcedure
     .input(pitRecordSchema)
     .mutation(async ({ input, ctx: { db } }) => {
-      await db.subjectiveRecord.create({
+      await db.pitRecord.create({
         data: { content: input },
       });
     }),
@@ -18,7 +18,7 @@ export const pitRouter = router({
   createMany: publicProcedure
     .input(z.array(pitRecordSchema))
     .mutation(async ({ input, ctx: { db } }) => {
-      await db.subjectiveRecord.createMany({
+      await db.pitRecord.createMany({
         data: {
           content: input,
         },
@@ -28,10 +28,10 @@ export const pitRouter = router({
   deleteOne: publicProcedure
     .input(z.string().cuid())
     .mutation(async ({ input, ctx: { db } }) => {
-      await db.subjectiveRecord.delete({ where: { id: input } });
+      await db.pitRecord.delete({ where: { id: input } });
     }),
 
   deleteAll: publicProcedure.mutation(async ({ ctx: { db } }) => {
-    await db.subjectiveRecord.deleteMany({});
+    await db.pitRecord.deleteMany({});
   }),
 });

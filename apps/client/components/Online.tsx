@@ -5,15 +5,88 @@ import { Controller, FieldError, useForm } from 'react-hook-form';
 import { View } from 'react-native';
 import { z } from 'zod';
 import { TBAMatch } from '~/../../packages/api/dist/packages/api/src';
-import { game, objectiveInfoSchema } from '~/models';
-import { appSettingsAtom } from '~/state';
+import { game, ObjectiveInfo, objectiveInfoSchema } from '~/models';
+import { appSettingsAtom, objectiveInfoAtom, recordTypeAtom, resetAtom } from '~/state';
+import { RootTabScreenProps } from '~/types';
 import tw from '~/utils/tailwind';
 import { trpc } from '~/utils/trpc';
 import { Button } from './Button';
 import { FieldInput } from './input/FieldInput';
 import { InputWrapper } from './input/InputWrapper';
 
-export const Online = () => {
+const getTeamFromMatch = (match: TBAMatch, scoutId: ObjectiveInfo["scoutId"]) => {
+  const alliance = scoutId.includes("red") ? match.alliances.red.team_keys : match.alliances.blue.team_keys;
+  const index = parseInt(scoutId.split(" ")[1]) - 1;
+  return parseInt(alliance[index].replace("frc", ""));
+}
+
+
+export const Online = ({ navigation }: { navigation: RootTabScreenProps["navigation"] }) => {
+  const [settings, setAppSettings] = useAtom(appSettingsAtom)
+  const [info, setInfo] = useAtom(objectiveInfoAtom);
+
+
+  if (settings.connection !== 'online') return <></>;
+
+  return (
+    <>
+      {!settings.scoutId && <ScoutIdSelect />}
+      {settings.scoutId &&
+        <InputWrapper label={`Scout ID: ${settings.scoutId}`}>
+          <Button
+            label="Change Scout ID"
+            onPress={() =>
+              setAppSettings((settings) => ({ ...settings, scoutId: null }))
+            }
+          />
+        </InputWrapper>
+      }
+      {settings.match && (
+        <InputWrapper label={`Current Match: ${matchToLabel(settings.match)}`}>
+          <NextMatchButton />
+          <Button
+            label="Change Match"
+            onPress={() =>
+              setAppSettings((settings) => ({ ...settings, match: null }))
+            }
+          />
+        </InputWrapper>
+      )}
+      {!settings.match && <GameSelect />}
+      {settings.match && settings.scoutId && <StartScoutingButton navigation={navigation} />}
+    </>
+  );
+};
+
+const StartScoutingButton = ({ navigation }: { navigation: RootTabScreenProps["navigation"] }) => {
+  const [settings, setAppSettings] = useAtom(appSettingsAtom);
+  const [_, setInfo] = useAtom(objectiveInfoAtom);
+  const [_type, setType] = useAtom(recordTypeAtom);
+  const [_reset, reset] = useAtom(resetAtom);
+
+  if (settings.connection !== 'online') return <></>;
+
+  const match = settings.match;
+  const scoutId = settings.scoutId;
+
+  if (!match || !scoutId) return <></>;
+
+  const handleStartScouting = async () => {
+    await reset();
+    setType('objective');
+    setInfo(() => ({
+      scoutId: scoutId,
+      matchType: settings.match?.comp_level === "qm" ? "Qualification" : "Elimination",
+      teamNumber: getTeamFromMatch(match, scoutId), matchNumber: match.match_number
+    }));
+
+    navigation.navigate('ObjectiveInfo');
+  }
+
+  return <Button label="Start Scouting" onPress={handleStartScouting} />
+}
+
+const ScoutIdSelect = () => {
   const [settings, setAppSettings] = useAtom(appSettingsAtom);
 
   const {
@@ -36,33 +109,20 @@ export const Online = () => {
     setAppSettings((settings) => ({ ...settings, scoutId: data.scoutId }));
   });
 
-  return (
-    <>
-      <FieldInput
-        control={{ control, name: 'scoutId' as const }}
-        error={errors.scoutId as FieldError | undefined}
-        field={element!!.field}
-        label={element!!.label}
-        key={element!!.name}
-      />
-      <View style={tw`mt-0.5`}>
-        <Button label="Next" onPress={onSubmit} />
-      </View>
-      {settings.match && (
-        <InputWrapper label={`Current Match: ${matchToLabel(settings.match)}`}>
-          <NextMatchButton />
-          <Button
-            label="Change Match"
-            onPress={() =>
-              setAppSettings((settings) => ({ ...settings, match: null }))
-            }
-          />
-        </InputWrapper>
-      )}
-      {!settings.match && <GameSelect />}
-    </>
-  );
-};
+  return <><FieldInput
+    control={{ control, name: 'scoutId' as const }}
+    error={errors.scoutId as FieldError | undefined}
+    field={element!!.field}
+    label={element!!.label}
+    key={element!!.name}
+  />
+
+    <View style={tw`mt-0.5`}>
+      <Button label="Set Scout ID" onPress={onSubmit} />
+    </View></>
+
+
+}
 
 type GameSelect = { match: string };
 
@@ -93,10 +153,11 @@ const GameSelect = () => {
   });
 
   //  {{ match.comp_level === 'qm' ? 'Qualification' : match.comp_level }}
-  // { { match.match_number } } ({{ match.set_number }
+  // {{ match.match_number }} ({{ match.set_number }
   // }) @ ~{{
   // new Date(match.predicted_time).toLocaleTimeString()
   // }}
+  //
 
   return (
     <>
@@ -113,6 +174,14 @@ const GameSelect = () => {
             >
               {matches
                 .map((m) => m.content)
+                .sort((a, b) =>
+                  // sort practice, then qual tthen playoff,
+                  // if same type, then sort by number
+                  a.comp_level === b.comp_level
+                    ? a.match_number - b.match_number
+                    : a.comp_level > b.comp_level
+                      ? 1
+                      : -1)
                 .map((e) => (
                   <Picker.Item
                     label={matchToLabel(e)}
@@ -163,6 +232,6 @@ const NextMatchButton = () => {
 
 
 function matchToLabel(match: any) {
-  return `${match.comp_level === 'qm' ? 'Qualification' : match.comp_level} ${match.match_number
-    } ${match.set_number}`;
+  return `${match.comp_level === 'qm' ? 'Qualification' : match.comp_level === 'f' ? 'Final' : 'Elim'} ${match.match_number
+    } (${match.set_number})`;
 }
