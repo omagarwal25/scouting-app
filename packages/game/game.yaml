@@ -46,8 +46,15 @@ elements:
       isInteger: true
       incrementable: false
       min: 0
-  - name: scoutName
-    label: Scout Name
+  - name: scoutNameOne
+    label: Scout Name 1
+    screens:
+      - ObjectiveOther
+      - PitOther
+    field:
+      fieldType: Text
+  - name: scoutNameTwo
+    label: Scout Name 2
     screens:
       - ObjectiveOther
       - PitOther
@@ -87,6 +94,7 @@ elements:
     label: Game Pieces Picked Up From Wing
     screens:
       - ObjectiveAuto
+      - PitAuto
     field:
       fieldType: Numeric
       isInteger: true
@@ -96,6 +104,7 @@ elements:
     label: Game Pieces Picked Up From Center
     screens:
       - ObjectiveAuto
+      - PitAuto
     field:
       fieldType: Numeric
       isInteger: true
@@ -375,14 +384,6 @@ elements:
       - ObjectivePostgame
     field:
       fieldType: Boolean
-  - name: drivetrainSpeed
-    label: Drivetrain Speed
-    screens:
-      - PitDrive
-    field:
-      fieldType: Numeric
-      isInteger: false
-      incrementable: false
   - name: drivetrainType
     label: Drivetrain Type
     screens:
@@ -407,6 +408,18 @@ elements:
         - "Traction Traction Traction"
         - "N/A"
       default: "N/A"
+  - name: drivetrainSwerve
+    label: Drivetrain Swerve Type
+    screens:
+      - PitDrive
+    field:
+      fieldType: Dropdown
+      options:
+        - "MaxSwerve"
+        - "SwerveX"
+        - "Other"
+        - "N/A"
+      default: "N/A"
   - name: robotLength
     label: Robot Length
     screens:
@@ -425,81 +438,106 @@ elements:
       isInteger: false
       incrementable: false
       min: 0
-  - name: preferredChargeStation
-    label: Preferred Charge Station
+  - name: robotHeight
+    label: Robot Height
     screens:
-      - PitDrive
+      - PitSpecifications
     field:
-      fieldType: Dropdown
-      options:
-        - Width First
-        - Length First
-        - Any
-        - Other
-  - name: pieceManipulation
-    label: Piece Manipulation
+      fieldType: Numeric
+      isInteger: false
+      incrementable: false
+      min: 0
+  - name: robotWeight
+    label: Robot Weight (without bumpers or battery)
+    screens:
+      - PitSpecifications
+    field:
+      fieldType: Numeric
+      isInteger: false
+      incrementable: false
+      min: 0
+  - name: scoringLocation
+    label: Scoring Location
     screens:
       - PitTeleop
     field:
       fieldType: Dropdown
       options:
-        - Cone
-        - Cube
-        - Cone and Cube
+        - Amp
+        - Speaker
+        - Both
         - None
-  - name: tippedCone
-    label: Tipped Cone
-    screens:
-      - PitTeleop
-    field:
-      fieldType: Boolean
-  - name: singleSubstation
-    label: Single Substation
-    screens:
-      - PitTeleop
-    field:
-      fieldType: Boolean
-  - name: doubleSubstation
-    label: Double Substation
-    screens:
-      - PitTeleop
-    field:
-      fieldType: Boolean
-  - name: floorPickup
-    label: Floor Pickup
-    screens:
-      - PitTeleop
-    field:
-      fieldType: Boolean
-  - name: canDriveOverChargeStation
-    label: Can Drive Over Charge Station
+  - name: intakeLocation
+    label: Intake Ability
     screens:
       - PitTeleop
     field:
       fieldType: Dropdown
       options:
-        - Yes
-        - No
-        - Slowly
-  - name: canBalance
-    label: Can Balance
+        - Floor
+        - Source
+        - Both
+  - name: shootLocationOne
+    label: Can they shoot from against the subwoofer?
     screens:
-      - PitAuto
-      - PitEndgame
+      - ObjectivePostgame
     field:
       fieldType: Boolean
-  - name: chargeStationLock
-    label: Charge Station Lock
+  - name: shootLocationTwo
+    label: Can they shoot from the robot starting zone?
+    screens:
+      - ObjectivePostgame
+    field:
+      fieldType: Boolean
+  - name: shootLocationThree
+    label: Can they shoot from the protected zone?
+    screens:
+      - ObjectivePostgame
+    field:
+      fieldType: Boolean
+  - name: shootLocationFour
+    label: Can they shoot from another spot in the wing?
+    screens:
+      - ObjectivePostgame
+    field:
+      fieldType: Boolean
+  - name: shootLocationFive
+    label: Do they shoot from anywhere else?
+    screens:
+      - ObjectivePostgame
+    field:
+      fieldType: Boolean
+  - name: canDriveUnderStage
+    label: Can Drive Under Stage
+    screens:
+      - PitTeleop
+    field:
+      fieldType: Boolean
+  - name: canScoreInTrap
+    label: Can Score in Trap
     screens:
       - PitEndgame
     field:
       fieldType: Dropdown
       options:
-        - Yes, Motorized
-        - Yes, Mechanical
-        - No
+        - "yes while hanging"
+        - "yes from floor"
+        - "no"
+        - None
+  - name: canClimb
+    label: Can they climb?
+    screens:
+      - PitEndgame
+    field:
+      fieldType: Dropdown
+      options:
+        - "yes, physical locking mechanism"
+        - "yes, motors in brake mode"
+        - "yes, no way of staying"
+        - "no"
+        - None
   - name: canFitWithOtherRobots
-    label: Can Fit With Other Robots
+    label: Can Fit With Other Robots on the Same Chain
     screens:
       - PitEndgame
     field:
@@ -515,49 +553,20 @@ elements:
     field:
       fieldType: Dropdown
       options:
-        - Barrier
-        - Co-op
-        - Cable Bump
-  - name: preferredGameElementOne
-    label: Preferred Game Element One
+        - Against Subwoofer
+        - Amp side
+        - Source side
+  - name: multipleAutos
+    label: Multiple Autos
     screens:
       - PitAuto
     field:
       fieldType: Dropdown
       options:
-        - Cone
-        - Cube
-        - No Preference
-  - name: preferredGameElementTwo
-    label: Preferred Game Element Two
-    screens:
-      - PitAuto
-    field:
-      fieldType: Dropdown
-      options:
-        - Cone
-        - Cube
-        - No Preference
-  - name: preferredGameElementThree
-    label: Preferred Game Element Three
-    screens:
-      - PitAuto
-    field:
-      fieldType: Dropdown
-      options:
-        - Cone
-        - Cube
-        - No Preference
-  - name: preferredGameElementFour
-    label: Preferred Game Element Four
-    screens:
-      - PitAuto
-    field:
-      fieldType: Dropdown
-      options:
-        - Cone
-        - Cube
-        - No Preference
+        - No Auto
+        - Single Auto
+        - Multiple Autos (preset)
+        - Multiple Autos (modular)
   - name: notes
     label: Notes
     screens:
@@ -568,6 +577,13 @@ elements:
   - name: intakeInsideFramePerimeter
     label: Intake Inside Frame Perimeter
     screens:
-      - PitTeleop
+      - PitSpecifications
+    field:
+      fieldType: Boolean
+  - name: photo
+    label: Have you taken a photo of the robot?
+    screens:
+      - ObjectivePostgame
+      - PitOther
     field:
       fieldType: Boolean

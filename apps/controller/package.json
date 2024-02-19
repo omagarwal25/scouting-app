@@ -69,6 +69,7 @@
     "google-auth-library": "^8.7.0",
     "googleapis": "^111.0.0",
     "got": "^12.5.3",
+    "prisma": "^5.9.1",
     "superjson": "^1.13.1",
     "trpc-playground": "^1.0.4",
     "zod": "^3.20.6"

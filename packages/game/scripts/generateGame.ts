@@ -76,7 +76,8 @@ const objectiveNames = elements
   .filter((e) => e.screens.some((s: string) => s.startsWith("Objective")))
   .map((e) => e.name);
 const objectiveRequired = [
-  "scoutName",
+  "scoutNameOne",
+  "scoutNameTwo",
   "scoutId",
   "matchType",
   "matchNumber",
@@ -94,7 +95,7 @@ objectiveRequired.forEach((name) => {
 const pitNames = elements
   .filter((e) => e.screens.some((s: string) => s.startsWith("Objective")))
   .map((e) => e.name);
-const pitRequired = ["teamNumber", "scoutName"];
+const pitRequired = ["teamNumber", "scoutNameOne", "scoutNameTwo"];
 
 pitRequired.forEach((name) => {
   if (!pitNames.includes(name)) {
