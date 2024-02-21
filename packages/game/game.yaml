@@ -230,13 +230,17 @@ elements:
               - Amp
               - Speaker
               - Ferry
-        - label: Scoring Successful?
-          name: scoringSuccess
+        - label: Scoring Outcome
+          name: scoringOutcome
           default: Success
           screens:
             - ObjectiveTeleop
           field:
-            fieldType: Boolean
+            fieldType: Dropdown
+            options:
+              - Success
+              - Miss
+              - Bounce Out
         - label: Amplified?
           name: amplified
           default: False
