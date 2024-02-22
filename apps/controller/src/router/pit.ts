@@ -1,10 +1,13 @@
-import { pitRecordSchema } from "@griffins-scout/game";
+import { PitRecord, pitRecordSchema } from "@griffins-scout/game";
 import { z } from "zod";
 import { publicProcedure, router } from "../trpc.js";
 
 export const pitRouter = router({
   findAll: publicProcedure.query(async ({ ctx: { db } }) => {
-    return db.pitRecord.findMany();
+    return db.pitRecord.findMany() as unknown as {
+      id: string;
+      content: PitRecord;
+    }[];
   }),
 
   create: publicProcedure

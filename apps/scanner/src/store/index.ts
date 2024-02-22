@@ -27,7 +27,7 @@ export const useCurrentGameStore = defineStore('currentGameStore', {
 
     async matches() {
       const res = await client.blueAlliance.findAll.query();
-      return res.map((r) => r.content)
+      return res.map((r) => r.content);
     },
   },
 
@@ -50,10 +50,14 @@ export const useCurrentGameStore = defineStore('currentGameStore', {
       // all goods
       // tbh, i dont think it matters what game its associated
 
+      console.log('sending');
+
       downloadCSVData(
         this.records
           .filter((e) => e.type === 'pit')
-          .map((r) => convertPitFieldsToArray(r.record as PitRecord)),
+          .map((r) =>
+            convertPitFieldsToArray(r.record as unknown as PitRecord)
+          ),
         pitHeaders(),
         `${Date.now().toLocaleString()}-pit`
       );
@@ -70,8 +74,10 @@ export const useCurrentGameStore = defineStore('currentGameStore', {
         `${Date.now().toLocaleString()}-objective`
       );
 
+      console.log('downloading');
+
       try {
-        client.record.createRecord.mutate(
+        await client.record.createRecord.mutate(
           this.records as unknown as RouterInput['record']['createRecord']
         );
       } catch (e) {
@@ -97,7 +103,7 @@ export const useCurrentGameStore = defineStore('currentGameStore', {
       const currentType = currentMatch.comp_level;
       const currentNumber = currentMatch.match_number;
 
-      matches
+      return matches
         .filter((match) => match.comp_level === currentType)
         .find((match) => match.match_number === currentNumber + 1)?.key;
     },

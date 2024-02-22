@@ -1,18 +1,18 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { httpBatchLink } from '@trpc/client';
 import { StatusBar } from 'expo-status-bar';
+import { useAtom } from 'jotai';
 import { Suspense, useState } from 'react';
 import { Text } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import superjson from 'superjson';
 import { useDeviceContext } from 'twrnc';
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
 import { appSettingsAtom } from './state';
-import { useAtom } from 'jotai';
 import tw from './utils/tailwind';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { trpc } from './utils/trpc';
-import superjson from 'superjson';
-import { httpBatchLink } from '@trpc/client';
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
@@ -22,9 +22,12 @@ export default function App() {
   const [queryClient] = useState(() => new QueryClient());
   const [trpcClient] = useState(() =>
     trpc.createClient({
-      links: [httpBatchLink({ url: 'http://192.168.195.101:8080/trpc' })],
+      links: [
+        httpBatchLink({
+          url: `http://192.168.195.101:8080/trpc`,
+        }),
+      ],
       transformer: superjson,
-
     })
   );
 

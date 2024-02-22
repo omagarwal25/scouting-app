@@ -81,6 +81,8 @@ export async function addObjectiveRecord(
 
 // TODO- im not sure we need this running every
 export async function addPitRecord(auth: Auth, record: PitRecord[]) {
+    await removePit(auth);
+
     const sheet: SheetName = "Pit Import";
 
     const request = {
@@ -186,6 +188,24 @@ export async function removeObjective(auth: Auth) {
     }
 }
 
+export async function removePit(auth: Auth) {
+    const sheetName: SheetName = "Pit Import";
+
+    const request = {
+        spreadsheetId: SHEET_ID,
+
+        // The A1 notation of the values to update.
+        range: `'${sheetName}'!A${2}:AZ${1000}`,
+
+        auth,
+    };
+
+    try {
+        const response = (await sheets.spreadsheets.values.clear(request)).data;
+    } catch (err) {
+        console.log(err);
+    }
+}
 
 function convertMatchToArray(match: TBAMatch): any[][] {
     const final: any[][] = [];
@@ -408,6 +428,12 @@ const main = async () => {
 
         console.log("Adding objective records to sheet");
         await addObjectiveRecord(auth, objectiveRecords.map(m => m.content));
+
+        console.log("Getting pit records from server");
+        const pitRecords = await client.pit.findAll.query();
+
+        console.log("Adding pit records to sheet");
+        await addPitRecord(auth, pitRecords.map(m => m.content));
     }, 5 * 60 * 1000);
 };
 

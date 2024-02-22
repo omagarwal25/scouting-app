@@ -39,7 +39,7 @@ export function RootScreen({ navigation }: RootTabScreenProps) {
   const handleSwitch = (value: boolean) => {
     setSettings(
       value
-        ? { connection: 'online', match: null, scoutId: null }
+        ? { connection: 'online', match: null, scoutId: null, ip: null }
         : { connection: 'offline' }
     );
   };
@@ -56,14 +56,12 @@ export function RootScreen({ navigation }: RootTabScreenProps) {
         />
       </InputWrapper>
       {isOnline && <Online navigation={navigation} />}
-      {!isOnline && (<>
-        <View style={tw`p-0.5`} />
-        <Button label="Manual Entry (Objective)" onPress={handleObjective} />
-        <View style={tw`p-0.5`} />
-        <Button label="Manual Entry (Pit)" onPress={handlePit} />
-        <View style={tw`p-0.5`} />
-        <Button label="QR Entry" onPress={handleQR} /></>)
-      }
-    </Container >
+      <View style={tw`p-0.5`} />
+      <Button label="Manual Entry (Objective)" onPress={handleObjective} />
+      <View style={tw`p-0.5`} />
+      <Button label="Manual Entry (Pit)" onPress={handlePit} />
+      <View style={tw`p-0.5`} />
+      <Button label="QR Entry" onPress={handleQR} />
+    </Container>
   );
 }

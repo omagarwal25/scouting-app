@@ -1,10 +1,17 @@
-import { ObjectiveRecord, objectiveRecordSchema } from "@griffins-scout/game";
+import {
+  ObjectiveRecord,
+  objectiveInfoSchema,
+  objectiveRecordSchema,
+} from "@griffins-scout/game";
 import { z } from "zod";
 import { publicProcedure, router } from "../trpc.js";
 
 export const objectiveRouter = router({
   findAll: publicProcedure.query(async ({ ctx: { db } }) => {
-    return db.objectiveRecord.findMany() as unknown as { id: string, content: ObjectiveRecord }[];
+    return db.objectiveRecord.findMany() as unknown as {
+      id: string;
+      content: ObjectiveRecord;
+    }[];
   }),
 
   create: publicProcedure
@@ -34,4 +41,25 @@ export const objectiveRouter = router({
   deleteAll: publicProcedure.mutation(async ({ ctx: { db } }) => {
     await db.objectiveRecord.deleteMany({});
   }),
+
+  findByMatch: publicProcedure
+    .input(
+      z.object({
+        matchNumber: objectiveInfoSchema.shape.matchNumber,
+        matchType: objectiveInfoSchema.shape.matchType,
+      })
+    )
+    .query(async ({ input, ctx: { db } }) => {
+      const records = (await db.objectiveRecord.findMany({})) as unknown as {
+        id: string;
+        content: ObjectiveRecord;
+      }[];
+
+      return records.filter((r) => {
+        return (
+          r.content.info.matchNumber === input.matchNumber &&
+          r.content.info.matchType === input.matchType
+        );
+      }) as unknown as { id: string; content: ObjectiveRecord }[];
+    }),
 });

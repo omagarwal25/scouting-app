@@ -50,7 +50,6 @@
 
 <script setup lang="ts">
 import { ref, Suspense } from 'vue';
-import { client } from '~/api';
 import Button from '~/components/util/Button.vue';
 import { useCurrentGameStore } from '~/store';
 import ManualPicker from './ManualPicker.vue';
@@ -89,7 +88,7 @@ const onNext = async () => {
   }
 };
 
-// const onFetchTBA = async () => {
-//   await client.match.importFromTba.mutate();
-// };
+const onFetchTBA = async () => {
+  // await client.match.importFromTba.mutate();
+};
 </script>

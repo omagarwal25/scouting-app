@@ -2,26 +2,23 @@ import { TBAMatch } from '@griffins-scout/api';
 import { atom } from 'jotai';
 import { focusAtom } from 'jotai/optics';
 import { atomWithStorage } from 'jotai/utils';
-import { z } from 'zod';
 import {
+  ObjectiveInfo,
   ObjectiveRecord,
   PitRecord,
-  game,
   objectiveRecordDefault,
   pitRecordDefault,
-  ObjectiveInfo,
 } from './models';
-
 
 type AppSettings =
   | {
-    connection: 'offline';
-  }
+      connection: 'offline';
+    }
   | {
-    connection: 'online';
-    scoutId: ObjectiveInfo['scoutId'] | null;
-    match: TBAMatch | null;
-  };
+      connection: 'online';
+      scoutId: ObjectiveInfo['scoutId'] | null;
+      match: TBAMatch | null;
+    };
 
 export const appSettingsAtom = atomWithStorage<AppSettings>('appSettings', {
   connection: 'offline',
