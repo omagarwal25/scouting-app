@@ -23,7 +23,7 @@ const getTeamFromMatch = (
   match: TBAMatch,
   scoutId: ObjectiveInfo['scoutId']
 ) => {
-  const alliance = scoutId.includes('red')
+  const alliance = scoutId.includes('Red')
     ? match.alliances.red.team_keys
     : match.alliances.blue.team_keys;
   const index = parseInt(scoutId.split(' ')[1]) - 1;
@@ -118,7 +118,7 @@ const ScoutIdSelect = () => {
     formState: { errors },
     control,
     handleSubmit,
-  } = useForm({
+  } = useForm<{ scoutId: ObjectiveInfo['scoutId'] }>({
     resolver: zodResolver(
       z.object({ scoutId: objectiveInfoSchema.shape.scoutId })
     ),
@@ -136,12 +136,13 @@ const ScoutIdSelect = () => {
 
   return (
     <>
-      <FieldInput
-        control={{ control, name: 'scoutId' as const }}
+      <FieldInput<{ scoutId: ObjectiveInfo['scoutId'] }>
+        control={{ control, name: 'scoutId' }}
         error={errors.scoutId as FieldError | undefined}
         field={element!!.field}
         label={element!!.label}
         key={element!!.name}
+        bg={undefined}
       />
 
       <View style={tw`mt-0.5`}>
@@ -207,8 +208,8 @@ const GameSelect = () => {
                   a.comp_level === b.comp_level
                     ? a.match_number - b.match_number
                     : a.comp_level > b.comp_level
-                    ? 1
-                    : -1
+                      ? 1
+                      : -1
                 )
                 .map((e) => (
                   <Picker.Item
@@ -257,11 +258,10 @@ const NextMatchButton = () => {
 };
 
 function matchToLabel(match: any) {
-  return `${
-    match.comp_level === 'qm'
-      ? 'Qualification'
-      : match.comp_level === 'f'
+  return `${match.comp_level === 'qm'
+    ? 'Qualification'
+    : match.comp_level === 'f'
       ? 'Final'
       : 'Elim'
-  } ${match.match_number} (${match.set_number})`;
+    } ${match.match_number} (${match.set_number})`;
 }

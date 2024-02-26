@@ -1,6 +1,5 @@
 import { TBAMatch } from '@griffins-scout/api';
 import {
-  GameRecord,
   ObjectiveRecord,
   PitRecord,
   convertObjectiveFieldsToArray,
@@ -8,9 +7,12 @@ import {
   objectiveHeaders,
   pitHeaders,
 } from '@griffins-scout/game';
+
 import { defineStore } from 'pinia';
 import { RouterInput, client } from '~/api';
 import { downloadCSVData } from '~/components/util/csv';
+
+type GameRecord = RouterInput['record']['createRecord'][0];
 
 export const useCurrentGameStore = defineStore('currentGameStore', {
   state: () => {

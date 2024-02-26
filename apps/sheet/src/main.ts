@@ -6,6 +6,7 @@ import {
     convertPitFieldsToArray,
     ObjectiveInfo,
     objectiveHeaders,
+    pitHeaders,
 } from "@griffins-scout/game";
 import type {
     BaseExternalAccountClient,
@@ -67,6 +68,7 @@ export async function addObjectiveRecord(
             range: `'${sheet}'!A2:BZ2`,
             majorDimension: "ROWS",
             values: record.map((r) => convertObjectiveFieldsToArray(r)),
+            // values: record.map(r => objectiveHeaders())
         },
 
         auth,
@@ -96,6 +98,7 @@ export async function addPitRecord(auth: Auth, record: PitRecord[]) {
             range: `'${sheet}'!A2:BZ2`,
             majorDimension: "ROWS",
             values: record.map((r) => convertPitFieldsToArray(r)),
+            // values: record.map(r => pitHeaders())
         },
 
         auth,
@@ -112,6 +115,8 @@ export async function addMatches(auth: Auth, record: TBAMatch[]) {
     const sheet: SheetName = "TBA Import";
 
     await removeMatches(auth);
+
+    console.log(record.map(convertMatchToArray).flat())
 
     const request = {
         // The ID of the spreadsheet to update.
@@ -157,7 +162,7 @@ export async function removeMatches(auth: Auth) {
         spreadsheetId: SHEET_ID,
 
         // The A1 notation of the values to update.
-        range: `'${sheetName}'!A${2}:AZ${1000}`,
+        range: `'${sheetName}'!A${2}:BM${1000}`,
 
         auth,
     };
@@ -405,36 +410,43 @@ function convertMatchToArray(match: TBAMatch): any[][] {
 const main = async () => {
     // every 5 min
     // thats 300000 ms
+    update();
 
     console.log("Starting main loop");
     setInterval(async () => {
-        // get data from controller
-        // push data to sheet
-        const auth = await getAuthToken();
-        // const objectiveRecord: ObjectiveRecord[] = []; // getMatches()
-
-
-        // await addObjectiveRecord(await auth, objectiveRecord)
-        //
-        console.log("Getting matches from server");
-        const matches = await client.blueAlliance.findAll.query();
-
-        console.log("Adding matches to sheet");
-        await addMatches(auth, matches.map(m => m.content));
-
-
-        console.log("Getting objective records from server");
-        const objectiveRecords = await client.objective.findAll.query();
-
-        console.log("Adding objective records to sheet");
-        await addObjectiveRecord(auth, objectiveRecords.map(m => m.content));
-
-        console.log("Getting pit records from server");
-        const pitRecords = await client.pit.findAll.query();
-
-        console.log("Adding pit records to sheet");
-        await addPitRecord(auth, pitRecords.map(m => m.content));
+        update();
     }, 5 * 60 * 1000);
 };
 
 main();
+
+async function update() {
+    // get data from controller
+    // push data to sheet
+    const auth = await getAuthToken();
+    // const objectiveRecord: ObjectiveRecord[] = []; // getMatches()
+
+
+    // await addObjectiveRecord(await auth, objectiveRecord)
+    //
+    console.log("Getting matches from server");
+    const matches = await client.blueAlliance.findAll.query();
+
+    console.log("Adding matches to sheet");
+    await addMatches(auth, matches.map(m => m.content));
+
+
+    console.log("Getting objective records from server");
+    const objectiveRecords = await client.objective.findAll.query();
+
+    console.log("Adding objective records to sheet");
+    await addObjectiveRecord(auth, objectiveRecords.map(m => m.content));
+
+    console.log("Getting pit records from server");
+    const pitRecords = await client.pit.findAll.query();
+
+    console.log("Adding pit records to sheet");
+    await addPitRecord(auth, pitRecords.map(m => m.content));
+
+    console.log("Done")
+}

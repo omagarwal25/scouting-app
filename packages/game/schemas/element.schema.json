@@ -1,7 +1,12 @@
 {
   "$id": "https://raw.githubusercontent.com/omagarwal25/scouting-app/main/packages/game/schemas/element.schema.json",
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "required": ["name", "screens", "field", "label"],
+  "required": [
+    "name",
+    "screens",
+    "field",
+    "label"
+  ],
   "type": "object",
   "properties": {
     "label": {
@@ -11,6 +16,20 @@
     "name": {
       "type": "string",
       "description": "The name of the scoring element (for internals)"
+    },
+    "colour": {
+      "type": "string",
+      "description": "The colour of the scoring element (for app)",
+      "enum": [
+        "red",
+        "orange",
+        "yellow",
+        "lime",
+        "teal",
+        "blue",
+        "purple",
+        "pink"
+      ]
     },
     "screens": {
       "type": "array",
@@ -45,21 +64,26 @@
           "properties": {
             "fieldType": {
               "type": "string",
-              "enum": ["Text"]
+              "enum": [
+                "Text"
+              ]
             },
             "default": {
               "type": "string",
               "description": "The default value of the field"
             }
           },
-
-          "required": ["fieldType"]
+          "required": [
+            "fieldType"
+          ]
         },
         {
           "properties": {
             "fieldType": {
               "type": "string",
-              "enum": ["Boolean"]
+              "enum": [
+                "Boolean"
+              ]
             },
             "default": {
               "type": "boolean",
@@ -67,14 +91,17 @@
               "default": false
             }
           },
-
-          "required": ["fieldType"]
+          "required": [
+            "fieldType"
+          ]
         },
         {
           "properties": {
             "fieldType": {
               "type": "string",
-              "enum": ["Numeric"]
+              "enum": [
+                "Numeric"
+              ]
             },
             "default": {
               "type": "number",
@@ -99,14 +126,19 @@
               "default": true
             }
           },
-
-          "required": ["isInteger", "fieldType", "incrementable"]
+          "required": [
+            "isInteger",
+            "fieldType",
+            "incrementable"
+          ]
         },
         {
           "properties": {
             "fieldType": {
               "type": "string",
-              "enum": ["Dropdown"]
+              "enum": [
+                "Dropdown"
+              ]
             },
             "default": {
               "type": "string",
@@ -122,14 +154,18 @@
               }
             }
           },
-
-          "required": ["options", "fieldType"]
+          "required": [
+            "options",
+            "fieldType"
+          ]
         },
         {
           "properties": {
             "fieldType": {
               "type": "string",
-              "enum": ["Grouping"]
+              "enum": [
+                "Grouping"
+              ]
             },
             "fields": {
               "type": "array",
@@ -139,8 +175,10 @@
               }
             }
           },
-
-          "required": ["fields", "fieldType"]
+          "required": [
+            "fields",
+            "fieldType"
+          ]
         }
       ]
     }

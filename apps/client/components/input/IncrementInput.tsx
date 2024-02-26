@@ -8,12 +8,14 @@ import {
 import { Pressable, View } from 'react-native';
 import Colors from '~/constants/Colors';
 import useColorScheme from '~/hooks/useColorScheme';
+import { BaseElement } from '~/models';
 import tw from '~/utils/tailwind';
 import { InputWrapper } from './InputWrapper';
 
 type Props<T extends FieldValues> = {
   control: UseControllerProps<T>;
   label: string;
+  bg: BaseElement["colour"]
 };
 export const IncrementInput = <T extends object>(props: Props<T>) => {
   const colorScheme = useColorScheme();
@@ -32,7 +34,7 @@ export const IncrementInput = <T extends object>(props: Props<T>) => {
   };
 
   return (
-    <InputWrapper label={`${props.label}: ${value}`}>
+    <InputWrapper label={`${props.label}: ${value}`} bg={props.bg}>
       <View
         style={tw`flex flex-row h-11 p-0.5 items-center justify-center mr-0 ml-auto`}
       >

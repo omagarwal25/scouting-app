@@ -1,5 +1,5 @@
 import { FieldError, FieldValues, UseControllerProps } from 'react-hook-form';
-import { Field } from '~/models';
+import { BaseElement, Field } from '~/models';
 import { IncrementInput } from './IncrementInput';
 import { NumericInput } from './NumericInput';
 import { PickerInput } from './PickerInput';
@@ -10,13 +10,14 @@ import tw from '~/utils/tailwind';
 
 type Props<T extends FieldValues> = {
   field: Field;
+  bg: BaseElement["colour"];
   label: string;
   error: FieldError | undefined;
   control: UseControllerProps<T>;
 };
 
 export const FieldInput = <T extends object>(props: Props<T>) => {
-  const { field, ...rest } = props;
+  const { field, bg, ...rest } = props;
   let inputElement: JSX.Element;
 
   if (field.fieldType === 'Boolean') {

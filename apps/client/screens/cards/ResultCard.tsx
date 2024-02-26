@@ -15,7 +15,12 @@ import Colors from '~/constants/Colors';
 import layout from '~/constants/Layout';
 import useColorScheme from '~/hooks/useColorScheme';
 import { encodeObjectiveRecord, encodePitRecord } from '~/models';
-import { appSettingsAtom, objectiveRecordAtom, pitRecordAtom, recordTypeAtom } from '~/state';
+import {
+  appSettingsAtom,
+  objectiveRecordAtom,
+  pitRecordAtom,
+  recordTypeAtom,
+} from '~/state';
 import { RootTabScreenProps } from '~/types';
 import tw from '~/utils/tailwind';
 import { trpc } from '~/utils/trpc';
@@ -26,7 +31,7 @@ export function QRCodeCard({ navigation }: RootTabScreenProps) {
   const [pitRecord] = useAtom(pitRecordAtom);
   const imageRef = useRef(null);
   const [settings] = useAtom(appSettingsAtom);
-  const { mutate } = trpc.objective.create.useMutation();
+  const { mutate } = trpc.record.createRecord.useMutation();
 
   if (status === null) requestPermission();
 
@@ -71,7 +76,19 @@ export function QRCodeCard({ navigation }: RootTabScreenProps) {
 
             if (settings.connection === 'online') {
               if (type === 'objective') {
-                mutate(objectiveRecord);
+                mutate([
+                  {
+                    type: 'objective',
+                    record: objectiveRecord,
+                  },
+                ]);
+              } else if (type === 'pit') {
+                mutate([
+                  {
+                    type: 'pit',
+                    record: pitRecord,
+                  },
+                ]);
               }
             }
           },

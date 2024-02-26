@@ -74,9 +74,8 @@ export const InputModal = <
       return;
     }
 
-    const path = `${name as string}.${
-      (values[name] as any[]).length
-    }` as unknown as Path<T>;
+    const path = `${name as string}.${(values[name] as any[]).length
+      }` as unknown as Path<T>;
 
     setValue(
       path,
@@ -131,6 +130,7 @@ export const InputModal = <
               }
               field={getElement(e, screen)!!.field}
               label={getElement(e, screen)!!.label}
+              bg={getElement(e, screen)!!.colour}
               key={getElement(e, screen)!!.name}
             />
           ))}
@@ -151,9 +151,10 @@ export const InputModal = <
                         }}
                         error={
                           (errors as Record<keyof T, FieldError>)[
-                            `${e.name}.${i}.${f.name}` as unknown as keyof T
+                          `${e.name}.${i}.${f.name}` as unknown as keyof T
                           ]
                         }
+                        bg={f.colour}
                         field={f.field}
                         label={f.label}
                         key={f.name}

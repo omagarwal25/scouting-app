@@ -17,6 +17,7 @@ elements:
         - Blue 1
         - Blue 2
         - Blue 3
+    colour: purple
   - name: matchType
     label: Match Type
     screens:
@@ -27,6 +28,7 @@ elements:
         - Practice
         - Qualification
         - Elimination
+    colour: blue
   - name: matchNumber
     label: Match Number
     screens:
@@ -36,6 +38,7 @@ elements:
       isInteger: true
       incrementable: false
       min: 0
+    colour: blue
   - name: teamNumber
     label: Team Number
     screens:
@@ -46,6 +49,7 @@ elements:
       isInteger: true
       incrementable: false
       min: 0
+    colour: blue
   - name: scoutNameOne
     label: Scout Name 1
     screens:
@@ -53,6 +57,7 @@ elements:
       - PitOther
     field:
       fieldType: Text
+    colour: purple
   - name: scoutNameTwo
     label: Scout Name 2
     screens:
@@ -60,16 +65,19 @@ elements:
       - PitOther
     field:
       fieldType: Text
+    colour: purple
   - name: startingPosition
     label: Starting Position
     screens:
       - ObjectivePregame
+      - PitAuto
     field:
       fieldType: Dropdown
       options:
         - Amp
         - Subwoofer
         - Source
+    colour: teal
   - name: touchingSubwoofer
     label: Touching Subwoofer?
     screens:
@@ -77,6 +85,7 @@ elements:
       - PitAuto
     field:
       fieldType: Boolean
+    colour: teal
   - name: preload
     label: Preload
     screens:
@@ -84,12 +93,24 @@ elements:
       - PitAuto
     field:
       fieldType: Boolean
+    colour: teal
   - name: autoAttempted
     label: Auto Attempted
     screens:
       - ObjectiveAuto
     field:
       fieldType: Boolean
+    colour: teal
+  - name: attemptedPiecesPickedUp
+    label: Attempted Game Pieces Picked Up (anywhere)
+    screens:
+      - ObjectiveAuto
+    field:
+      fieldType: Numeric
+      isInteger: true
+      incrementable: true
+      min: 0
+    colour: red
   - name: gamePiecesPickedUpWing
     label: Game Pieces Picked Up From Wing
     screens:
@@ -100,6 +121,7 @@ elements:
       isInteger: true
       incrementable: true
       min: 0
+    colour: red
   - name: gamePiecesPickedUpCenter
     label: Game Pieces Picked Up From Center
     screens:
@@ -110,6 +132,17 @@ elements:
       isInteger: true
       incrementable: true
       min: 0
+    colour: red
+  - name: attemptedAutoSpeaker
+    label: Auto Game Pieces Speaker Attempted
+    screens:
+      - ObjectiveAuto
+    field:
+      fieldType: Numeric
+      isInteger: true
+      incrementable: true
+      min: 0
+    colour: orange
   - name: autoSpeaker
     label: Auto Game Pieces Speaker
     screens:
@@ -120,8 +153,9 @@ elements:
       isInteger: true
       incrementable: true
       min: 0
-  - name: attemptedAutoSpeaker
-    label: Auto Game Pieces Speaker Attempted
+    colour: orange
+  - name: attemptedAutoAmp
+    label: Auto Game Pieces Amp Attempted
     screens:
       - ObjectiveAuto
     field:
@@ -129,6 +163,7 @@ elements:
       isInteger: true
       incrementable: true
       min: 0
+    colour: orange 
   - name: autoAmp
     label: Auto Game Pieces Amp
     screens:
@@ -139,8 +174,9 @@ elements:
       isInteger: true
       incrementable: true
       min: 0
-  - name: attemptedAutoAmp
-    label: Auto Game Pieces Amp Attempted
+    colour: orange
+  - name: attemptedAutoFloor
+    label: Auto Game Pieces Deposited Floor Attempted
     screens:
       - ObjectiveAuto
     field:
@@ -148,6 +184,7 @@ elements:
       isInteger: true
       incrementable: true
       min: 0
+    colour: orange
   - name: autoFloor
     label: Auto Game Pieces Deposited Floor
     screens:
@@ -158,15 +195,7 @@ elements:
       isInteger: true
       incrementable: true
       min: 0
-  - name: attemptedAutoFloor
-    label: Auto Game Pieces Deposited Floor Attempted
-    screens:
-      - ObjectiveAuto
-    field:
-      fieldType: Numeric
-      isInteger: true
-      incrementable: true
-      min: 0
+    colour: orange
   - name: exitedStartingZone
     label: Exited Starting Zone
     screens:
@@ -174,6 +203,7 @@ elements:
       - PitAuto
     field:
       fieldType: Boolean
+    colour: yellow
   - name: offensiveCycles
     label: Offensive Cycles
     screens:
@@ -193,8 +223,10 @@ elements:
               - Source
               - Source Floor
               - Opposing Wing
+              - Other
           screens:
             - ObjectiveTeleop
+          colour: red
         - label: Route
           name: route
           default: None
@@ -206,6 +238,7 @@ elements:
               - Amp
               - Stage
               - Source
+          colour: yellow
         - label: Shooting Area
           name: shootingArea
           default: Starting
@@ -219,6 +252,7 @@ elements:
               - Protected
               - Wing
               - Other
+          colour: orange
         - label: Scoring Area
           name: scoringArea
           default: None
@@ -230,6 +264,8 @@ elements:
               - Amp
               - Speaker
               - Ferry
+              - Trap
+          colour: orange
         - label: Scoring Outcome
           name: scoringOutcome
           default: Success
@@ -241,6 +277,7 @@ elements:
               - Success
               - Miss
               - Bounce Out
+          colour: orange
         - label: Amplified?
           name: amplified
           default: False
@@ -248,6 +285,7 @@ elements:
             - ObjectiveTeleop
           field:
             fieldType: Boolean
+          colour: orange
         - label: Pickup to Loss of Possession Time
           name: pickupToLossOfPossesstionTime
           screens:
@@ -257,6 +295,7 @@ elements:
             isInteger: false
             incrementable: false
             min: 0
+          colour: yellow
         - label: Encountered Defense?
           name: encounteredDefense
           default: False
@@ -264,6 +303,7 @@ elements:
             fieldType: Boolean
           screens:
             - ObjectiveTeleop
+          colour: yellow
         - label: Offensive Fouls
           name: offensiveFouls
           screens:
@@ -273,6 +313,7 @@ elements:
             isInteger: true
             incrementable: true
             min: 0
+          colour: blue
   - name: defensiveCycles
     label: Defensive Cycles
     screens:
@@ -289,6 +330,7 @@ elements:
             isInteger: true
             incrementable: true
             min: 0
+          colour: yellow
         - label: Defense Location
           name: defenseLocation
           default: Other
@@ -304,6 +346,7 @@ elements:
               - Allied Wing
               - Opposing Wing
               - Other
+          colour: yellow
         - label: Defensive Fouls
           name: defensiveFouls
           screens:
@@ -313,6 +356,7 @@ elements:
             isInteger: true
             incrementable: true
             min: 0
+          colour: blue
         - label: Defense Time
           name: defenseTime
           screens:
@@ -322,25 +366,7 @@ elements:
             isInteger: false
             incrementable: false
             min: 0
-  - name: piecesInTrap
-    label: Pieces In Trap
-    screens:
-      - ObjectiveEndgame
-    field:
-      fieldType: Numeric
-      isInteger: true
-      incrementable: true
-      min: 0
-      max: 3
-  - name: attemptedPiecesInTrap
-    label: Attempted Pieces In Trap
-    screens:
-      - ObjectiveEndgame
-    field:
-      fieldType: Numeric
-      isInteger: true
-      incrementable: true
-      min: 0
+          colour: yellow
   - name: climbStatus
     label: Climb Status
     screens:
@@ -351,6 +377,7 @@ elements:
         - Successful
         - Unsuccessful
         - Not Attempted
+    colour: lime
   - name: climbTime
     label: Climb Time Time
     screens:
@@ -360,18 +387,21 @@ elements:
       isInteger: false
       incrementable: false
       min: 0
+    colour: lime
   - name: parked
     label: Parked
     screens:
       - ObjectiveEndgame
     field:
       fieldType: Boolean
+    colour: yellow
   - name: spotlit
     label: Spotlit
     screens:
       - ObjectiveEndgame
     field:
       fieldType: Boolean
+    colour: blue
   - name: robotsOnChainWith
     label: Robots On Chain With
     screens:
@@ -382,12 +412,14 @@ elements:
         - "0"
         - "1"
         - "2"
+    colour: lime
   - name: coopertitionBonus
     label: Coopertition Bonus
     screens:
       - ObjectivePostgame
     field:
       fieldType: Boolean
+    colour: blue
   - name: drivetrainType
     label: Drivetrain Type
     screens:
@@ -408,8 +440,8 @@ elements:
       fieldType: Dropdown
       options:
         - "Omni Omni Omni"
-        - "Omni Traction Omni"
-        - "Traction Traction Traction"
+        - "Omni Trac Omni"
+        - "Trac Trac Traction"
         - "N/A"
       default: "N/A"
   - name: drivetrainSwerve
@@ -426,7 +458,7 @@ elements:
         - "N/A"
       default: "N/A"
   - name: robotLength
-    label: Robot Length
+    label: Robot Length (in)
     screens:
       - PitSpecifications
     field:
@@ -435,7 +467,7 @@ elements:
       incrementable: false
       min: 0
   - name: robotWidth
-    label: Robot Width
+    label: Robot Width (in)
     screens:
       - PitSpecifications
     field:
@@ -444,7 +476,7 @@ elements:
       incrementable: false
       min: 0
   - name: robotHeight
-    label: Robot Height
+    label: Robot Height (in)
     screens:
       - PitSpecifications
     field:
@@ -453,7 +485,7 @@ elements:
       incrementable: false
       min: 0
   - name: robotWeight
-    label: Robot Weight (without bumpers or battery)
+    label: Robot Weight (without bumpers or battery) (in)
     screens:
       - PitSpecifications
     field:
@@ -525,10 +557,9 @@ elements:
     field:
       fieldType: Dropdown
       options:
-        - "yes while hanging"
-        - "yes from floor"
-        - "no"
-        - None
+        - Yes while hanging
+        - Yes from floor
+        - No
   - name: canClimb
     label: Can they climb?
     screens:
@@ -536,11 +567,10 @@ elements:
     field:
       fieldType: Dropdown
       options:
-        - "yes, physical locking mechanism"
-        - "yes, motors in brake mode"
-        - "yes, no way of staying"
-        - "no"
-        - None
+        - Yes, physical lock
+        - Yes, brake mode
+        - Yes, no way of staying
+        - No
   - name: canFitWithOtherRobots
     label: Can Fit With Other Robots on the Same Chain
     screens:
@@ -551,16 +581,6 @@ elements:
         - "1"
         - "2"
         - None
-  - name: startingPosition
-    label: Starting Position
-    screens:
-      - PitAuto
-    field:
-      fieldType: Dropdown
-      options:
-        - Against Subwoofer
-        - Amp side
-        - Source side
   - name: multipleAutos
     label: Multiple Autos
     screens:

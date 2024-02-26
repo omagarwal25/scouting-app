@@ -1,10 +1,24 @@
-import { recordSchema } from "@griffins-scout/game";
+import { objectiveRecordSchema, pitRecordSchema } from "@griffins-scout/game";
 import { z } from "zod";
 import { publicProcedure, router } from "../trpc.js";
 
 export const recordRouter = router({
   createRecord: publicProcedure
-    .input(z.array(recordSchema))
+    .input(
+      z.array(
+        z
+          .object({
+            type: z.literal("objective"),
+            record: objectiveRecordSchema,
+          })
+          .or(
+            z.object({
+              type: z.literal("pit"),
+              record: pitRecordSchema,
+            })
+          )
+      )
+    )
     .mutation(async ({ input, ctx: { db } }) => {
       const obj = input
         .filter((i) => i.type === "objective")

@@ -6,6 +6,7 @@ import {
   UseControllerProps,
 } from 'react-hook-form';
 import { Pressable, Text, View } from 'react-native';
+import { BaseElement } from '~/models';
 import tw from '~/utils/tailwind';
 import { InputWrapper } from './InputWrapper';
 
@@ -13,6 +14,7 @@ type Props<T extends FieldValues> = {
   control: UseControllerProps<T>;
   label: string;
   items: string[];
+  bg: BaseElement["colour"]
 };
 
 export const NativePickerInput = <T extends object>(props: Props<T>) => {
@@ -26,7 +28,7 @@ export const NativePickerInput = <T extends object>(props: Props<T>) => {
   };
 
   return (
-    <InputWrapper label={props.label}>
+    <InputWrapper label={props.label} bg={props.bg}>
       <Picker
         style={tw`w-1/2 rounded mr-0 ml-auto border dark:border-pheonix-red border-griffins-blue dark:text-white`}
         selectedValue={value}
@@ -52,7 +54,7 @@ const MultiButton = <T extends object>(props: Props<T>) => {
   };
 
   return (
-    <InputWrapper label={`${props.label}: ${value}`}>
+    <InputWrapper label={`${props.label}: ${value}`} bg={props.bg}>
       <View
         style={tw`flex flex-row p-0.5 items-center justify-center mr-0 ml-auto`}
       >
@@ -63,7 +65,7 @@ const MultiButton = <T extends object>(props: Props<T>) => {
             style={tw`ml-2 border rounded p-3 flex items-center border-griffins-blue dark:border-pheonix-red ${value === e ? 'bg-griffins-blue dark:bg-pheonix-red' : ''
               }`}
           >
-            <Text style={tw`dark:text-white`}>{e}</Text>
+            <Text style={tw`dark:text-white ${value === e ? "text-white" : ""}`}>{e}</Text>
           </Pressable>
         ))}
       </View>
