@@ -122,6 +122,7 @@ const ScoutIdSelect = () => {
     resolver: zodResolver(
       z.object({ scoutId: objectiveInfoSchema.shape.scoutId })
     ),
+    defaultValues: { scoutId: "Red 1" }
   });
 
   const element = game.elements.find(

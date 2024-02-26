@@ -24,7 +24,7 @@ export default function App() {
     trpc.createClient({
       links: [
         httpBatchLink({
-          url: `http://192.168.195.101:8080/trpc`,
+          url: `http://IridiumLion.local:8080/trpc`,
         }),
       ],
       transformer: superjson,
