@@ -9,6 +9,8 @@
     "start": "wireit",
     "gen": "wireit",
     "push": "wireit",
+    "cron:start": "crontab cron",
+    "cron:stop": "crontab -r",
     "dev": "concurrently --kill-others --names \"BUILD,RUN\" -c \"bgBlue.bold,bgMagenta.bold\" \"tsc --build -w --pretty\" \"nodemon -q -w dist dist/src/server.js\""
   },
   "wireit": {
