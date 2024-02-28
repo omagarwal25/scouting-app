@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import { envsafe, port, str, url } from "envsafe";
+import { envsafe, str, url } from "envsafe";
 
 dotenv.config();
 
@@ -12,4 +12,3 @@ export const env = envsafe({
   SHEET_ID: str(),
   CRED_PATH: str(),
 });
-

@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react';
-import tw from '~/utils/tailwind';
 import { ScrollView } from 'react-native';
+import tw from '~/utils/tailwind';
 
 export const Container = ({ children }: PropsWithChildren) => {
   return (

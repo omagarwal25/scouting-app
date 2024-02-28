@@ -23,7 +23,6 @@ export const blueAllianceRouter = router({
   importFromTba: publicProcedure
     .input(z.array(z.any()))
     .mutation(async ({ input, ctx: { db } }) => {
-      console.log(input);
       await db.tBARecord.createMany({
         data: input.map((match) => ({
           content: match,

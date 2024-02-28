@@ -90,7 +90,7 @@ const StartScoutingButton = ({
   if (!match || !scoutId) return <></>;
 
   const handleStartScouting = async () => {
-    await reset();
+    await reset(null);
     setType('objective');
 
     const matchNumber =
@@ -122,7 +122,7 @@ const ScoutIdSelect = () => {
     resolver: zodResolver(
       z.object({ scoutId: objectiveInfoSchema.shape.scoutId })
     ),
-    defaultValues: { scoutId: "Red 1" }
+    defaultValues: { scoutId: 'Red 1' },
   });
 
   const element = game.elements.find(
@@ -209,8 +209,8 @@ const GameSelect = () => {
                   a.comp_level === b.comp_level
                     ? a.match_number - b.match_number
                     : a.comp_level > b.comp_level
-                      ? 1
-                      : -1
+                    ? 1
+                    : -1
                 )
                 .map((e) => (
                   <Picker.Item
@@ -259,10 +259,11 @@ const NextMatchButton = () => {
 };
 
 function matchToLabel(match: any) {
-  return `${match.comp_level === 'qm'
-    ? 'Qualification'
-    : match.comp_level === 'f'
+  return `${
+    match.comp_level === 'qm'
+      ? 'Qualification'
+      : match.comp_level === 'f'
       ? 'Final'
       : 'Elim'
-    } ${match.match_number} (${match.set_number})`;
+  } ${match.match_number} (${match.set_number})`;
 }

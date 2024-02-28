@@ -9,8 +9,6 @@ const tbaBaseUrl = "https://www.thebluealliance.com/api/v3";
 export const getMatches = async () => {
   const eventCode = env.EVENT_CODE;
 
-  console.log(`${tbaBaseUrl}/event/${eventCode}/matches`);
-
   return got(`${tbaBaseUrl}/event/${eventCode}/matches`, {
     headers: {
       "X-TBA-Auth-Key": env.X_TBA_AUTH_KEY,

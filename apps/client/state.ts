@@ -1,7 +1,7 @@
 import { TBAMatch } from '@griffins-scout/api';
 import { atom } from 'jotai';
-import { focusAtom } from 'jotai/optics';
 import { atomWithStorage } from 'jotai/utils';
+import { focusAtom } from 'jotai-optics';
 import {
   ObjectiveInfo,
   ObjectiveRecord,
@@ -12,13 +12,13 @@ import {
 
 type AppSettings =
   | {
-      connection: 'offline';
-    }
+    connection: 'offline';
+  }
   | {
-      connection: 'online';
-      scoutId: ObjectiveInfo['scoutId'] | null;
-      match: TBAMatch | null;
-    };
+    connection: 'online';
+    scoutId: ObjectiveInfo['scoutId'] | null;
+    match: TBAMatch | null;
+  };
 
 export const appSettingsAtom = atomWithStorage<AppSettings>('appSettings', {
   connection: 'offline',

@@ -1,12 +1,12 @@
 {
   "name": "@griffins-scout/sheet",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "type": "module",
   "private": true,
   "license": "MIT",
   "scripts": {
     "build": "wireit",
-    "start": "wireit",
+    "start": "yarn build && node dist/src/main.js",
     "dev": "concurrently --kill-others --names \"BUILD,RUN\" -c \"bgBlue.bold,bgMagenta.bold\" \"tsc --build -w --pretty\" \"nodemon -q -w dist dist/src/main.js\""
   },
   "wireit": {
@@ -24,35 +24,22 @@
       "dependencies": [
         "../../packages/api:build"
       ]
-    },
-    "start": {
-      "command": "node dist/src/main.js",
-      "dependencies": [
-        "build"
-      ],
-      "files": [
-        "dist/**",
-        "src/**/*.ts",
-        "tsconfig.json"
-      ],
-      "clean": "if-file-deleted"
     }
   },
   "dependencies": {
     "dotenv": "^16.0.3",
     "envsafe": "^2.0.3",
-    "got": "^12.5.3",
-    "node-fetch": "^3.3.2",
     "superjson": "^1.13.1",
-    "undici": "^6.2.1",
-    "whatwg-fetch": "^3.6.20",
+    "google-auth-library": "^9.6.3",
+    "googleapis": "^133.0.0",
+    "@google-cloud/local-auth": "^3.0.1",
     "zod": "^3.20.6"
   },
   "devDependencies": {
     "@griffins-scout/api": "*",
     "@griffins-scout/game": "*",
+    "@griffins-scout/logger": "*",
     "@types/node": "^18.7.14",
-    "@types/whatwg-fetch": "^0.0.33",
     "concurrently": "^7.3.0",
     "nodemon": "^2.0.19",
     "prettier": "^2.7.1",

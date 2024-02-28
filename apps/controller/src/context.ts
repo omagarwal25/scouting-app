@@ -1,3 +1,4 @@
+import { logInfo, logInfoWithHeading } from "@griffins-scout/logger";
 import { PrismaClient } from "@prisma/client";
 import * as trpc from "@trpc/server";
 
@@ -15,8 +16,8 @@ export const createContext = () => {
   });
 
   db.$on("query", (e) => {
-    console.log("Query: " + e.query);
-    console.log("Duration: " + e.duration + "ms");
+    logInfoWithHeading("Query", e.query);
+    logInfo("Duration: " + e.duration + "ms");
   });
 
   return {

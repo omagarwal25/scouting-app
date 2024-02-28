@@ -1,3 +1,4 @@
+import { logInfo } from "@griffins-scout/logger";
 import * as trpcExpress from "@trpc/server/adapters/express";
 import cors from "cors";
 import express from "express";
@@ -52,10 +53,7 @@ const main = async () => {
   app.get("/", (req, res) => res.send("Express + Prisma + tRPC + tRPC Shield"));
 
   app.listen(env.PORT, () => {
-    console.log(`server listening at http://localhost:${env.PORT}`);
-    console.log(
-      `tRPC playground listening at http://localhost:${env.PORT}${trpcPlaygroundEndpoint}`
-    );
+    logInfo(`Server listening at http://localhost:${env.PORT}`);
   });
 };
 

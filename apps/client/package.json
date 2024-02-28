@@ -24,8 +24,9 @@
     "expo-media-library": "~15.2.3",
     "expo-splash-screen": "~0.18.1",
     "expo-status-bar": "~1.4.4",
-    "jotai": "^1.8.2",
-    "optics-ts": "^2.3.0",
+    "jotai": "^2.6.5",
+    "jotai-optics": "^0.3.2",
+    "optics-ts": "^2.4.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.35.0",
@@ -53,7 +54,7 @@
     "start": "expo start",
     "postinstall": "cd .. && cd .. && cd packages/game && yarn build"
   },
-  "version": "2.1.0",
+  "version": "3.0.0",
   "private": true,
   "name": "@griffins-scout/client"
 }

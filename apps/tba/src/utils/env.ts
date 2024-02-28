@@ -1,5 +1,6 @@
+import { logInfo } from "@griffins-scout/logger";
 import dotenv from "dotenv";
-import { envsafe, port, str, url } from "envsafe";
+import { envsafe, str, url } from "envsafe";
 
 dotenv.config();
 
@@ -13,4 +14,4 @@ export const env = envsafe({
   CONTROLLER_URL: url(),
 });
 
-console.log(env.EVENT_CODE);
+logInfo(`Event: ${env.EVENT_CODE}`);

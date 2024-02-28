@@ -1,7 +1,4 @@
-import {
-  objectiveRecordDefault,
-  pitRecordDefault,
-} from "./defaults";
+import { objectiveRecordDefault, pitRecordDefault } from "./defaults";
 import { game } from "./game";
 import {
   ObjectiveRecord,
@@ -30,7 +27,7 @@ function elementToCell<T extends Record<string, any>, K extends keyof T>(
 ): string[] {
   const value: any =
     record[screen as keyof typeof record][
-      key as keyof typeof record[typeof screen]
+      key as keyof (typeof record)[typeof screen]
     ];
 
   if (typeof value === "object") {
