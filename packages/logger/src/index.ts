@@ -62,7 +62,7 @@ export const intervalWithBar = async (
 ) => {
   const update = async () => {
     const bar = new SingleBar({
-      format: "|{bar}| {percentage}% | Next update in {eta_formatted}",
+      format: "[{bar}] {percentage}% | Next update in {eta_formatted}",
       barCompleteChar,
       barIncompleteChar,
       noTTYOutput: true,
@@ -73,7 +73,7 @@ export const intervalWithBar = async (
         const incompleteSize = options.barsize! - completeSize;
 
         // generate bar string by stripping the pre-rendered strings
-        return gradient.morning(
+        return gradient.cristal(
           options.barCompleteString!.substring(0, completeSize) +
           options.barGlue +
           options.barIncompleteString!.substring(0, incompleteSize)
