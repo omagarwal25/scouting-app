@@ -28,7 +28,7 @@
     "qrcode.vue": "^3.3.3",
     "superjson": "^1.13.1",
     "vue": "^3.2.38",
-    "vue3-qr-reader": "^1.0.0"
+    "vue-qrcode-reader": "^5.3.3"
   },
   "devDependencies": {
     "@griffins-scout/api": "*",

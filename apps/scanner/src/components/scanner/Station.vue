@@ -1,7 +1,7 @@
 <template>
   <p
     :class="
-      exists &&
+      present &&
       'font-bold underline ' +
         (station.includes('Red') ? 'text-phoenix-red' : 'text-griffins-blue')
     "
@@ -11,18 +11,10 @@
 </template>
 
 <script lang="ts" setup>
-import { ObjectiveInfo, ObjectiveRecord } from '@griffins-scout/game';
-import { computed } from '@vue/reactivity';
+import { ObjectiveInfo } from '@griffins-scout/game';
 
 const props = defineProps<{
   station: ObjectiveInfo['scoutId'];
-  records: ObjectiveRecord[];
+  present: boolean;
 }>();
-
-console.log(props.records);
-console.log(props.station);
-
-const exists = computed(() =>
-  props.records.some((record) => record.info.scoutId === props.station)
-);
 </script>

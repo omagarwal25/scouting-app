@@ -42,5 +42,8 @@
   "private": true,
   "dependencies": {
     "@griffins-scout/game": "*"
+  },
+  "devDependencies": {
+    "wireit": "^0.14.4"
   }
 }

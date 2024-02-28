@@ -6,7 +6,7 @@ import superjson from 'superjson';
 export const client = createTRPCProxyClient<AppRouter>({
   links: [
     httpBatchLink({
-      url: 'http://localhost:8080/trpc',
+      url: 'http://IridiumLion.local:8080/trpc',
     }),
   ],
   transformer: superjson,

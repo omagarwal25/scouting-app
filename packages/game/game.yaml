@@ -163,7 +163,7 @@ elements:
       isInteger: true
       incrementable: true
       min: 0
-    colour: orange 
+    colour: orange
   - name: autoAmp
     label: Auto Game Pieces Amp
     screens:
@@ -229,12 +229,13 @@ elements:
           colour: red
         - label: Route
           name: route
-          default: None
+          default: N/A
           screens:
             - ObjectiveTeleop
           field:
             fieldType: Dropdown
             options:
+              - N/A
               - Amp
               - Stage
               - Source
@@ -517,7 +518,7 @@ elements:
   - name: shootLocationOne
     label: Can they shoot from against the subwoofer?
     screens:
-      -  PitTeleop
+      - PitTeleop
     field:
       fieldType: Boolean
   - name: shootLocationTwo

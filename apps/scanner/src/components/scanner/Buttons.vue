@@ -77,6 +77,7 @@ const onPickerOpen = async () => {
 };
 
 const onNext = async () => {
+  console.log('texting');
   await sendRecords();
 
   const next = await store.getNextGame();

@@ -1,7 +1,7 @@
 <template>
   <button
     :class="props.color"
-    @click="click"
+    @click="emits('click')"
     :disabled="props.disabled"
     class="rounded-3xl border-2 border-gray-400 p-2 text-white"
   >
@@ -11,5 +11,5 @@
 
 <script lang="ts" setup>
 const props = defineProps<{ color?: string; disabled?: boolean }>();
-const { click } = defineEmits<{ click: () => void }>();
+const emits = defineEmits<{ click: [] }>();
 </script>
