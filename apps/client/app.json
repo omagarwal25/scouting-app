@@ -18,11 +18,22 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          }
+        }
+      ]
+    ],
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
         "NSCameraUsageDescription": "This app uses the camera to scan barcodes on event tickets."
-      }
+      },
+      "bundleIdentifier": "com.omagarwal25.scountingclient"
     },
     "android": {
       "adaptiveIcon": {

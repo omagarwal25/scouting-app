@@ -157,17 +157,18 @@ type GameSelect = { match: string };
 
 const GameSelect = () => {
   const [settings, setAppSettings] = useAtom(appSettingsAtom);
-  const { data: matches, isLoading } = trpc.blueAlliance.findAll.useQuery();
-
   const {
-    formState: { errors },
-    control,
-    handleSubmit,
-  } = useForm<GameSelect>({
+    data: matches,
+    isLoading,
+    error,
+  } = trpc.blueAlliance.findAll.useQuery();
+
+  const { formState, control, handleSubmit } = useForm<GameSelect>({
     resolver: zodResolver(z.object({ match: z.string() })),
   });
 
   if (isLoading) return <></>;
+  if (error) return <InputWrapper label={error.message}></InputWrapper>;
   if (!matches) return <></>;
 
   const getMatch = (key: string) =>

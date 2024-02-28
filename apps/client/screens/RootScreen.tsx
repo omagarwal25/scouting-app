@@ -20,26 +20,26 @@ export function RootScreen({ navigation }: RootTabScreenProps) {
   const [isOnline] = useAtom(onlineAtom);
 
   const handleObjective = async () => {
-    await reset();
+    await reset(null);
     setType('objective');
     navigation.navigate('ObjectiveInfo');
   };
 
   const handlePit = async () => {
-    await reset();
+    await reset(null);
     setType('pit');
     navigation.navigate('PitInfo');
   };
 
   const handleQR = async () => {
-    await reset();
+    await reset(null);
     navigation.navigate('Scanner');
   };
 
   const handleSwitch = (value: boolean) => {
     setSettings(
       value
-        ? { connection: 'online', match: null, scoutId: null, ip: null }
+        ? { connection: 'online', match: null, scoutId: null }
         : { connection: 'offline' }
     );
   };

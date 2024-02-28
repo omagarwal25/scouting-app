@@ -40,7 +40,6 @@
   "author": "omagarwal25",
   "license": "MIT",
   "private": true,
-  "devDependencies": {},
   "dependencies": {
     "@griffins-scout/game": "*"
   }
