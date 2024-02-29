@@ -4,10 +4,9 @@ import { Text, View } from 'react-native';
 
 import { saveToLibraryAsync, usePermissions } from 'expo-media-library';
 import { useAtom } from 'jotai';
-import { useRef } from 'react';
 import { Alert } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
-import { captureRef } from 'react-native-view-shot';
+import { captureScreen } from 'react-native-view-shot';
 import { Button } from '~/components/Button';
 import { Container } from '~/components/Container';
 import { ObjectiveTopbar, PitTopbar } from '~/components/Topbar';
@@ -29,7 +28,6 @@ export function QRCodeCard({ navigation }: RootTabScreenProps) {
   const [status, requestPermission] = usePermissions();
   const [objectiveRecord] = useAtom(objectiveRecordAtom);
   const [pitRecord] = useAtom(pitRecordAtom);
-  const imageRef = useRef(null);
   const [settings] = useAtom(appSettingsAtom);
   const { mutate } = trpc.record.createRecord.useMutation();
 
@@ -98,7 +96,7 @@ export function QRCodeCard({ navigation }: RootTabScreenProps) {
 
   const onSaveImageAsync = async () => {
     try {
-      const localUri = await captureRef(imageRef, {
+      const localUri = await captureScreen({
         quality: 1,
         fileName: getName(),
       });
@@ -113,7 +111,7 @@ export function QRCodeCard({ navigation }: RootTabScreenProps) {
   };
 
   return (
-    <View ref={imageRef}>
+    <View>
       {type === 'objective' ? <ObjectiveTopbar /> : <PitTopbar />}
       <Container>
         <Text style={tw`dark:text-white`}>{getName()}</Text>
