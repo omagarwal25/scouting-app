@@ -4,12 +4,7 @@ import { useAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text } from 'react-native';
 import { decodeInfo } from '~/models';
-import {
-  objectiveInfoAtom,
-  pitInfoAtom,
-  recordTypeAtom,
-  subjectiveInfoAtom,
-} from '~/state';
+import { objectiveInfoAtom, pitInfoAtom, recordTypeAtom } from '~/state';
 import type { RootTabScreenProps } from '~/types';
 import tw from '~/utils/tailwind';
 
@@ -17,7 +12,6 @@ export const ScannerCard = ({ navigation }: RootTabScreenProps) => {
   const [hasPermission, setHasPermission] = useState<null | boolean>(null);
   const [scanned, setScanned] = useState(false);
   const [_objectiveInfo, setObjectiveInfo] = useAtom(objectiveInfoAtom);
-  const [_subjectiveInfo, setSubjectiveInfo] = useAtom(subjectiveInfoAtom);
   const [_pitInfo, setPitInfo] = useAtom(pitInfoAtom);
   const [_type, setType] = useAtom(recordTypeAtom);
 
@@ -36,10 +30,6 @@ export const ScannerCard = ({ navigation }: RootTabScreenProps) => {
       await setObjectiveInfo(info);
       await setType('objective');
       navigation.navigate('ObjectiveInfo');
-    } else if (type === 'subjective') {
-      await setSubjectiveInfo(info);
-      await setType('subjective');
-      navigation.navigate('SubjectiveInfo');
     } else if (type === 'pit') {
       await setPitInfo(info);
       await setType('pit');

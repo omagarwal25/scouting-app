@@ -25,12 +25,6 @@ export type RootStackParamList = {
   ObjectiveInfo: undefined;
   ObjectiveOther: undefined;
 
-  SubjectiveInfo: undefined;
-  SubjectiveOther: undefined;
-  SubjectiveTeamOne: undefined;
-  SubjectiveTeamTwo: undefined;
-  SubjectiveTeamThree: undefined;
-
   PitInfo: undefined;
   PitOther: undefined;
   PitSpecifications: undefined;

@@ -1,9 +1,9 @@
 <template>
   <p
     :class="
-      exists &&
+      present &&
       'font-bold underline ' +
-        ((exists as unknown as string).includes('Red') ? 'text-phoenix-red' : 'text-griffins-blue')
+        (station.includes('Red') ? 'text-phoenix-red' : 'text-griffins-blue')
     "
   >
     {{ station }}
@@ -11,18 +11,10 @@
 </template>
 
 <script lang="ts" setup>
-import { ObjectiveInfo, SubjectiveInfo } from '@griffins-scout/game';
-import { computed } from '@vue/reactivity';
-import { useCurrentGameStore } from '~/store';
+import { ObjectiveInfo } from '@griffins-scout/game';
 
 const props = defineProps<{
-  station: ObjectiveInfo['scoutId'] | SubjectiveInfo['scoutId'];
+  station: ObjectiveInfo['scoutId'];
+  present: boolean;
 }>();
-const store = useCurrentGameStore();
-
-const exists = computed(() =>
-  store.records
-    .map((r) => (r.type === 'pit' ? '' : r.record.info.scoutId))
-    .find((e) => e === props.station)
-);
 </script>

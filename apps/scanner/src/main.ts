@@ -3,10 +3,11 @@ import App from './App.vue';
 import './index.css';
 
 // @ts-ignore
-import QrReader from 'vue3-qr-reader';
 import { createPinia } from 'pinia';
+import { VueQrcodeReader } from 'vue-qrcode-reader';
 
 const app = createApp(App);
-app.use(QrReader);
+
+app.use(VueQrcodeReader);
 app.use(createPinia());
 app.mount('#app');

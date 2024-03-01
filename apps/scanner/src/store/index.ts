@@ -1,19 +1,18 @@
 import { TBAMatch } from '@griffins-scout/api';
 import {
-  GameRecord,
   ObjectiveRecord,
   PitRecord,
-  SubjectiveRecord,
   convertObjectiveFieldsToArray,
   convertPitFieldsToArray,
-  convertSubjectiveFieldsToArray,
   objectiveHeaders,
   pitHeaders,
-  subjectiveHeaders,
 } from '@griffins-scout/game';
+
 import { defineStore } from 'pinia';
 import { RouterInput, client } from '~/api';
 import { downloadCSVData } from '~/components/util/csv';
+
+type GameRecord = RouterInput['record']['createRecord'][0];
 
 export const useCurrentGameStore = defineStore('currentGameStore', {
   state: () => {
@@ -29,7 +28,8 @@ export const useCurrentGameStore = defineStore('currentGameStore', {
     },
 
     async matches() {
-      return client.match.findAll.query();
+      const res = await client.blueAlliance.findAll.query();
+      return res.map((r) => r.content);
     },
   },
 
@@ -44,28 +44,22 @@ export const useCurrentGameStore = defineStore('currentGameStore', {
     },
 
     async sendRecords() {
-      // TODO all we have to do is just send off the matches
+      // TODO: all we have to do is just send off the matches
 
-      // TODO deal with the off case
-      // BUG THIS IS IMPORTANT BECAUSE OF PRACTICE MATCH SCOUTING.
+      // TODO: deal with the off case
+      // BUG: THIS IS IMPORTANT BECAUSE OF PRACTICE MATCH SCOUTING.
       // IT WILL NOT EXIST IN TBA. ALSO WE NEED AN ESCAPE HATCH
       // all goods
       // tbh, i dont think it matters what game its associated
 
-      downloadCSVData(
-        this.records
-          .filter((e) => e.type === 'subjective')
-          .map((r) =>
-            convertSubjectiveFieldsToArray(r.record as SubjectiveRecord)
-          ),
-        subjectiveHeaders(),
-        `${Date.now().toLocaleString()}-subjective`
-      );
+      console.log('sending');
 
       downloadCSVData(
         this.records
           .filter((e) => e.type === 'pit')
-          .map((r) => convertPitFieldsToArray(r.record as PitRecord)),
+          .map((r) =>
+            convertPitFieldsToArray(r.record as unknown as PitRecord)
+          ),
         pitHeaders(),
         `${Date.now().toLocaleString()}-pit`
       );
@@ -82,8 +76,10 @@ export const useCurrentGameStore = defineStore('currentGameStore', {
         `${Date.now().toLocaleString()}-objective`
       );
 
+      console.log('downloading');
+
       try {
-        client.record.createRecord.mutate(
+        await client.record.createRecord.mutate(
           this.records as unknown as RouterInput['record']['createRecord']
         );
       } catch (e) {

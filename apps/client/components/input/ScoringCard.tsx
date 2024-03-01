@@ -6,11 +6,7 @@ import { Text, View } from 'react-native';
 import { ZodObject, ZodSchema } from 'zod';
 import { Button } from '~/components/Button';
 import { Container } from '~/components/Container';
-import {
-  ObjectiveTopbar,
-  PitTobar,
-  SubjectiveTopbar,
-} from '~/components/Topbar';
+import { ObjectiveTopbar, PitTopbar } from '~/components/Topbar';
 import { game, ScoutingElement, Screen } from '~/models';
 import { RootStackParamList, RootTabScreenProps } from '~/types';
 import tw from '~/utils/tailwind';
@@ -28,14 +24,9 @@ type Props<
   readonly keys: readonly Path<T>[];
   zodSchema: ZodSchema;
   defaults: ZodObject<any>;
-  type:
-    | {
-        name: 'objective' | 'pit';
-      }
-    | {
-        name: 'subjective';
-        team: 'one' | 'two' | 'three' | 'none';
-      };
+  type: {
+    name: 'objective' | 'pit';
+  };
 };
 
 const getElement = (name: string, screen: Screen) => {
@@ -83,9 +74,8 @@ export const InputModal = <
       return;
     }
 
-    const path = `${name as string}.${
-      (values[name] as any[]).length
-    }` as unknown as Path<T>;
+    const path = `${name as string}.${(values[name] as any[]).length
+      }` as unknown as Path<T>;
 
     setValue(
       path,
@@ -128,13 +118,7 @@ export const InputModal = <
 
   return (
     <>
-      {type.name === 'subjective' ? (
-        <SubjectiveTopbar team={type.team} />
-      ) : type.name === 'objective' ? (
-        <ObjectiveTopbar />
-      ) : (
-        <PitTobar />
-      )}
+      {type.name === 'objective' ? <ObjectiveTopbar /> : <PitTopbar />}
       <Container>
         {keys
           .filter((e) => getElement(e, screen)?.field.fieldType !== 'Grouping')
@@ -146,6 +130,7 @@ export const InputModal = <
               }
               field={getElement(e, screen)!!.field}
               label={getElement(e, screen)!!.label}
+              bg={getElement(e, screen)!!.colour}
               key={getElement(e, screen)!!.name}
             />
           ))}
@@ -166,9 +151,10 @@ export const InputModal = <
                         }}
                         error={
                           (errors as Record<keyof T, FieldError>)[
-                            `${e.name}.${i}.${f.name}` as unknown as keyof T
+                          `${e.name}.${i}.${f.name}` as unknown as keyof T
                           ]
                         }
+                        bg={f.colour}
                         field={f.field}
                         label={f.label}
                         key={f.name}

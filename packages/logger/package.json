@@ -1,0 +1,55 @@
+{
+  "name": "@griffins-scout/logger",
+  "version": "3.0.0",
+  "description": "Logs stuff",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "files": [
+    "dist/**",
+    "package.json"
+  ],
+  "scripts": {
+    "build": "wireit",
+    "dev": "wireit"
+  },
+  "wireit": {
+    "build": {
+      "command": "rollup -c",
+      "clean": "if-file-deleted",
+      "files": [
+        "src/**",
+        "rollup.config.js",
+        "tsconfig.json"
+      ],
+      "output": [
+        "dist/**"
+      ]
+    },
+    "dev": {
+      "command": "tsc",
+      "clean": "if-file-deleted",
+      "files": [
+        "src/**"
+      ],
+      "output": [
+        "dist/**"
+      ]
+    }
+  },
+  "author": "omagarwal25",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "@types/cli-progress": "^3.11.5",
+    "@types/gradient-string": "^1.1.5",
+    "rollup": "^2.79.0",
+    "rollup-plugin-typescript2": "^0.33.0",
+    "typescript": "^4.8.2",
+    "wireit": "^0.14.4"
+  },
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "cli-progress": "^3.12.0",
+    "gradient-string": "^2.0.2"
+  }
+}

@@ -1,6 +1,7 @@
 import { initTRPC } from "@trpc/server";
 import superjson from "superjson";
 import { Context } from "./context";
+import { logErrorWithHeading, logInfo, logInfoWithHeading } from "@griffins-scout/logger";
 
 const t = initTRPC.context<Context>().create({
   // Optional:
@@ -21,13 +22,8 @@ const logger = t.middleware(async ({ path, type, next }) => {
   const result = await next();
   const durationMs = Date.now() - start;
   result.ok
-    ? console.info("OK request timing:", { path, type, durationMs })
-    : console.warn("Non-OK request timing", {
-        path,
-        type,
-        durationMs,
-        error: result.error,
-      });
+    ? logInfoWithHeading(`${type} ${path}`, `OK request timing: ${durationMs}ms`,)
+    : logErrorWithHeading(`${type} ${path}`, `Error request timing: ${durationMs}ms ${result.error}`)
 
   return result;
 });

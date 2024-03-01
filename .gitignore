@@ -59,6 +59,7 @@ typings/
 .rts2_cache_es/
 .rts2_cache_umd/
 
+.yarn/
 # Optional REPL history
 .node_repl_history
 
@@ -108,3 +109,4 @@ dist
 
 **/.DS_Store
 .wireit
+.idea

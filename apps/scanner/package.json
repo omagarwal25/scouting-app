@@ -1,7 +1,7 @@
 {
   "name": "@griffins-scout/scanner",
   "private": true,
-  "version": "2.1.0",
+  "version": "3.0.0",
   "scripts": {
     "dev": "wireit",
     "build": "vue-tsc --noEmit && vite build",
@@ -21,15 +21,14 @@
   },
   "dependencies": {
     "@griffins-scout/game": "*",
-    "@trpc/client": "^10.8.1",
-    "@trpc/server": "^10.8.1",
+    "@trpc/client": "^10.35.0",
+    "@trpc/server": "^10.35.0",
     "@vueuse/core": "^9.1.1",
-    "node-fetch": "^3.2.10",
     "pinia": "^2.0.21",
     "qrcode.vue": "^3.3.3",
-    "superjson": "^1.9.1",
+    "superjson": "^1.13.1",
     "vue": "^3.2.38",
-    "vue3-qr-reader": "^1.0.0"
+    "vue-qrcode-reader": "^5.3.3"
   },
   "devDependencies": {
     "@griffins-scout/api": "*",

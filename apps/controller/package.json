@@ -1,15 +1,34 @@
 {
   "name": "@griffins-scout/controller",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "type": "module",
   "private": true,
   "license": "MIT",
   "scripts": {
     "build": "wireit",
     "start": "wireit",
+    "gen": "wireit",
+    "push": "wireit",
+    "cron:start": "crontab cron",
+    "cron:stop": "crontab -r",
     "dev": "concurrently --kill-others --names \"BUILD,RUN\" -c \"bgBlue.bold,bgMagenta.bold\" \"tsc --build -w --pretty\" \"nodemon -q -w dist dist/src/server.js\""
   },
   "wireit": {
+    "gen": {
+      "command": "prisma generate",
+      "files": [
+        "prisma/schema.prisma"
+      ]
+    },
+    "push": {
+      "command": "prisma db push",
+      "files": [
+        "prisma/schema.prisma"
+      ],
+      "dependencies": [
+        "gen"
+      ]
+    },
     "build": {
       "server": true,
       "command": "tsc --build --pretty",
@@ -22,13 +41,15 @@
       ],
       "clean": "if-file-deleted",
       "dependencies": [
+        "gen",
         "../../packages/game:build"
       ]
     },
     "start": {
       "command": "node dist/src/server.js",
       "dependencies": [
-        "build"
+        "build",
+        "push"
       ],
       "files": [
         "dist/**",
@@ -39,18 +60,15 @@
     }
   },
   "dependencies": {
-    "@google-cloud/local-auth": "^2.1.1",
-    "@griffins-scout/api": "*",
     "@griffins-scout/game": "*",
-    "@trpc/server": "^10.8.1",
+    "@griffins-scout/logger": "*",
+    "@prisma/client": "5.10.2",
+    "@trpc/server": "^10.35.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "envsafe": "^2.0.3",
     "express": "^4.18.1",
-    "google-auth-library": "^8.7.0",
-    "googleapis": "^111.0.0",
-    "got": "^12.5.3",
-    "superjson": "^1.9.1",
+    "superjson": "^1.13.1",
     "trpc-playground": "^1.0.4",
     "zod": "^3.20.6"
   },
@@ -61,6 +79,8 @@
     "concurrently": "^7.3.0",
     "nodemon": "^2.0.19",
     "prettier": "^2.7.1",
-    "typescript": "^4.8.2"
+    "prisma": "^5.10.2",
+    "typescript": "^4.8.2",
+    "wireit": "^0.14.4"
   }
 }

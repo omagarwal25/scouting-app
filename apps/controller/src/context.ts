@@ -1,12 +1,28 @@
-import trpc from "@trpc/server";
+import { logInfo, logInfoWithHeading } from "@griffins-scout/logger";
+import { PrismaClient } from "@prisma/client";
+import * as trpc from "@trpc/server";
 
 export const createContext = () => {
-  // prisma.$on("query", (e) => {
-  //   console.log("Query: " + e.query);
-  //   console.log("Duration: " + e.duration + "ms");
-  // });
+  const db = new PrismaClient({
+    log: [
+      {
+        emit: "event",
+        level: "query",
+      },
+      "info",
+      "warn",
+      "error",
+    ],
+  });
 
-  return {};
+  db.$on("query", (e) => {
+    logInfoWithHeading("Query", e.query);
+    logInfo("Duration: " + e.duration + "ms");
+  });
+
+  return {
+    db,
+  };
 };
 
 export type Context = trpc.inferAsyncReturnType<typeof createContext>;

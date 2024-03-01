@@ -6,10 +6,12 @@
   </FlexVert> -->
 
   <div class="w-full">
-    <div class="w-full p-4">
-      <ScannerDash />
-      <Codes v-if="store.currentMatch" :match="store.currentMatch" />
-    </div>
+    <Suspense>
+      <div class="w-full p-4">
+        <ScannerDash />
+        <Codes v-if="store.currentMatch" :match="store.currentMatch" />
+      </div>
+    </Suspense>
   </div>
 </template>
 

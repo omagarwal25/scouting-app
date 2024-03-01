@@ -21,26 +21,14 @@ import {
   pitRecordSchema,
   pitSpecificationsKeys,
   pitTeleopKeys,
-  SubjectiveInfo,
-  subjectiveInfoKeys,
-  subjectiveOtherKeys,
-  SubjectiveRecord,
-  subjectiveRecordSchema,
-  subjectiveTeamKeys,
 } from "./screens";
 import { ScoutingElement, Screen } from "./types";
 
 export const recordSchema = z
   .object({
-    type: z.literal("subjective"),
-    record: subjectiveRecordSchema,
+    type: z.literal("objective"),
+    record: objectiveRecordSchema,
   })
-  .or(
-    z.object({
-      type: z.literal("objective"),
-      record: objectiveRecordSchema,
-    })
-  )
   .or(
     z.object({
       type: z.literal("pit"),
@@ -244,20 +232,6 @@ export const encodeObjectiveRecord = (record: ObjectiveRecord) => {
   return `o!${auto}@${endgame}@${postgame}@${teleop}@${pregame}@${other}@${info}`;
 };
 
-export const encodeSubjectiveRecord = (record: SubjectiveRecord) => {
-  const teamOne = encode(record.teamOne, subjectiveTeamKeys, "SubjectiveTeam");
-  const teamTwo = encode(record.teamTwo, subjectiveTeamKeys, "SubjectiveTeam");
-  const teamThree = encode(
-    record.teamThree,
-    subjectiveTeamKeys,
-    "SubjectiveTeam"
-  );
-  const info = encode(record.info, subjectiveInfoKeys, "SubjectiveInfo");
-  const other = encode(record.other, subjectiveOtherKeys, "SubjectiveOther");
-
-  return `s!${teamOne}@${teamTwo}@${teamThree}@${other}@${info}`;
-};
-
 export const encodePitRecord = (record: PitRecord) => {
   const auto = encode(record.auto, pitAutoKeys, "PitAuto");
   const teleop = encode(record.teleop, pitTeleopKeys, "PitTeleop");
@@ -291,21 +265,6 @@ export const decodeObjectiveRecord = (str: string): ObjectiveRecord => {
   return record;
 };
 
-export const decodeSubjectiveRecord = (str: string): SubjectiveRecord => {
-  // remove the s! prefix
-  const split = str.slice(2).split("@");
-
-  const record: SubjectiveRecord = {
-    teamOne: decode(split[0], subjectiveTeamKeys, "SubjectiveTeam"),
-    teamTwo: decode(split[1], subjectiveTeamKeys, "SubjectiveTeam"),
-    teamThree: decode(split[2], subjectiveTeamKeys, "SubjectiveTeam"),
-    other: decode(split[3], subjectiveOtherKeys, "SubjectiveOther"),
-    info: decode(split[4], subjectiveInfoKeys, "SubjectiveInfo"),
-  };
-
-  return record;
-};
-
 export const decodePitRecord = (str: string): PitRecord => {
   // remove the p! prefix
 
@@ -328,11 +287,8 @@ export const decodePitRecord = (str: string): PitRecord => {
   return record;
 };
 
-export const getEncodedType = (
-  str: string
-): "objective" | "subjective" | "pit" => {
+export const getEncodedType = (str: string): "objective" | "pit" => {
   if (str.startsWith("o!")) return "objective";
-  else if (str.startsWith("s!")) return "subjective";
   else if (str.startsWith("p!")) return "pit";
   else throw new Error("Invalid encoded string");
 };
@@ -340,19 +296,12 @@ export const getEncodedType = (
 export const decodeRecord = (str: string): GameRecord => {
   const type = getEncodedType(str);
   if (type === "objective") return { type, record: decodeObjectiveRecord(str) };
-  if (type === "subjective")
-    return { type, record: decodeSubjectiveRecord(str) };
   return { type, record: decodePitRecord(str) };
 };
 
 export const encodeObjectiveInfo = (info: ObjectiveInfo) => {
   const coded = encode(info, objectiveInfoKeys, "ObjectiveInfo");
   return `o!${coded}`;
-};
-
-export const encodeSubjectiveInfo = (info: SubjectiveInfo) => {
-  const coded = encode(info, subjectiveInfoKeys, "SubjectiveInfo");
-  return `s!${coded}`;
 };
 
 export const encodePitInfo = (info: PitInfo) => {
@@ -365,11 +314,6 @@ export const decodeObjectiveInfo = (str: string): ObjectiveInfo => {
   return decode(split, objectiveInfoKeys, "ObjectiveInfo");
 };
 
-export const decodeSubjectiveInfo = (str: string): SubjectiveInfo => {
-  const split = str.slice(2);
-  return decode(split, subjectiveInfoKeys, "SubjectiveInfo");
-};
-
 export const decodePitInfo = (str: string): PitInfo => {
   const split = str.slice(2);
   return decode(split, pitInfoKeys, "PitInfo");
@@ -378,11 +322,9 @@ export const decodePitInfo = (str: string): PitInfo => {
 export const decodeInfo = (
   str: string
 ):
-  | { type: "subjective"; info: SubjectiveInfo }
   | { type: "objective"; info: ObjectiveInfo }
   | { type: "pit"; info: PitInfo } => {
   const type = getEncodedType(str);
   if (type === "objective") return { type, info: decodeObjectiveInfo(str) };
-  if (type === "subjective") return { type, info: decodeSubjectiveInfo(str) };
   return { type, info: decodePitInfo(str) };
 };

@@ -50,7 +50,6 @@
 
 <script setup lang="ts">
 import { ref, Suspense } from 'vue';
-import { client } from '~/api';
 import Button from '~/components/util/Button.vue';
 import { useCurrentGameStore } from '~/store';
 import ManualPicker from './ManualPicker.vue';
@@ -78,6 +77,7 @@ const onPickerOpen = async () => {
 };
 
 const onNext = async () => {
+  console.log('texting');
   await sendRecords();
 
   const next = await store.getNextGame();
@@ -90,6 +90,6 @@ const onNext = async () => {
 };
 
 const onFetchTBA = async () => {
-  await client.match.importFromTba.mutate();
+  // await client.match.importFromTba.mutate();
 };
 </script>

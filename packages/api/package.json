@@ -1,6 +1,6 @@
 {
   "name": "@griffins-scout/api",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "description": "The browser API collection for anything Griffins Scout",
   "main": "dist/packages/api/src/index.js",
   "module": "dist/packages/api/index.esm.js",
@@ -15,6 +15,9 @@
     "build": {
       "command": "tsc",
       "clean": "if-file-deleted",
+      "dependencies": [
+        "../../apps/controller:build"
+      ],
       "files": [
         "src/**",
         "../../apps/controller/**"
@@ -37,8 +40,10 @@
   "author": "omagarwal25",
   "license": "MIT",
   "private": true,
-  "devDependencies": {},
   "dependencies": {
     "@griffins-scout/game": "*"
+  },
+  "devDependencies": {
+    "wireit": "^0.14.4"
   }
 }

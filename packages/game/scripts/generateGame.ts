@@ -45,20 +45,22 @@ const elements = info.elements.map((element) => {
     return {
       name: element.name,
       label: element.label,
+      colour: element.colour,
       screens: element.screens,
       schema: zSchema,
       field: `{
         fieldType: "Grouping",
         fields: [${element.field.fields.map(
-          (f) =>
-            `{
+        (f) =>
+          `{
               name: "${f.name}",
               label: "${f.label}",
+              colour: ${f.colour ? `"${f.colour}"` : "undefined"},
               screens: ${JSON.stringify(f.screens)},
               field: ${JSON.stringify(f.field)},
               schema: ${getSchema(f.field)},
             }`
-        )}]
+      )}]
       }`,
     };
   }
@@ -66,6 +68,7 @@ const elements = info.elements.map((element) => {
   return {
     name: element.name,
     label: element.label,
+    colour: element.colour,
     screens: element.screens,
     schema: zSchema,
     field: JSON.stringify(element.field),
@@ -76,7 +79,8 @@ const objectiveNames = elements
   .filter((e) => e.screens.some((s: string) => s.startsWith("Objective")))
   .map((e) => e.name);
 const objectiveRequired = [
-  "scoutName",
+  "scoutNameOne",
+  "scoutNameTwo",
   "scoutId",
   "matchType",
   "matchNumber",
@@ -91,32 +95,10 @@ objectiveRequired.forEach((name) => {
   }
 });
 
-const subjectiveNames = elements
-  .filter((e) => e.screens.some((s: string) => s.startsWith("Subjective")))
-  .map((e) => e.name);
-const subjectiveRequired = [
-  "scoutName",
-  "scoutId",
-  "matchType",
-  "matchNumber",
-  "teamOneNumber",
-  "teamTwoNumber",
-];
-
-if (info.allianceSize === 3) subjectiveRequired.push("teamThreeNumber");
-
-subjectiveRequired.forEach((name) => {
-  if (!subjectiveNames.includes(name)) {
-    throw new Error(
-      `❌ Scoring element ${name} is required in subjectiveElements`
-    );
-  }
-});
-
 const pitNames = elements
   .filter((e) => e.screens.some((s: string) => s.startsWith("Objective")))
   .map((e) => e.name);
-const pitRequired = ["teamNumber", "scoutName"];
+const pitRequired = ["teamNumber", "scoutNameOne", "scoutNameTwo"];
 
 pitRequired.forEach((name) => {
   if (!pitNames.includes(name)) {
@@ -146,8 +128,9 @@ main.addVariableStatement({
             writer.block(() => {
               writer.writeLine(`name: "${element.name}",`);
               writer.writeLine(`label: "${element.label}",`);
-              writer.writeLine(`screens: ${JSON.stringify(element.screens)},`);
-              writer.writeLine(`field:`);
+              writer.writeLine(`colour: ${element.colour ? `"${element.colour}"` : "undefined"}, `);
+              writer.writeLine(`screens: ${JSON.stringify(element.screens)}, `);
+              writer.writeLine(`field: `);
               writer.writeLine(element.field + ",");
               writer.writeLine(`schema: ${element.schema}`);
             });

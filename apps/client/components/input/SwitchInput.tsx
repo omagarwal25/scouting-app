@@ -7,10 +7,12 @@ import { Switch } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import { InputWrapper } from './InputWrapper';
 import tw from '~/utils/tailwind';
+import { BaseElement } from '~/models';
 
 type Props<T extends FieldValues> = {
   control: UseControllerProps<T>;
   label: string;
+  bg: BaseElement["colour"]
 };
 export const SwitchInput = <T extends object>(props: Props<T>) => {
   const {
@@ -23,7 +25,7 @@ export const SwitchInput = <T extends object>(props: Props<T>) => {
   };
 
   return (
-    <InputWrapper label={props.label}>
+    <InputWrapper label={props.label} bg={props.bg}>
       <Switch
         style={tw`h-10 p-2.5 mr-0 ml-auto`}
         onValueChange={(value) => onClick(value)}

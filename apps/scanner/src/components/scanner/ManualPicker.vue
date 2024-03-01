@@ -23,15 +23,17 @@ const emit = defineEmits<{ (e: 'close'): void }>();
 
 const selected = ref<string | null>(null);
 const store = useCurrentGameStore();
-const matches = (await client.match.findAll.query()).sort((a, b) =>
-  // sort practice, then qual tthen playoff,
-  // if same type, then sort by number
-  a.comp_level === b.comp_level
-    ? a.match_number - b.match_number
-    : a.comp_level > b.comp_level
-    ? 1
-    : -1
-);
+const matches = (await client.blueAlliance.findAll.query())
+  .map((e) => e.content)
+  .sort((a, b) =>
+    // sort practice, then qual tthen playoff,
+    // if same type, then sort by number
+    a.comp_level === b.comp_level
+      ? a.match_number - b.match_number
+      : a.comp_level > b.comp_level
+      ? 1
+      : -1
+  );
 
 const onSelect = async () => {
   if (selected.value) {

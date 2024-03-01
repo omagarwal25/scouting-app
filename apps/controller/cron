@@ -1,0 +1,1 @@
+0,30 * * * * /Users/oma/Documents/Coding/scouting-app/apps/controller/backup.sh >> /Users/oma/Documents/Coding/scouting-app/apps/controller/backup.log 2>&1

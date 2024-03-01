@@ -1,0 +1,581 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/omagarwal25/scouting-app/main/packages/game/schemas/game.schema.json
+name: Crescendo
+description: Uwu
+year: 2024
+allianceSize: 3
+elements:
+  - name: scoutId
+    label: Scout ID
+    screens:
+      - ObjectiveInfo
+    field:
+      fieldType: Dropdown
+      options:
+        - Red 1
+        - Red 2
+        - Red 3
+        - Blue 1
+        - Blue 2
+        - Blue 3
+  - name: matchType
+    label: Match Type
+    screens:
+      - ObjectiveInfo
+    field:
+      fieldType: Dropdown
+      options:
+        - Practice
+        - Qualification
+        - Elimination
+  - name: matchNumber
+    label: Match Number
+    screens:
+      - ObjectiveInfo
+    field:
+      fieldType: Numeric
+      isInteger: true
+      incrementable: false
+      min: 0
+  - name: teamNumber
+    label: Team Number
+    screens:
+      - ObjectiveInfo
+      - PitInfo
+    field:
+      fieldType: Numeric
+      isInteger: true
+      incrementable: false
+      min: 0
+  - name: scoutName
+    label: Scout Name
+    screens:
+      - ObjectiveOther
+      - PitOther
+    field:
+      fieldType: Text
+  - name: startingPosition
+    label: Starting Position
+    screens:
+      - ObjectivePregame
+    field:
+      fieldType: Dropdown
+      options:
+        - Amp
+        - Subwoofer
+        - Source
+  - name: touchingSubwoofer
+    label: Touching Subwoofer?
+    screens:
+      - ObjectivePregame
+      - PitAuto
+    field:
+      fieldType: Boolean
+  - name: preload
+    label: Preload
+    screens:
+      - ObjectivePregame
+      - PitAuto
+    field:
+      fieldType: Boolean
+  - name: autoAttempted
+    label: Auto Attempted
+    screens:
+      - ObjectiveAuto
+    field:
+      fieldType: Boolean
+  - name: gamePiecesPickedUpWing
+    label: Game Pieces Picked Up From Wing
+    screens:
+      - ObjectiveAuto
+    field:
+      fieldType: Numeric
+      isInteger: true
+      incrementable: true
+      min: 0
+  - name: gamePiecesPickedUpCenter
+    label: Game Pieces Picked Up From Center
+    screens:
+      - ObjectiveAuto
+    field:
+      fieldType: Numeric
+      isInteger: true
+      incrementable: true
+      min: 0
+  - name: autoSpeaker
+    label: Auto Game Pieces Speaker
+    screens:
+      - ObjectiveAuto
+      - PitAuto
+    field:
+      fieldType: Numeric
+      isInteger: true
+      incrementable: true
+      min: 0
+  - name: attemptedAutoSpeaker
+    label: Auto Game Pieces Speaker Attempted
+    screens:
+      - ObjectiveAuto
+    field:
+      fieldType: Numeric
+      isInteger: true
+      incrementable: true
+      min: 0
+  - name: autoAmp
+    label: Auto Game Pieces Amp
+    screens:
+      - ObjectiveAuto
+      - PitAuto
+    field:
+      fieldType: Numeric
+      isInteger: true
+      incrementable: true
+      min: 0
+  - name: attemptedAutoAmp
+    label: Auto Game Pieces Amp Attempted
+    screens:
+      - ObjectiveAuto
+    field:
+      fieldType: Numeric
+      isInteger: true
+      incrementable: true
+      min: 0
+  - name: autoFloor
+    label: Auto Game Pieces Deposited Floor
+    screens:
+      - ObjectiveAuto
+      - PitAuto
+    field:
+      fieldType: Numeric
+      isInteger: true
+      incrementable: true
+      min: 0
+  - name: attemptedAutoFloor
+    label: Auto Game Pieces Deposited Floor Attempted
+    screens:
+      - ObjectiveAuto
+    field:
+      fieldType: Numeric
+      isInteger: true
+      incrementable: true
+      min: 0
+  - name: exitedStartingZone
+    label: Exited Starting Zone
+    screens:
+      - ObjectiveAuto
+      - PitAuto
+    field:
+      fieldType: Boolean
+  - name: offensiveCycles
+    label: Offensive Cycles
+    screens:
+      - ObjectiveTeleop
+    field:
+      fieldType: Grouping
+      fields:
+        - label: Collection Point
+          name: collectionPoint
+          field:
+            default: Source Floor
+            fieldType: Dropdown
+            options:
+              - Alliance Wing
+              - Opposing Source
+              - Midfield
+              - Source
+              - Source Floor
+              - Opposing Wing
+          screens:
+            - ObjectiveTeleop
+
+        - label: Route
+          name: route
+          default: None
+          screens:
+            - ObjectiveTeleop
+          field:
+            fieldType: Dropdown
+            options:
+              - Amp
+              - Stage
+              - Source
+
+        - label: Shooting Area
+          name: shootingArea
+          default: Starting
+          screens:
+            - ObjectiveTeleop
+          field:
+            fieldType: Dropdown
+            options:
+              - Subwoofer
+              - Starting
+              - Protected
+              - Wing
+              - Other
+
+        - label: Scoring Area
+          name: scoringArea
+          default: None
+          screens:
+            - ObjectiveTeleop
+          field:
+            fieldType: Dropdown
+            options:
+              - Amp
+              - Speaker
+              - Ferry
+
+        - label: Scoring Successful?
+          name: scoringSuccess
+          default: Success
+          screens:
+            - ObjectiveTeleop
+          field:
+            fieldType: Boolean
+
+        - label: Amplified?
+          name: amplified
+          default: False
+          screens:
+            - ObjectiveTeleop
+          field:
+            fieldType: Boolean
+
+        - label: Pickup to Loss of Possession Time
+          name: pickupToLossOfPossesstionTime
+          screens:
+            - ObjectiveTeleop
+          field:
+            fieldType: Numeric
+            isInteger: false
+            incrementable: false
+            min: 0
+
+        - label: Encountered Defense?
+          name: encounteredDefense
+          default: False
+          field:
+            fieldType: Boolean
+          screens:
+            - ObjectiveTeleop
+
+        - label: Offensive Fouls
+          name: offensiveFouls
+          screens:
+            - ObjectiveTeleop
+          field:
+            fieldType: Numeric
+            isInteger: true
+            incrementable: true
+            min: 0
+  - name: defensiveCycles
+    label: Defensive Cycles
+    screens:
+      - ObjectiveTeleop
+    field:
+      fieldType: Grouping
+      fields:
+        - label: Pins
+          name: pins
+          screens:
+            - ObjectiveTeleop
+          field:
+            fieldType: Numeric
+            isInteger: true
+            incrementable: true
+            min: 0
+        - label: Defense Location
+          name: defenseLocation
+          default: Other
+          screens:
+            - ObjectiveTeleop
+          field:
+            fieldType: Dropdown
+            options:
+              - Allied Amp
+              - Opposing Amp
+              - Allied Source
+              - Opposing Source
+              - Allied Wing
+              - Opposing Wing
+              - Other
+        - label: Defensive Fouls
+          name: defensiveFouls
+          screens:
+            - ObjectiveTeleop
+          field:
+            fieldType: Numeric
+            isInteger: true
+            incrementable: true
+            min: 0
+        - label: Defense Time
+          name: defenseTime
+          screens:
+            - ObjectiveTeleop
+          field:
+            fieldType: Numeric
+            isInteger: false
+            incrementable: false
+            min: 0
+  - name: piecesInTrap
+    label: Pieces In Trap
+    screens:
+      - ObjectiveTeleop
+    field:
+      fieldType: Numeric
+      isInteger: true
+      incrementable: true
+      min: 0
+  - name: attemptedPiecesInTrap
+    label: Attempted Pieces In Trap
+    screens:
+      - ObjectiveTeleop
+    field:
+      fieldType: Numeric
+      isInteger: true
+      incrementable: true
+      min: 0
+  - name: climbStatus
+    label: Climb Status
+    screens:
+      - ObjectiveEndgame
+    field:
+      fieldType: Dropdown
+      options:
+        - Successful
+        - Unsuccessful
+        - Not Attempted
+  - name: climbTime
+    label: Climb Time Time
+    screens:
+      - ObjectiveEndgame
+    field:
+      fieldType: Numeric
+      isInteger: false
+      incrementable: false
+      min: 0
+  - name: parked
+    label: Parked
+    screens:
+      - ObjectiveEndgame
+    field:
+      fieldType: Boolean
+  - name: spotlit
+    label: Spotlit
+    screens:
+      - ObjectiveEndgame
+    field:
+      fieldType: Boolean
+  - name: robotsOnChainWith
+    label: Robots On Chain With
+    screens:
+      - ObjectiveEndgame
+    field:
+      fieldType: Dropdown
+      options:
+        - "0"
+        - "1"
+        - "2"
+  - name: coopertitionBonus
+    label: Coopertition Bonus
+    screens:
+      - ObjectivePostgame
+    field:
+      fieldType: Boolean
+  - name: drivetrainSpeed
+    label: Drivetrain Speed
+    screens:
+      - PitDrive
+    field:
+      fieldType: Numeric
+      isInteger: false
+      incrementable: false
+  - name: drivetrainType
+    label: Drivetrain Type
+    screens:
+      - PitDrive
+    field:
+      fieldType: Dropdown
+      options:
+        - "Mecanum"
+        - "Omni"
+        - "Tank"
+        - "Swerve"
+        - "Other"
+  - name: drivetrainWheels
+    label: Drivetrain Wheels
+    screens:
+      - PitDrive
+    field:
+      fieldType: Dropdown
+      options:
+        - "Omni Omni Omni"
+        - "Omni Traction Omni"
+        - "Traction Traction Traction"
+        - "N/A"
+      default: "N/A"
+  - name: robotLength
+    label: Robot Length
+    screens:
+      - PitSpecifications
+    field:
+      fieldType: Numeric
+      isInteger: false
+      incrementable: false
+      min: 0
+  - name: robotWidth
+    label: Robot Width
+    screens:
+      - PitSpecifications
+    field:
+      fieldType: Numeric
+      isInteger: false
+      incrementable: false
+      min: 0
+  - name: preferredChargeStation
+    label: Preferred Charge Station
+    screens:
+      - PitDrive
+    field:
+      fieldType: Dropdown
+      options:
+        - Width First
+        - Length First
+        - Any
+        - Other
+  - name: pieceManipulation
+    label: Piece Manipulation
+    screens:
+      - PitTeleop
+    field:
+      fieldType: Dropdown
+      options:
+        - Cone
+        - Cube
+        - Cone and Cube
+        - None
+  - name: tippedCone
+    label: Tipped Cone
+    screens:
+      - PitTeleop
+    field:
+      fieldType: Boolean
+  - name: singleSubstation
+    label: Single Substation
+    screens:
+      - PitTeleop
+    field:
+      fieldType: Boolean
+  - name: doubleSubstation
+    label: Double Substation
+    screens:
+      - PitTeleop
+    field:
+      fieldType: Boolean
+  - name: floorPickup
+    label: Floor Pickup
+    screens:
+      - PitTeleop
+    field:
+      fieldType: Boolean
+  - name: canDriveOverChargeStation
+    label: Can Drive Over Charge Station
+    screens:
+      - PitTeleop
+    field:
+      fieldType: Dropdown
+      options:
+        - Yes
+        - No
+        - Slowly
+  - name: canBalance
+    label: Can Balance
+    screens:
+      - PitAuto
+      - PitEndgame
+    field:
+      fieldType: Boolean
+  - name: chargeStationLock
+    label: Charge Station Lock
+    screens:
+      - PitEndgame
+    field:
+      fieldType: Dropdown
+      options:
+        - Yes, Motorized
+        - Yes, Mechanical
+        - No
+  - name: canFitWithOtherRobots
+    label: Can Fit With Other Robots
+    screens:
+      - PitEndgame
+    field:
+      fieldType: Dropdown
+      options:
+        - "1"
+        - "2"
+        - None
+  - name: startingPosition
+    label: Starting Position
+    screens:
+      - PitAuto
+    field:
+      fieldType: Dropdown
+      options:
+        - Barrier
+        - Co-op
+        - Cable Bump
+  - name: preferredGameElementOne
+    label: Preferred Game Element One
+    screens:
+      - PitAuto
+    field:
+      fieldType: Dropdown
+      options:
+        - Cone
+        - Cube
+        - No Preference
+  - name: preferredGameElementTwo
+    label: Preferred Game Element Two
+    screens:
+      - PitAuto
+    field:
+      fieldType: Dropdown
+      options:
+        - Cone
+        - Cube
+        - No Preference
+  - name: preferredGameElementThree
+    label: Preferred Game Element Three
+    screens:
+      - PitAuto
+    field:
+      fieldType: Dropdown
+      options:
+        - Cone
+        - Cube
+        - No Preference
+  - name: preferredGameElementFour
+    label: Preferred Game Element Four
+    screens:
+      - PitAuto
+    field:
+      fieldType: Dropdown
+      options:
+        - Cone
+        - Cube
+        - No Preference
+
+  - name: notes
+    label: Notes
+    screens:
+      - ObjectivePostgame
+      - PitOther
+    field:
+      fieldType: Text
+  - name: intakeInsideFramePerimeter
+    label: Intake Inside Frame Perimeter
+    screens:
+      - PitTeleop
+    field:
+      fieldType: Boolean

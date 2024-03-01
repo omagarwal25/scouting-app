@@ -1,15 +1,13 @@
+import { TBAMatch } from "@griffins-scout/api";
 import { ObjectiveInfo } from "@griffins-scout/game";
 import got from "got";
 
-import type { CompLevel, TBAMatch } from "../interfaces/match.js";
 import { env } from "./env.js";
 
 const tbaBaseUrl = "https://www.thebluealliance.com/api/v3";
 
 export const getMatches = async () => {
   const eventCode = env.EVENT_CODE;
-
-  console.log(`${tbaBaseUrl}/event/${eventCode}/matches`);
 
   return got(`${tbaBaseUrl}/event/${eventCode}/matches`, {
     headers: {
@@ -31,7 +29,7 @@ export const getMatches = async () => {
 // };
 
 export const compLevelToMatchType = (
-  compLevel: CompLevel
+  compLevel: TBAMatch["comp_level"]
 ): ObjectiveInfo["matchType"] => {
   if (compLevel === "qm") {
     return "Qualification";

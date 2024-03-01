@@ -1,6 +1,5 @@
 import { scoringCardFactory } from '~/components/input/ScoringCard';
 import {
-  game,
   objectiveAutoDefaultSchema,
   objectiveAutoKeys,
   objectiveAutoSchema,
@@ -43,15 +42,6 @@ import {
   pitTeleopDefaultSchema,
   pitTeleopKeys,
   pitTeleopSchema,
-  subjectiveInfoDefaultSchema,
-  subjectiveInfoKeys,
-  subjectiveInfoSchema,
-  subjectiveOtherDefaultSchema,
-  subjectiveOtherKeys,
-  subjectiveOtherSchema,
-  subjectiveTeamDefaultSchema,
-  subjectiveTeamKeys,
-  subjectiveTeamSchema,
 } from '~/models';
 import {
   objectiveAutoAtom,
@@ -68,11 +58,6 @@ import {
   pitOtherAtom,
   pitSpecificationsAtom,
   pitTeleopAtom,
-  subjectiveInfoAtom,
-  subjectiveOtherAtom,
-  subjectiveTeamOneAtom,
-  subjectiveTeamThreeAtom,
-  subjectiveTeamTwoAtom,
 } from '~/state';
 
 export const scoringCards: ReturnType<typeof scoringCardFactory>[] = [
@@ -154,70 +139,7 @@ export const scoringCards: ReturnType<typeof scoringCardFactory>[] = [
     nextPage: 'QR',
   }),
 
-  // Subjective
-
-  scoringCardFactory({
-    currentPage: 'SubjectiveInfo',
-    screen: 'SubjectiveInfo',
-    atom: subjectiveInfoAtom,
-    keys: subjectiveInfoKeys,
-    zodSchema: subjectiveInfoSchema,
-    defaults: subjectiveInfoDefaultSchema,
-    type: { name: 'subjective', team: 'none' },
-    nextPage: 'SubjectiveTeamOne',
-  }),
-
-  scoringCardFactory({
-    currentPage: 'SubjectiveTeamOne',
-    screen: 'SubjectiveTeam',
-    atom: subjectiveTeamOneAtom,
-    keys: subjectiveTeamKeys,
-    zodSchema: subjectiveTeamSchema,
-    defaults: subjectiveTeamDefaultSchema,
-    type: { name: 'subjective', team: 'one' },
-    nextPage: 'SubjectiveTeamTwo',
-  }),
-
-  scoringCardFactory({
-    currentPage: 'SubjectiveTeamTwo',
-    screen: 'SubjectiveTeam',
-    atom: subjectiveTeamTwoAtom,
-    keys: subjectiveTeamKeys,
-    zodSchema: subjectiveTeamSchema,
-    defaults: subjectiveTeamDefaultSchema,
-    type: { name: 'subjective', team: 'two' },
-    nextPage:
-      game.allianceSize === 3 ? 'SubjectiveTeamThree' : 'SubjectiveOther',
-  }),
-
-  ...(subjectiveTeamThreeAtom !== null
-    ? [
-        scoringCardFactory({
-          currentPage: 'SubjectiveTeamThree',
-          screen: 'SubjectiveTeam',
-          atom: subjectiveTeamThreeAtom,
-          keys: subjectiveTeamKeys,
-          zodSchema: subjectiveTeamSchema,
-          defaults: subjectiveTeamDefaultSchema,
-          type: { name: 'subjective', team: 'three' },
-          nextPage: 'SubjectiveOther',
-        }),
-      ]
-    : []),
-
-  scoringCardFactory({
-    currentPage: 'SubjectiveOther',
-    screen: 'SubjectiveOther',
-    atom: subjectiveOtherAtom,
-    keys: subjectiveOtherKeys,
-    zodSchema: subjectiveOtherSchema,
-    defaults: subjectiveOtherDefaultSchema,
-    type: { name: 'subjective', team: 'none' },
-    nextPage: 'QR',
-  }),
-
   // Pit
-
   scoringCardFactory({
     currentPage: 'PitInfo',
     screen: 'PitInfo',

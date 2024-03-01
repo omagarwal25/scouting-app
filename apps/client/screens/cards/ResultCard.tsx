@@ -4,57 +4,40 @@ import { Text, View } from 'react-native';
 
 import { saveToLibraryAsync, usePermissions } from 'expo-media-library';
 import { useAtom } from 'jotai';
-import { useRef } from 'react';
 import { Alert } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
-import { captureRef } from 'react-native-view-shot';
+import { captureScreen } from 'react-native-view-shot';
 import { Button } from '~/components/Button';
 import { Container } from '~/components/Container';
-import { ObjectiveTopbar, PitTobar, Topbar } from '~/components/Topbar';
+import { ObjectiveTopbar, PitTopbar } from '~/components/Topbar';
 import Colors from '~/constants/Colors';
 import layout from '~/constants/Layout';
 import useColorScheme from '~/hooks/useColorScheme';
+import { encodeObjectiveRecord, encodePitRecord } from '~/models';
 import {
-  encodeObjectiveRecord,
-  encodePitRecord,
-  encodeSubjectiveRecord,
-} from '~/models';
-import {
+  appSettingsAtom,
   objectiveRecordAtom,
   pitRecordAtom,
   recordTypeAtom,
-  subjectiveRecordAtom,
 } from '~/state';
 import { RootTabScreenProps } from '~/types';
 import tw from '~/utils/tailwind';
+import { trpc } from '~/utils/trpc';
 
 export function QRCodeCard({ navigation }: RootTabScreenProps) {
   const [status, requestPermission] = usePermissions();
   const [objectiveRecord] = useAtom(objectiveRecordAtom);
-  const [subjectiveRecord] = useAtom(subjectiveRecordAtom);
   const [pitRecord] = useAtom(pitRecordAtom);
-  const imageRef = useRef(null);
+  const [settings] = useAtom(appSettingsAtom);
+  const { mutate } = trpc.record.createRecord.useMutation();
 
   if (status === null) requestPermission();
-
-  // the way to check if we are in subjective or objective is to see the scout ID of the subjective info, if it is Red 1 then we are objective
 
   const [type] = useAtom(recordTypeAtom);
 
   const getName = () => {
     const time = new Date().toLocaleTimeString();
 
-    if (type === 'subjective') {
-      const {
-        teamOneNumber,
-        teamTwoNumber,
-        teamThreeNumber,
-        matchNumber,
-        matchType,
-        scoutId,
-      } = subjectiveRecord.info;
-      return `Subjective ${teamOneNumber} ${teamTwoNumber} ${teamThreeNumber} ${matchType} ${matchNumber} ${scoutId} ${time}`;
-    }
     if (type === 'objective') {
       const { teamNumber, matchType, matchNumber, scoutId } =
         objectiveRecord.info;
@@ -66,9 +49,7 @@ export function QRCodeCard({ navigation }: RootTabScreenProps) {
   };
 
   const encoded =
-    type === 'subjective'
-      ? encodeSubjectiveRecord(subjectiveRecord)
-      : type === 'objective'
+    type === 'objective'
       ? encodeObjectiveRecord(objectiveRecord)
       : encodePitRecord(pitRecord);
 
@@ -90,6 +71,24 @@ export function QRCodeCard({ navigation }: RootTabScreenProps) {
           onPress: async () => {
             await onSaveImageAsync();
             navigation.navigate('Root');
+
+            if (settings.connection === 'online') {
+              if (type === 'objective') {
+                mutate([
+                  {
+                    type: 'objective',
+                    record: objectiveRecord,
+                  },
+                ]);
+              } else if (type === 'pit') {
+                mutate([
+                  {
+                    type: 'pit',
+                    record: pitRecord,
+                  },
+                ]);
+              }
+            }
           },
         },
       ]
@@ -97,7 +96,7 @@ export function QRCodeCard({ navigation }: RootTabScreenProps) {
 
   const onSaveImageAsync = async () => {
     try {
-      const localUri = await captureRef(imageRef, {
+      const localUri = await captureScreen({
         quality: 1,
         fileName: getName(),
       });
@@ -112,14 +111,8 @@ export function QRCodeCard({ navigation }: RootTabScreenProps) {
   };
 
   return (
-    <View ref={imageRef}>
-      {type === 'subjective' ? (
-        <Topbar color="blue" text="Subjective" />
-      ) : type === 'objective' ? (
-        <ObjectiveTopbar />
-      ) : (
-        <PitTobar />
-      )}
+    <View>
+      {type === 'objective' ? <ObjectiveTopbar /> : <PitTopbar />}
       <Container>
         <Text style={tw`dark:text-white`}>{getName()}</Text>
         <QRCode

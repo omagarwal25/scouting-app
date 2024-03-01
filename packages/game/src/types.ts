@@ -3,6 +3,15 @@ export interface BaseElement {
   name: string;
   label: string;
   field: Field;
+  colour?:
+    | "red"
+    | "orange"
+    | "yellow"
+    | "lime"
+    | "teal"
+    | "blue"
+    | "purple"
+    | "pink";
   schema: ZodSchema;
 }
 
@@ -18,7 +27,6 @@ type ObjectiveScreen = `Objective${
   | "Postgame"
   | "Other"
   | "Info"}`;
-type SubjectiveScreen = `Subjective${"Team" | "Other" | "Info"}`;
 type PitScreen = `Pit${
   | "Specifications"
   | "Drive"
@@ -28,7 +36,7 @@ type PitScreen = `Pit${
   | "Other"
   | "Info"}`;
 
-export type Screen = ObjectiveScreen | SubjectiveScreen | PitScreen;
+export type Screen = ObjectiveScreen | PitScreen;
 
 export type Field =
   | { fieldType: "Boolean"; default?: boolean }

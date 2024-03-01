@@ -1,13 +1,8 @@
-import {
-  objectiveRecordDefault,
-  pitRecordDefault,
-  subjectiveRecordDefault,
-} from "./defaults";
+import { objectiveRecordDefault, pitRecordDefault } from "./defaults";
 import { game } from "./game";
 import {
   ObjectiveRecord,
   PitRecord,
-  SubjectiveRecord,
   objectiveAutoKeys,
   objectiveEndgameKeys,
   objectiveInfoKeys,
@@ -22,9 +17,6 @@ import {
   pitOtherKeys,
   pitSpecificationsKeys,
   pitTeleopKeys,
-  subjectiveInfoKeys,
-  subjectiveOtherKeys,
-  subjectiveTeamKeys,
 } from "./screens";
 
 function elementToCell<T extends Record<string, any>, K extends keyof T>(
@@ -35,7 +27,7 @@ function elementToCell<T extends Record<string, any>, K extends keyof T>(
 ): string[] {
   const value: any =
     record[screen as keyof typeof record][
-      key as keyof typeof record[typeof screen]
+      key as keyof (typeof record)[typeof screen]
     ];
 
   if (typeof value === "object") {
@@ -88,67 +80,6 @@ export function convertObjectiveFieldsToArray(
   return final;
 }
 
-export function convertSubjectiveFieldsToArray(
-  record: SubjectiveRecord,
-  header = false
-) {
-  // we want to flatten the whole record into an array
-  // so we can easily add it to the sheet
-
-  let one: any[] = [];
-
-  [
-    [subjectiveTeamKeys, "teamOne"] as const,
-    [subjectiveOtherKeys, "other"] as const,
-    [
-      subjectiveInfoKeys.filter(
-        (e) => e !== "teamThreeNumber" && e !== "teamTwoNumber"
-      ),
-      "info",
-    ] as const,
-  ].forEach(([keySet, screen]) => {
-    keySet.forEach((key) => {
-      one = one.concat(elementToCell(key, screen, record, header));
-    });
-  });
-
-  let two: any[] = [];
-
-  [
-    [subjectiveTeamKeys, "teamTwo"] as const,
-    [subjectiveOtherKeys, "other"] as const,
-    [
-      subjectiveInfoKeys.filter(
-        (e) => e !== "teamOneNumber" && e !== "teamThreeNumber"
-      ),
-      "info",
-    ] as const,
-  ].forEach(([keySet, screen]) => {
-    keySet.forEach((key) => {
-      two = two.concat(elementToCell(key, screen, record, header));
-    });
-  });
-
-  let three: any[] = [];
-
-  [
-    [subjectiveTeamKeys, "teamThree"] as const,
-    [subjectiveOtherKeys, "other"] as const,
-    [
-      subjectiveInfoKeys.filter(
-        (e) => e !== "teamOneNumber" && e !== "teamTwoNumber"
-      ),
-      "info",
-    ] as const,
-  ].forEach(([keySet, screen]) => {
-    keySet.forEach((key) => {
-      three = three.concat(elementToCell(key, screen, record, header));
-    });
-  });
-
-  return [one, two, three];
-}
-
 export function convertPitFieldsToArray(record: PitRecord, header = false) {
   let final: any[] = [];
 
@@ -171,10 +102,6 @@ export function convertPitFieldsToArray(record: PitRecord, header = false) {
 
 export function objectiveHeaders() {
   return convertObjectiveFieldsToArray(objectiveRecordDefault, true);
-}
-
-export function subjectiveHeaders() {
-  return convertSubjectiveFieldsToArray(subjectiveRecordDefault, true)[0];
 }
 
 export function pitHeaders() {
