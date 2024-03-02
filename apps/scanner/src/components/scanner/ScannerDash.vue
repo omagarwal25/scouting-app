@@ -59,7 +59,7 @@ const currentRecords = ref(await recordsFromCurrentMatch())
 setInterval(async () => {
   console.log("updating current records")
   currentRecords.value = await  recordsFromCurrentMatch()
-}, 30 * 1000)
+}, 10 * 1000)
 
 const store = useCurrentGameStore();
 
