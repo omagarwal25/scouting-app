@@ -1,6 +1,6 @@
 {
   "name": "@griffins-scout/sheet",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "type": "module",
   "private": true,
   "license": "MIT",

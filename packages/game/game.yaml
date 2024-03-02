@@ -250,7 +250,7 @@ elements:
             options:
               - Subwoofer
               - Starting
-              - Protected
+              - Podium
               - Wing
               - Other
           colour: orange
@@ -486,7 +486,7 @@ elements:
       incrementable: false
       min: 0
   - name: robotWeight
-    label: Robot Weight (without bumpers or battery) (in)
+    label: Robot Weight (without bumpers or battery) (lbs)
     screens:
       - PitSpecifications
     field:
@@ -494,6 +494,18 @@ elements:
       isInteger: false
       incrementable: false
       min: 0
+  - name: noteAlign
+    label: Uses vision to align with note?
+    screens:
+      - PitSpecifications
+    field:
+      fieldType: Boolean
+  - name: tagAlign
+    label: Uses vision to align with april tags?
+    screens:
+      - PitSpecifications
+    field:
+      fieldType: Boolean
   - name: scoringLocation
     label: Scoring Location
     screens:
@@ -528,7 +540,7 @@ elements:
     field:
       fieldType: Boolean
   - name: shootLocationThree
-    label: Can they shoot from the protected zone?
+    label: Can they shoot from the podium?
     screens:
       - PitTeleop
     field:
